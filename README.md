@@ -2,6 +2,8 @@
 
 Varun Kumar · product and UX case studies.
 
+**Live site:** [final-varun-resume.netlify.app](https://final-varun-resume.netlify.app)
+
 ## Deploy to Netlify
 
 Drag the [`resume-site`](./resume-site) folder onto Netlify (Deploys, then "drag and drop your site output folder"), or unzip [`downloads/varun-resume-site.zip`](./downloads/varun-resume-site.zip) and drag the unzipped folder. The zip re-creates the whole site.
