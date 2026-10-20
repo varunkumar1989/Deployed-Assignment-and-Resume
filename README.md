@@ -2,24 +2,28 @@
 
 Varun Kumar · product and UX case studies.
 
-| What | Link |
+## Deploy to Netlify
+
+Drag the [`netlify-site`](./netlify-site) folder onto Netlify (Deploys, then "drag and drop your site output folder"). It contains the whole bundle:
+
+| Path | What |
 |---|---|
-| Resume site | [varun-pm-resume.netlify.app](https://varun-pm-resume.netlify.app/) |
-| Case studies page for Netlify: [`case-studies.html`](./case-studies.html) | Deploys as `/case-studies.html` next to your resume |
-| Portfolio (Claude artifact, all projects) | [claude.ai/artifact/LSjCZrSgrP9G5gLKr24vPw](https://claude.ai/artifact/LSjCZrSgrP9G5gLKr24vPw) |
-| Case studies repository | [varunkumar1989/Case-studies](https://github.com/varunkumar1989/Case-studies) |
+| `index.html` | Case-studies hub with all projects and links |
+| `oyo/` | OYO Two Journeys prototype, 10-page deck, 23-page report |
+| `zomato/` | Zomato Customer & Partner prototype, 10-slide deck, 19-page report |
+| `noon/` | Noon UAE heuristic evaluation (page and 16-page PDF) |
+| `klook/` | Klook UX evaluation (page and 8-slide PDF) |
 
-## Featured case studies
+Dragging a folder replaces the whole Netlify site. To keep an existing resume page, copy this folder's contents into a `case-studies` folder next to your resume `index.html`, then drag the combined folder.
 
-| Study | Artifact | PDFs |
+## Live sites and artifacts
+
+| Study | Live site | Artifact |
 |---|---|---|
-| OYO | [Artifact](https://claude.ai/artifact/X16m61bmq12RqtwcoXgvqB) · [Netlify](https://oyo-varun-v3.netlify.app/#p1) | 10-page deck, 23-page report |
-| Zomato | [Artifact](https://claude.ai/artifact/GQAmKHgKsu1PChwp24CcMY) | 10-page and 19-page decks |
-| Noon UAE | [Artifact](https://claude.ai/artifact/WnJNSE1AYzAQHhnBinYGzt) | 16-page deck |
-| Klook | [Artifact](https://claude.ai/artifact/NgvkYSWfS4hdnmYe1kjYhf) | 8-slide deck |
+| OYO Two Journeys | [oyo-varun-v3.netlify.app](https://oyo-varun-v3.netlify.app/) | [Open](https://claude.ai/artifact/X16m61bmq12RqtwcoXgvqB) |
+| Zomato Customer & Partner Prototype | [zomato-varun.netlify.app](https://zomato-varun.netlify.app/) | [Open](https://claude.ai/artifact/NL8yiaHhdPBHo8Gx5SPfBL) |
+| Noon UAE Heuristic Evaluation | in the bundle: `/noon/` | [Open](https://claude.ai/artifact/WnJNSE1AYzAQHhnBinYGzt) |
+| Klook UX Evaluation | in the bundle: `/klook/` | [Open](https://claude.ai/artifact/NgvkYSWfS4hdnmYe1kjYhf) |
+| Portfolio | | [Open](https://claude.ai/artifact/LSjCZrSgrP9G5gLKr24vPw) |
 
-The portfolio page also lists the Slack, Snapdeal, SIP, Tatkal, Hike and AMPscript projects.
-
-## Netlify upload folder
-
-[`netlify/`](./netlify) holds `index.html` (case-studies page with all artifact links) and a ready zip. Drag the folder onto Netlify > Deploys.
+Resume site: [varun-pm-resume.netlify.app](https://varun-pm-resume.netlify.app/) · Case studies repository: [varunkumar1989/Case-studies](https://github.com/varunkumar1989/Case-studies)

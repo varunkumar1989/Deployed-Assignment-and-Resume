@@ -1,0 +1,671 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}[hidden]{display:none!important}</style><title>Zomato Customer & Partner Prototype</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Clickable concept by Varun Kumar: the customer order flow with a corrected, itemised bill, the restaurant partner flow from registration to payouts, and the real app screens it improves.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Layout: phone on the left, flow map + screen notes on the right; stacks on phones. Device screen is always light like the real app. */
+:root{
+  --bg:#F6F0EE; --panel:#FFFFFF; --ink:#24171A; --muted:#7A6A6D; --line:#EADFDC; --accent:#E23744; --accent-ink:#B5162A; --soft:#FCE9EB; --ok:#1A8F4E;
+  --display:"Fraunces",Georgia,serif; --body:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif; --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  /* in-app (always light) */
+  --a-bg:#FFFFFF; --a-ink:#1C1C1C; --a-mut:#696969; --a-line:#EFEFEF; --a-soft:#F8F8F8; --a-red:#E23744; --a-green:#24963F; --a-blue:#256FEF;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#1A1213;--panel:#251A1C;--ink:#F6ECEC;--muted:#BCA9AC;--line:#3A2B2E;--accent:#FF5A67;--accent-ink:#FF8C96;--soft:#3A1E22;--ok:#4CC383;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#1A1213;--panel:#251A1C;--ink:#F6ECEC;--muted:#BCA9AC;--line:#3A2B2E;--accent:#FF5A67;--accent-ink:#FF8C96;--soft:#3A1E22;--ok:#4CC383;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:14px;line-height:1.45}
+.wrap{max-width:1180px;margin:0 auto;padding-block:20px 40px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:start}
+@media (max-width:860px){.wrap{grid-template-columns:minmax(0,1fr);justify-items:center}}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* device */
+.dev{width:390px;max-width:100%;height:812px;border-radius:46px;background:#141012;padding:11px;box-shadow:0 30px 60px -30px rgba(60,10,20,.45);position:sticky;top:16px}
+@media (max-width:860px){.dev{position:relative;top:0;height:min(812px,calc(100dvh - 40px));min-height:640px}}
+.scr{position:relative;width:100%;height:100%;border-radius:36px;overflow:hidden;background:var(--a-bg);color:var(--a-ink);display:flex;flex-direction:column}
+.sb{flex:none;height:40px;display:flex;justify-content:space-between;align-items:center;padding:0 26px;font:700 13px var(--body);color:var(--a-ink)}
+.sb.dk{background:var(--a-red);color:#fff}
+.body{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;scrollbar-width:none}
+.body::-webkit-scrollbar{display:none}
+.foot{flex:none;padding:10px 14px 16px;border-top:1px solid var(--a-line);background:var(--a-bg)}
+.tabs{flex:none;display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--a-line);padding:6px 4px 14px;background:var(--a-bg)}
+.tabs button{border:0;background:none;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:10.5px;font-weight:700;color:var(--a-mut);padding:4px}
+.tabs button.on{color:var(--a-red)}
+.tabs i{font-style:normal;font-size:18px;line-height:1}
+.hdr{display:flex;align-items:center;gap:10px;padding:6px 14px 10px}
+.back{width:34px;height:34px;border-radius:50%;border:0;background:var(--a-soft);font-size:17px;flex:none}
+.hdr h1{font:800 17px var(--body);margin:0;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pad{padding:0 14px}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;border:0;border-radius:12px;background:var(--a-red);color:#fff;font-weight:800;font-size:15px;padding:14px}
+.btn:disabled{background:#F2A7AE}
+.btn.gh{background:#fff;color:var(--a-ink);border:1px solid #DADADA}
+.btn.sm{width:auto;padding:8px 12px;font-size:13px;border-radius:9px}
+.lnk{border:0;background:none;color:var(--a-red);font-weight:800;padding:0}
+.sec{font:800 11px var(--body);letter-spacing:.12em;text-transform:uppercase;color:#9C9C9C;margin:16px 14px 8px}
+.card{border:1px solid var(--a-line);border-radius:14px;background:#fff}
+.inp{display:flex;align-items:center;gap:8px;border:1px solid #DADADA;border-radius:12px;padding:0 12px;background:#fff}
+.inp input{border:0;outline:0;flex:1;min-width:0;font:600 15px var(--body);padding:13px 0;background:transparent;color:var(--a-ink)}
+.chip{border:1px solid #DADADA;background:#fff;border-radius:9px;padding:6px 10px;font-size:12.5px;font-weight:700;white-space:nowrap}
+.chip.on{border-color:var(--a-red);background:#FFF1F2;color:var(--a-red)}
+.row{display:flex;align-items:center;gap:10px}
+.hs{display:flex;gap:8px;overflow-x:auto;padding:0 14px;scrollbar-width:none}
+.hs::-webkit-scrollbar{display:none}
+.mut{color:var(--a-mut)} .sm{font-size:12px}
+.veg{display:inline-grid;place-items:center;width:13px;height:13px;border:1.5px solid var(--a-green);border-radius:3px;flex:none}
+.veg::after{content:"";width:6px;height:6px;border-radius:50%;background:var(--a-green)}
+.veg.nv{border-color:#963B1C}.veg.nv::after{background:#963B1C;border-radius:0;width:0;height:0;border-left:4px solid transparent;border-right:4px solid transparent;border-bottom:7px solid #963B1C;background:none}
+.food{display:grid;place-items:center;border-radius:14px;font-size:40px;flex:none}
+.rate{display:inline-flex;align-items:center;gap:2px;background:var(--a-green);color:#fff;font-weight:800;font-size:11.5px;border-radius:6px;padding:2px 6px}
+.addb{border:1px solid var(--a-red);background:#FFF5F6;color:var(--a-red);font:900 13px var(--body);border-radius:9px;padding:7px 0;width:92px;box-shadow:0 2px 6px rgba(0,0,0,.06)}
+.step{display:inline-flex;align-items:center;border-radius:9px;background:var(--a-red);color:#fff;font-weight:900;width:92px;justify-content:space-between}
+.step button{border:0;background:none;color:#fff;font-weight:900;font-size:16px;padding:5px 11px}
+.info{display:inline-grid;place-items:center;width:16px;height:16px;border-radius:50%;border:1.4px solid var(--a-blue);color:var(--a-blue);font:800 10px var(--body);background:none;padding:0;vertical-align:-2px}
+.bill{display:flex;flex-direction:column;gap:9px;padding:14px}
+.bill .l{display:flex;justify-content:space-between;gap:10px;font-size:14px}
+.bill .t{border-top:1px dashed #D5D5D5;padding-top:10px;font-weight:900;font-size:15.5px}
+.free{color:var(--a-green);font-weight:800}
+.note{font-size:11.5px;color:var(--a-mut)}
+.toast{position:absolute;left:14px;right:14px;bottom:90px;background:#1C1C1C;color:#fff;border-radius:12px;padding:11px 14px;font-weight:700;font-size:13px;z-index:60;opacity:0;transform:translateY(8px);transition:.2s;pointer-events:none}
+.toast.on{opacity:1;transform:none}
+.ov{position:absolute;inset:0;background:rgba(0,0,0,.45);z-index:40;display:flex;align-items:flex-end}
+.sheet{background:#fff;width:100%;border-radius:22px 22px 0 0;max-height:88%;display:flex;flex-direction:column}
+.sheet .sh{padding:16px 16px 8px;display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.sheet .sbd{overflow-y:auto;padding:0 16px 8px}
+.x{border:0;background:var(--a-soft);width:32px;height:32px;border-radius:50%;font-size:15px;flex:none}
+.opt{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid var(--a-line);gap:10px}
+.opt:last-child{border-bottom:0}
+.radio{width:20px;height:20px;border-radius:50%;border:2px solid #BDBDBD;flex:none;display:grid;place-items:center}
+.radio.on{border-color:var(--a-red)}.radio.on::after{content:"";width:10px;height:10px;border-radius:50%;background:var(--a-red)}
+.chk{width:20px;height:20px;border-radius:5px;border:2px solid #BDBDBD;flex:none;display:grid;place-items:center;color:#fff;font-size:12px;font-weight:900}
+.chk.on{border-color:var(--a-red);background:var(--a-red)}
+.cartbar{position:absolute;left:12px;right:12px;bottom:14px;z-index:20;border:0;border-radius:14px;background:var(--a-red);color:#fff;padding:11px 14px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 10px 24px -8px rgba(226,55,68,.6)}
+.fab{position:absolute;right:16px;bottom:84px;z-index:19;border:0;border-radius:24px;background:#1C1C1C;color:#fff;font-weight:800;font-size:12.5px;padding:9px 14px}
+.dealnote{margin:10px 14px 0;border:1px dashed #E4B860;background:#FFF9EC;color:#7A5300;border-radius:10px;padding:8px 10px;font-size:12px;font-weight:700;display:flex;gap:6px;align-items:center}
+.otp{display:flex;gap:10px;justify-content:center}
+.otp span{width:48px;height:56px;border:1.5px solid #DADADA;border-radius:12px;display:grid;place-items:center;font:800 22px var(--body)}
+.otp span.f{border-color:var(--a-red)}
+.tl{display:flex;flex-direction:column;gap:0;padding:4px 16px}
+.tl .s{display:flex;gap:12px;position:relative;padding-bottom:16px}
+.tl .s:last-child{padding-bottom:0}
+.tl .d{width:22px;height:22px;border-radius:50%;background:#E5E5E5;flex:none;display:grid;place-items:center;color:#fff;font-size:11px;font-weight:900;z-index:1}
+.tl .s.done .d{background:var(--a-green)}.tl .s.cur .d{background:var(--a-red);box-shadow:0 0 0 5px rgba(226,55,68,.18)}
+.tl .s::before{content:"";position:absolute;left:10px;top:22px;bottom:0;width:2px;background:#E5E5E5}
+.tl .s.done::before{background:var(--a-green)}.tl .s:last-child::before{display:none}
+.banner{background:#FFF1F2;color:#9B1C28;font-size:10.5px;font-weight:700;text-align:center;padding:5px 10px}
+.spin{width:54px;height:54px;border-radius:50%;border:5px solid #F6C6CB;border-top-color:var(--a-red);animation:sp 0.9s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+@keyframes pop{0%{transform:scale(.6);opacity:0}100%{transform:scale(1);opacity:1}}
+.pop{animation:pop .35s ease-out both}
+@media (prefers-reduced-motion:reduce){.spin,.pop{animation:none}.toast{transition:none}}
+
+/* side panel */
+.side{display:flex;flex-direction:column;gap:16px;min-width:0;width:100%}
+.ttl .eb{font:700 11px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--accent-ink)}
+.ttl h2{font:800 34px/1.05 var(--display);margin:6px 0 8px;text-wrap:balance}
+.ttl p{margin:0;color:var(--muted);max-width:62ch}
+.pnl{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:16px}
+.pnl h3{margin:0 0 10px;font:800 13px var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.flow{display:flex;flex-direction:column;gap:12px}
+.fg{display:flex;flex-direction:column;gap:6px}
+.fg b{font:700 11px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.fs{display:flex;flex-wrap:wrap;gap:6px}
+.fs button{border:1px solid var(--line);background:var(--bg);border-radius:999px;padding:6px 11px;font-size:12.5px;font-weight:700;color:var(--ink);display:inline-flex;gap:6px;align-items:center}
+.fs button .n{font:700 10.5px var(--mono);color:var(--muted)}
+.fs button.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.fs button.on .n{color:#fff}
+.fs button.seen:not(.on){border-color:var(--accent)}
+.notes{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:560px){.notes{grid-template-columns:1fr}}
+.nt{border-radius:14px;padding:12px 14px;background:var(--bg);display:flex;flex-direction:column;gap:6px;min-width:0}
+.nt.try{background:var(--soft)}
+.nt h4{margin:0;font:800 12px var(--body);letter-spacing:.06em;text-transform:uppercase;color:var(--accent-ink)}
+.nt.ux h4{color:var(--ok)}
+.nt ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:4px}
+.ctl{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.ctl button{border:1px solid var(--line);background:var(--panel);border-radius:10px;padding:8px 12px;font-weight:700;font-size:13px}
+.ctl .pri{background:var(--accent);border-color:var(--accent);color:#fff}
+.prog{height:6px;border-radius:6px;background:var(--line);overflow:hidden}
+.prog i{display:block;height:100%;background:var(--accent);transition:width .3s}
+.disc{font-size:12px;color:var(--muted)}
+.pf{display:flex;flex-direction:column;gap:4px;min-width:0}.inp input{width:100%}
+.mode3{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:5px}
+.mode3 button{border:0;border-radius:12px;padding:10px 12px;background:none;font-weight:800;text-align:left;display:flex;flex-direction:column;gap:2px;color:var(--ink);min-width:0}
+.mode3 button span{font-weight:600;font-size:11.5px;color:var(--muted)}
+.mode3 button.on{background:var(--accent);color:#fff}.mode3 button.on span{color:#fff}
+@media (max-width:560px){.mode3{grid-template-columns:1fr}}
+kbd{font:600 11px var(--mono);border:1px solid var(--line);border-radius:5px;padding:1px 5px}
+</style>
+
+<div class="wrap">
+  <div class="dev" aria-label="Phone prototype"><div class="scr" id="scr"></div></div>
+  <aside class="side">
+    <div class="ttl"><span class="eb">Zomato UX case study · clickable prototype · Varun Kumar</span>
+      <h2 id="h2"></h2>
+      <p id="lede"></p></div>
+    <div class="mode3" role="tablist" aria-label="Choose a journey"><button id="mC" role="tab">🍔 Customer<span>Login → order → tracking</span></button><button id="mP" role="tab">🍳 Restaurant partner<span>Register → live → payouts</span></button><button id="mR" role="tab">📸 Real app today<span>10 genuine screens</span></button></div>
+    <div class="pnl"><div class="row" style="justify-content:space-between;margin-bottom:8px"><h3 style="margin:0">Where you are</h3><span class="disc" id="pct"></span></div><div class="prog"><i id="bar"></i></div>
+      <div class="notes" style="margin-top:12px"><div class="nt try"><h4>Try this</h4><ul id="try"></ul></div><div class="nt ux"><h4>Design decision</h4><ul id="ux"></ul></div></div></div>
+    <div class="pnl"><h3>Flow map · jump to any screen</h3><div class="flow" id="flow"></div></div>
+    <div class="ctl"><button class="pri" id="bPrev">← Previous step</button><button class="pri" id="bNext">Next step →</button><button id="bReset">Restart demo</button><span class="disc">Keys: <kbd>←</kbd> <kbd>→</kbd></span></div>
+    <p class="disc"><span id="docs">Reports:</span> <a href="Zomato_UX_10_Slides_Varun_Kumar.pdf" target="_blank" rel="noopener" style="color:var(--accent-ink);font-weight:700">10-slide evaluation (PDF)</a> · <a href="Zomato_UX_Detailed_Report_Varun_Kumar.pdf" target="_blank" rel="noopener" style="color:var(--accent-ink);font-weight:700">19-page detailed report (PDF)</a> · <a href="https://zomato-varun.netlify.app/" style="color:var(--accent-ink);font-weight:700">zomato-varun.netlify.app</a></p>
+    <p class="disc">Concept prototype by <b>Varun Kumar</b> for an independent UX evaluation. Not the real Zomato app and not affiliated with Zomato or Eternal Ltd. No real login, payment or delivery happens; names, numbers and prices are samples. The bill follows the real app’s structure seen on 19 Oct 2026: item total, delivery partner fee, platform fee ₹14.99, GST (govt. taxes). Partner screens are based on public sources and are proposals, not the real partner app.</p>
+  </aside>
+</div>
+
+<script>
+(function(){
+const R='₹';
+const fmt=n=>R+(Math.round(n*100)/100).toFixed(Number.isInteger(Math.round(n*100)/100)?0:2);
+const REST=[
+ {id:'seoul',name:'Seoul Burgers & Shakes',cui:'Korean, Burgers, Shakes',r:4.4,t:'25–30 min',km:'1.8 km',bg:'#FFE3C2',e:'🍔',deal:'Items from ₹99'},
+ {id:'boba',name:'Boba Bhai – Bubble Tea',cui:'Beverages, Korean',r:4.2,t:'30–35 min',km:'2.6 km',bg:'#E8DAFF',e:'🧋',deal:'Flat ₹50 off above ₹299'},
+ {id:'tandoor',name:'Tandoor Junction',cui:'North Indian, Biryani',r:4.3,t:'35–40 min',km:'3.1 km',bg:'#FFD7CF',e:'🍛',deal:'20% off up to ₹100'},
+ {id:'green',name:'Green Bowl Co.',cui:'Salads, Healthy',r:4.1,t:'20–25 min',km:'1.2 km',bg:'#D7F2DA',e:'🥗',deal:''}
+];
+const MENU=[
+ {id:'og',name:'The OG Veggie Burger',p:199,veg:1,e:'🍔',bg:'#FFE3C2',d:'Crispy veg patty, gochujang mayo, lettuce, onion.',cust:1,best:1},
+ {id:'cc',name:'Crispy Chicken Burger',p:144,was:289,veg:0,e:'🍗',bg:'#FFE0C7',d:'Buttermilk fried chicken, slaw, honey sriracha.',deal:1},
+ {id:'kh',name:'Korean Honey Sriracha Burger',p:229,veg:0,e:'🌶️',bg:'#FFD6CC',d:'Double chicken, honey sriracha glaze, kimchi slaw.'},
+ {id:'ff',name:'Peri Peri Fries',p:119,veg:1,e:'🍟',bg:'#FFF0B8',d:'Crinkle-cut fries tossed in peri peri seasoning.'},
+ {id:'bm',name:'Berry Bomb Mojito',p:149,veg:1,e:'🍹',bg:'#FFD3E2',d:'Mixed berry, mint and lime, served chilled.'},
+ {id:'tb',name:'Taro Bubble Tea',p:229,veg:1,e:'🧋',bg:'#E8DAFF',d:'Taro milk tea with brown sugar pearls.'},
+ {id:'os',name:'Oreo Thick Shake',p:189,veg:1,e:'🥤',bg:'#E2DCD5',d:'Vanilla ice cream blended with Oreo.'},
+ {id:'cb',name:'Burger + Fries + Coke Combo',p:299,was:377,veg:1,e:'🍱',bg:'#FFE8B0',d:'OG Veggie Burger, regular fries, Coke 250 ml.',deal:1}
+];
+const PAIR=['ff','bm','tb','os'];
+const COUP=[
+ {code:'SAVE50',t:'Flat ₹50 off',d:'On items not already on a deal, item total ₹249 or more',min:249,calc:b=>50},
+ {code:'TRYNEW',t:'40% off up to ₹80',d:'On items not already on a deal, item total ₹159 or more',min:159,calc:b=>Math.min(80,Math.round(b*.4))}
+];
+const INFO={
+ dl:['Delivery partner fee','Paid towards the delivery partner’s trip. Normally ₹45 on this order; ₹0 for you because Gold makes delivery free above ₹199 (sample rule).'],
+ pf:['Platform fee','A fixed ₹14.99 per order that Zomato charges to run the app (as shown in the app on 19 Oct 2026). GST of 18% applies to it and is included in the GST line.'],
+ gst:['GST (govt. taxes)','5% GST on the food, plus 18% GST on the platform fee (and on any delivery fee). Example from a real bill: 5% of ₹567.50 + 18% of ₹14.99 = ₹31.07.'],
+ deal:['Deal prices','Items marked DEAL already have a lower price. Coupons apply only to the other items, so you never wonder why a coupon “didn’t work”.'],
+ est:['Estimated total','Your items plus all fees and taxes, before any coupon. Updated every time you add something.']
+};
+const FLOW=[
+ ['Get in',[['login','Login'],['otp','OTP'],['addr','Address']]],
+ ['Find food',[['home','Home'],['search','Search'],['results','Results'],['menu','Menu'],['cust','Customise']]],
+ ['Check out',[['cart','Cart'],['coupons','Coupons'],['pay','Payment'],['proc','Paying']]],
+ ['After order',[['placed','Order placed'],['track','Live tracking'],['summary','Order summary'],['orders','Orders tab'],['profile','Profile']]]
+];
+let mode='C';
+const FLOWS={C:FLOW,P:null,R:null};const ORD={};
+const LEDE={C:['Order food, from login to doorstep','Log in, find a dish, customise it, then check a cart whose bill matches the real app’s lines: item total, delivery partner fee, platform fee and GST. Pay, then follow the order live.'],P:['Get a restaurant online, then run it day to day','A proposed restaurant partner journey built from public sources: a checklist before effort, documents checked as you type, menu from a photo, fees shown before you agree, a status tracker, then orders, stock, offers and a payout you can trace line by line.'],R:['The real app today','Ten genuine screenshots from the customer journey (13 and 19 Oct 2026), with what works and what the evaluation found. Personal details are replaced. Tap the screen to move on.']};
+const NOTES={
+ p_welcome:[['Tap “Register your restaurant”.','Or log in as an existing partner to jump to the dashboard.'],['Time and steps shown upfront: register ~45 min, verification 3–7 days (as reported).']],
+ p_login:[['Continue; the OTP is auto-filled in this demo.'],['Documents are not asked at sign-up, so owners can start quickly and return later.']],
+ p_check:[['Read the checklist, then Start.'],['Everything needed is listed before any effort (heuristic #10), with a path for owners without FSSAI.']],
+ p_details:[['Tap the map to drop the pin.','Pick up to 3 cuisines.'],['Map pin avoids wrong addresses; required fields marked; button explains what’s missing.']],
+ p_docs:[['Type a wrong FSSAI or PAN to see the check.','Tap “Fill sample”.','Try “not GST-registered”.'],['Format checks as you type (#5 error prevention) with an example in every error.']],
+ p_menu:[['Upload a menu photo; items appear.','Add 5 photos.'],['Menu from a photo cuts a ~30-minute task (#7 flexibility).']],
+ p_terms:[['Drag the order value; change the distance.','Tap ⓘ on each fee.'],['Commission, GST and the long-distance fee are shown with the net payout before the owner agrees (#1 visibility).']],
+ p_status:[['Tap “Skip ahead” to move through review.','Edit while in review.'],['Status, next step and timeline always visible (#1).']],
+ p_live:[['Adjust prep time, Accept, then Mark ready.','Turn on Rush hour.'],['Each new order shows what the restaurant will receive.','Big targets for busy kitchens (Fitts’s law).']],
+ p_menu2:[['Switch an item off; it comes back at 6 PM by default.'],['A return time prevents items staying off by mistake.']],
+ p_offer:[['Change the discount %.','Confirm the offer.'],['Shows who funds the discount and the payout impact before it runs (#2, #5).']],
+ p_payout:[['Tap each line to see why it was charged.','Raise a query.'],['Every deduction traces to something the owner approved, addressing reported complaints about unclear deductions.']],
+ login:[['Number is pre-filled with a sample. Tap Continue.','Try other sign-in options to see the toast.'],['One field, one primary action: fewest steps to start (Hick’s law).','Prototype banner makes clear nothing real is sent.']],
+ otp:[['The code fills itself after a moment, as if read from SMS.','Tap Verify.'],['Auto-read OTP removes recall and typing (heuristic #6).','Resend timer shows system status (#1).']],
+ addr:[['Pick a saved address or the current location.','Confirm to reach home.'],['Locality and landmark shown in full, no “Sect…” truncation (Issue ⑤).']],
+ home:[['Tap the search bar, a category, or a restaurant.','Use “Order again” for a one-tap reorder.','Bottom tabs work: Orders, Profile.'],['Search first; fewer promos above the fold (Issue ⑥).','“Order again” serves returning users (Jakob’s law).']],
+ search:[['Type “burger”, or tap a recent search or dish.'],['Recent searches and popular dishes reduce typing (#6, #7).']],
+ results:[['Toggle the filters.','Open Seoul Burgers & Shakes.'],['Cards show time, distance and rating; the only offer line is the one that applies.']],
+ menu:[['Tap ADD on a few items; the OG Veggie Burger opens options.','Tap ⓘ on the deal note.','Watch the cart bar: it shows the estimated total with fees.'],['One price per item; deal rule stated once (Issue ①).','Menu button sits above the cart bar, never over ADD (Issue ②, Fitts’s law).']],
+ cust:[['Pick with or without cheese.','Open “Pair it with (optional)”.','Change quantity, then Add item.'],['Required choice first; extras collapsed and never pre-selected (Issue ④, Hick’s law).','Live price in the big button.']],
+ cart:[['Change quantities; the bill updates live.','Apply a coupon; tap ⓘ next to every fee.','Tips and donation are optional and off by default.'],['Every charge is itemised before payment (Issue ③).','Nothing is added without consent (no basket sneaking).']],
+ coupons:[['Apply SAVE50 or TRYNEW.','See why a coupon is unavailable.'],['Eligibility is explained before you apply, not after it fails (#9).']],
+ pay:[['Tap “View bill” to open the same breakdown.','Choose UPI, card or cash, then Pay.'],['The total at the moment of paying can be checked in place (Issue ③, Jakob’s law).']],
+ proc:[['Wait a moment while the demo payment completes.'],['Clear progress state; no double-tap risk (#1, #5).']],
+ placed:[['Track the order or view the summary.'],['Confirmation repeats what, when, where and how much.']],
+ track:[['Watch the status move on its own every few seconds.','Tap Skip ahead, Call rider, or Order summary.'],['Live status, ETA and rider position answer “where is my food?” (#1).']],
+ summary:[['Check items, bill, payment and address.','Rate the order or get help.'],['Summary uses exactly the same bill lines as cart and payment (consistency, #4).']],
+ orders:[['Open the current order to track it.','Reorder a past order.'],['Past orders make repeat ordering one tap.']],
+ profile:[['Log out to return to the start.'],['Account and help are one tap away (#10).']]
+};
+let S,timer=null,trackT=null,seen=new Set();
+function fresh(){return {p:pfresh(),voucher:false,scr:'login',phone:'98765 43210',otp:'',otpT:30,addr:0,cart:{},opt:{og:'plain'},q:'',filters:{veg:0,r4:0,fast:0},coupon:null,tip:0,donate:false,pay:'upi',billOpen:false,sheet:null,cust:null,stage:0,eta:28,rated:0,placedAt:null,orderId:null,toast:''};}
+const $=s=>document.querySelector(s);
+const scr=$('#scr');
+function lineKey(id){return id==='og'?'og|'+(S.opt.og||'plain'):id}
+function price(id,o){const m=MENU.find(x=>x.id===id);return m.p+(id==='og'&&o==='cheese'?20:0)}
+function lines(){return Object.entries(S.cart).filter(([k,q])=>q>0).map(([k,q])=>{const [id,o]=k.split('|');const m=MENU.find(x=>x.id===id);return {k,id,o,q,m,p:price(id,o)}})}
+function bill(){
+ const L=lines();const items=L.reduce((a,l)=>a+l.p*l.q,0);const nonDeal=L.filter(l=>!l.m.deal).reduce((a,l)=>a+l.p*l.q,0);
+ const was=L.reduce((a,l)=>a+((l.m.was&&!l.o)?l.m.was:l.p)*l.q,0);const dlWas=items?45:0;const dl=items>=199||items===0?0:45;const pf=items?14.99:0;
+ let disc=0,cOk=false;if(S.coupon){const c=COUP.find(x=>x.code===S.coupon);if(c&&nonDeal>=c.min){disc=c.calc(nonDeal);cOk=true}}
+ const gst=items?Math.round(((items-disc)*.05+pf*.18+dl*.18)*100)/100:0;
+ const tip=S.tip,don=S.donate?3:0;const total=Math.round((items+dl+pf+gst-disc+tip+don)*100)/100;
+ return {L,items,was,dlWas,saved:Math.round((was-items)+(dlWas-dl)+disc),nonDeal,dl,pf,gst,disc,cOk,tip,don,total,count:L.reduce((a,l)=>a+l.q,0),est:Math.round((items+dl+pf+gst)*100)/100,fees:Math.round((dl+pf+gst)*100)/100};
+}
+function billHTML(b,compact){
+ const i=k=>`<button class="info" data-act="info" data-k="${k}" aria-label="About this charge">i</button>`;
+ return `<div class="bill">
+ <div class="l"><span>Item total (${b.count} item${b.count>1?'s':''})</span><span>${b.was>b.items?`<s class="mut sm">${fmt(b.was)}</s> `:''}${fmt(b.items)}</span></div>
+ <div class="l"><span>Delivery partner fee ${i('dl')}</span><span>${b.dl?fmt(b.dl):`<s class="mut sm">${fmt(b.dlWas)}</s> <b style="color:#B07600">₹0 Gold</b>`}</span></div>
+ <div class="l"><span>Platform fee ${i('pf')}</span><span>${fmt(b.pf)}</span></div>
+ <div class="l"><span>GST (govt. taxes) ${i('gst')}</span><span>${fmt(b.gst)}</span></div>
+ ${b.disc?`<div class="l" style="color:var(--a-green);font-weight:700"><span>Coupon ${S.coupon}</span><span>−${fmt(b.disc)}</span></div>`:''}
+ ${b.tip?`<div class="l"><span>Delivery partner tip</span><span>${fmt(b.tip)}</span></div>`:''}
+ ${b.don?`<div class="l"><span>Feeding India donation</span><span>${fmt(b.don)}</span></div>`:''}
+ <div class="l t"><span>${compact?'Total':'To pay'}</span><span>${fmt(b.total)}</span></div>${b.saved>0?`<div class="sm" style="background:#EEF4FF;color:#1E4BB0;border-radius:8px;padding:6px 9px;font-weight:800">🎉 You saved ${fmt(b.saved)} on this order</div>`:''}</div>`;
+}
+const sb=(dk)=>`<div class="sb${dk?' dk':''}"><span>9:41</span><span>5G ▮▮▮</span></div>`;
+const hdr=(t,back,extra='')=>`<div class="hdr"><button class="back" data-go="${back}" aria-label="Back">←</button><h1>${t}</h1>${extra}</div>`;
+const tabs=on=>`<nav class="tabs">${[['home','🛵','Delivery'],['search','🔍','Search'],['orders','🧾','Orders'],['profile','👤','Profile']].map(([s,i,l])=>`<button data-go="${s}" class="${on===s?'on':''}"><i>${i}</i>${l}</button>`).join('')}</nav>`;
+const addrs=[['Home','Flat 1204, Tower B, Sector 85','Near City Park, Gurugram 122004'],['Work','4th floor, Cyber Hub Tower C','DLF Phase 2, Gurugram 122002']];
+function addB(m){const k=lineKey(m.id);const q=m.cust?Object.entries(S.cart).filter(([kk])=>kk.startsWith(m.id+'|')).reduce((a,[,v])=>a+v,0):(S.cart[m.id]||0);
+ if(!q)return `<button class="addb" data-act="add" data-id="${m.id}">ADD</button>`;
+ return `<span class="step"><button data-act="dec" data-id="${m.id}" aria-label="Remove one">−</button>${q}<button data-act="add" data-id="${m.id}" aria-label="Add one">+</button></span>`;}
+
+const V={
+login:()=>`${sb()}<div class="banner">Prototype · sample data only · nothing is sent</div><div class="body">
+ <div style="height:290px;background:linear-gradient(160deg,#E23744,#B5162A);display:flex;flex-direction:column;justify-content:flex-end;padding:22px;color:#fff;gap:6px;position:relative;overflow:hidden">
+  <div style="position:absolute;right:-20px;top:20px;font-size:120px;opacity:.9">🍔</div><div style="position:absolute;right:110px;top:110px;font-size:60px">🍜</div><div style="position:absolute;left:20px;top:40px;font-size:54px">🍕</div>
+  <div style="font:italic 900 40px var(--body);letter-spacing:-.03em">zomato</div><div style="font-weight:700;font-size:15px;opacity:.95">India’s food delivery and dining app</div></div>
+ <div class="pad" style="display:flex;flex-direction:column;gap:14px;padding-top:20px">
+  <div style="text-align:center;font-weight:800;font-size:15px">Log in or sign up</div>
+  <label class="inp" for="ph"><span style="font-weight:800">🇮🇳 +91</span><input id="ph" inputmode="numeric" value="${S.phone}" aria-label="Mobile number" maxlength="11"></label>
+  <span class="note" id="pherr"></span>
+  <button class="btn" data-act="login">Continue</button>
+  <div class="row" style="gap:10px"><div style="flex:1;height:1px;background:var(--a-line)"></div><span class="sm mut">or</span><div style="flex:1;height:1px;background:var(--a-line)"></div></div>
+  <div class="row" style="justify-content:center;gap:14px"><button class="chip" data-act="toast" data-m="Demo: use phone login">G&nbsp; Google</button><button class="chip" data-act="toast" data-m="Demo: use phone login">✉&nbsp; Email</button><button class="chip" data-act="toast" data-m="Demo: use phone login">⋯ More</button></div>
+  <p class="note" style="text-align:center">By continuing, you agree to the Terms of Service and Privacy Policy (sample text).</p></div></div>`,
+otp:()=>`${sb()}<div class="body">${hdr('OTP verification','login')}<div class="pad" style="display:flex;flex-direction:column;gap:18px;text-align:center;padding-top:20px">
+ <div class="pop" style="font-size:50px">📩</div><div><div style="font-weight:800;font-size:16px">We sent a 4-digit code to</div><div style="font-weight:800;font-size:16px">+91 ${S.phone}</div></div>
+ <div class="otp">${[0,1,2,3].map(i=>`<span class="${S.otp[i]?'f':''}">${S.otp[i]||''}</span>`).join('')}</div>
+ <div class="note">${S.otp.length===4?'✓ Code read from SMS automatically (demo)':'Waiting for SMS…'}</div>
+ <button class="btn" data-act="verify" ${S.otp.length<4?'disabled':''}>Verify and continue</button>
+ <div class="sm mut">Didn’t get it? ${S.otpT>0?`Resend in 0:${String(S.otpT).padStart(2,'0')}`:`<button class="lnk" data-act="resend">Resend code</button>`}</div></div></div>`,
+addr:()=>`${sb()}<div class="body">${hdr('Select delivery address','otp')}
+ <div class="pad" style="display:flex;flex-direction:column;gap:10px">
+ <button class="card row" data-act="toast" data-m="Demo: location access is not requested in this prototype" style="padding:13px;text-align:left;width:100%"><span style="font-size:20px">📍</span><span style="flex:1"><b style="color:var(--a-red)">Use current location</b><br><span class="sm mut">Sector 85, Gurugram</span></span>›</button>
+ <div class="sec" style="margin:8px 0 0">Saved addresses</div>
+ ${addrs.map((a,i)=>`<button class="card row" data-act="addr" data-i="${i}" style="padding:13px;text-align:left;width:100%;${S.addr===i?'border-color:var(--a-red);background:#FFF5F6':''}"><span style="font-size:20px">${i?'💼':'🏠'}</span><span style="flex:1;min-width:0"><b>${a[0]}</b><br><span class="sm">${a[1]}</span><br><span class="sm mut">${a[2]}</span></span><span class="radio ${S.addr===i?'on':''}"></span></button>`).join('')}
+ <button class="chip" data-act="toast" data-m="Demo: adding an address is not part of this flow" style="align-self:flex-start">＋ Add address</button></div></div>
+ <div class="foot"><button class="btn" data-go="home">Deliver here</button></div>`,
+home:()=>{const a=addrs[S.addr];return `${sb()}<div class="body">
+ <div class="pad row" style="padding-top:4px"><button data-go="addr" style="border:0;background:none;text-align:left;padding:0;flex:1;min-width:0"><b style="font-size:16px">📍 ${a[0]} ▾</b><br><span class="sm mut">${a[1]}, ${a[2].split(',')[0]}</span></button><button data-go="profile" class="back" style="background:#FFE3E6" aria-label="Profile">V</button></div>
+ <div class="pad" style="margin-top:12px"><button class="inp" data-go="search" style="width:100%;padding:13px 12px;color:var(--a-mut);font-weight:600;font-size:14.5px;justify-content:flex-start">🔍&nbsp; Search “burger” or a restaurant</button></div>
+ <div class="sec">Order again</div>
+ <div class="hs">${[['seoul','The OG Veggie Burger','og'],['boba','Taro Bubble Tea','tb']].map(([r,n,id])=>{const R0=REST.find(x=>x.id===r);return `<button class="card" data-act="reorder" data-id="${id}" style="min-width:210px;padding:10px;text-align:left;display:flex;gap:10px;align-items:center"><span class="food" style="width:48px;height:48px;font-size:26px;background:${R0.bg}">${R0.e}</span><span style="min-width:0"><b class="sm">${n}</b><br><span class="sm mut">${R0.name.split(' –')[0]}</span><br><span class="sm" style="color:var(--a-red);font-weight:800">Reorder ›</span></span></button>`}).join('')}</div>
+ <div class="sec">What’s on your mind?</div>
+ <div class="hs">${[['🍔','Burger'],['🍕','Pizza'],['🍛','Biryani'],['🧋','Bubble tea'],['🥗','Salad'],['🍰','Cake']].map(([e,n])=>`<button data-act="cat" data-q="${n}" style="border:0;background:none;display:flex;flex-direction:column;align-items:center;gap:4px;min-width:62px"><span class="food" style="width:58px;height:58px;font-size:30px;background:var(--a-soft);border-radius:50%">${e}</span><span class="sm" style="font-weight:700">${n}</span></button>`).join('')}</div>
+ <div class="sec">${REST.length} restaurants delivering to you</div>
+ <div class="pad" style="display:flex;flex-direction:column;gap:14px;padding-bottom:16px">${REST.map(restCard).join('')}</div></div>${tabs('home')}`},
+search:()=>{const q=S.q.trim().toLowerCase();const hits=q?MENU.filter(m=>m.name.toLowerCase().includes(q)).slice(0,5):[];const rh=q?REST.filter(r=>(r.name+r.cui).toLowerCase().includes(q)):[];
+ return `${sb()}<div class="body">${hdr('','home',`<label class="inp" for="sq" style="flex:1;margin-left:-6px"><input id="sq" placeholder="Search dish or restaurant" value="${S.q}" autocomplete="off"><button class="lnk" data-act="clearq" aria-label="Clear" style="color:var(--a-mut)">${S.q?'✕':''}</button></label>`).replace('<h1></h1>','')}
+ ${q?`<div class="pad" style="display:flex;flex-direction:column;gap:2px">
+   ${rh.map(r=>`<button class="opt" data-act="openr" data-id="${r.id}" style="border-left:0;border-right:0;border-top:0;background:none;width:100%;text-align:left"><span class="row"><span class="food" style="width:40px;height:40px;font-size:22px;background:${r.bg}">${r.e}</span><span><b>${r.name}</b><br><span class="sm mut">Restaurant · ${r.t}</span></span></span>›</button>`).join('')}
+   ${hits.map(m=>`<button class="opt" data-act="dish" style="border-left:0;border-right:0;border-top:0;background:none;width:100%;text-align:left"><span class="row"><span class="food" style="width:40px;height:40px;font-size:22px;background:${m.bg}">${m.e}</span><span><b>${m.name}</b><br><span class="sm mut">Dish · Seoul Burgers & Shakes · ${fmt(m.p)}</span></span></span>›</button>`).join('')}
+   ${!rh.length&&!hits.length?`<p class="mut" style="padding:20px 0">No match for “${S.q}”. Try “burger”, “fries” or “bubble tea”.</p>`:''}
+   <button class="btn gh" data-go="results" style="margin-top:10px">See all restaurants for “${S.q}”</button></div>`
+ :`<div class="sec">Recent searches</div><div class="hs" style="flex-wrap:wrap">${['burger','bubble tea','fries'].map(x=>`<button class="chip" data-act="setq" data-q="${x}">↺ ${x}</button>`).join('')}</div>
+   <div class="sec">Popular near you</div><div class="pad" style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">${[['🍔','Burger'],['🍟','Fries'],['🧋','Bubble tea'],['🍛','Biryani'],['🥗','Salad'],['🥤','Shakes']].map(([e,n])=>`<button class="card" data-act="setq" data-q="${n.toLowerCase()}" style="padding:12px 4px;display:flex;flex-direction:column;align-items:center;gap:4px"><span style="font-size:30px">${e}</span><b class="sm">${n}</b></button>`).join('')}</div>`}
+ </div>${tabs('search')}`},
+results:()=>{let list=REST.filter(r=>(!S.filters.r4||r.r>=4.3)&&(!S.filters.fast||parseInt(r.t)<=25)&&(!S.filters.veg||r.id!=='tandoor'));
+ return `${sb()}<div class="body">${hdr(S.q?`Results for “${S.q}”`:'Restaurants near you','search')}
+ <div class="hs" style="padding-bottom:4px">${[['veg','🟢 Pure veg'],['r4','★ Rating 4.3+'],['fast','⚡ Under 25 min']].map(([k,l])=>`<button class="chip ${S.filters[k]?'on':''}" data-act="filt" data-k="${k}">${l}</button>`).join('')}</div>
+ <div class="sec">${list.length} restaurant${list.length!==1?'s':''} delivering to you</div>
+ <div class="pad" style="display:flex;flex-direction:column;gap:14px;padding-bottom:16px">${list.map(restCard).join('')||'<p class="mut">No restaurants match these filters. Turn one off.</p>'}</div></div>`},
+menu:()=>{const b=bill();return `${sb()}<div class="body" style="padding-bottom:140px">${hdr('','results','<button class="back" data-go="search" aria-label="Search">🔍</button>').replace('<h1></h1>','<h1></h1>')}
+ <div class="pad"><div class="row" style="justify-content:space-between;align-items:flex-start"><div style="min-width:0"><h2 style="margin:0;font:900 21px var(--body)">Seoul Burgers & Shakes</h2><div class="sm mut">Korean, Burgers, Shakes · Sector 85 · 1.8 km</div><div class="sm" style="margin-top:3px">🕒 25–30 min · <span class="free">Free delivery on ₹199+</span></div></div><span class="rate">4.4 ★</span></div></div>
+ <div class="dealnote">🏷️ <span style="flex:1">Items marked DEAL already have a lower price · coupons apply to the other items</span><button class="info" data-act="info" data-k="deal" aria-label="About deals">i</button></div>
+ <div class="sec">Bestsellers &amp; menu</div>
+ <div class="pad">${MENU.map(m=>`<div class="row" style="align-items:flex-start;padding:14px 0;border-bottom:1px solid var(--a-line);gap:12px">
+   <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:4px"><span class="row" style="gap:6px"><span class="veg ${m.veg?'':'nv'}"></span>${m.best?'<span class="sm" style="color:#C26A00;font-weight:800">★ Bestseller</span>':''}${m.deal?'<span class="sm" style="background:#E8F1FF;color:var(--a-blue);font-weight:800;border-radius:5px;padding:0 5px">DEAL</span>':''}</span>
+   <b style="font-size:15px">${m.name}</b><span style="font-weight:800">${fmt(m.p)} ${m.was?`<s class="mut sm" style="font-weight:600">${fmt(m.was)}</s>`:''}</span><span class="sm mut">${m.d}</span>${m.cust?'<span class="sm" style="color:#B07600;font-weight:700">Customisable</span>':''}</div>
+   <div style="display:flex;flex-direction:column;align-items:center;gap:0"><span class="food" style="width:110px;height:100px;background:${m.bg}">${m.e}</span><div style="margin-top:-16px">${addB(m)}</div></div></div>`).join('')}</div></div>
+ <button class="fab" data-act="toast" data-m="Menu sections: Bestsellers (8) · Burgers (3) · Sides (1) · Drinks (3) · Combos (1)" style="${b.count?'':'bottom:24px'}">☰ Menu</button>
+ ${b.count?`<button class="cartbar" data-go="cart"><span style="text-align:left"><b>${b.count} item${b.count>1?'s':''} added</b><br><span class="sm" style="opacity:.9">Est. total ${fmt(b.est)} incl. fees <span data-act="info" data-k="est" style="text-decoration:underline">what’s this?</span></span></span><b>View cart ›</b></button>`:''}`},
+cart:()=>{const b=bill();const a=addrs[S.addr];if(!b.count)return `${sb()}<div class="body">${hdr('Cart','menu')}<div class="pad" style="text-align:center;padding-top:60px;display:flex;flex-direction:column;gap:12px;align-items:center"><div style="font-size:60px">🛒</div><b>Your cart is empty</b><span class="mut sm">Add something from Seoul Burgers & Shakes.</span><button class="btn sm" data-go="menu">Browse menu</button></div></div>`;
+ return `${sb()}<div class="body" style="padding-bottom:16px">${hdr('Cart · Seoul Burgers & Shakes','menu')}
+ <div class="pad" style="display:flex;flex-direction:column;gap:12px">
+ <div class="card" style="padding:4px 14px">${b.L.map(l=>`<div class="row" style="padding:11px 0;border-bottom:1px solid var(--a-line);align-items:flex-start"><span class="veg ${l.m.veg?'':'nv'}" style="margin-top:4px"></span><div style="flex:1;min-width:0"><b class="sm" style="font-size:13.5px">${l.m.name}</b>${l.id==='og'?`<br><span class="sm mut">${l.o==='cheese'?'With cheese':'Without cheese'}</span>`:''}${l.m.deal?'<br><span class="sm" style="color:var(--a-blue);font-weight:700">Deal price · coupons don’t apply</span>':''}</div><div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px"><span class="step" style="width:84px"><button data-act="cdec" data-k="${l.k}" aria-label="Remove one">−</button>${l.q}<button data-act="cinc" data-k="${l.k}" aria-label="Add one">+</button></span><b class="sm">${fmt(l.p*l.q)}</b></div></div>`).join('')}
+  <div class="row" style="padding:11px 0;justify-content:space-between"><button class="lnk sm" data-go="menu">＋ Add more items</button><button class="lnk sm" data-act="toast" data-m="Note saved: less spicy, please (demo)" style="color:var(--a-mut)">✎ Cooking request</button></div></div>
+ <button class="card row" data-go="coupons" style="padding:13px;text-align:left;width:100%"><span style="font-size:20px">🏷️</span><span style="flex:1">${S.coupon&&b.cOk?`<b style="color:var(--a-green)">${S.coupon} applied · you save ${fmt(b.disc)}</b>`:S.coupon?`<b>${S.coupon} needs ₹${COUP.find(c=>c.code===S.coupon).min}+ of non-deal items</b>`:'<b>Apply a coupon</b><br><span class="sm mut">2 available for this order</span>'}</span>${S.coupon?`<span class="lnk sm" data-act="rmcoupon" style="color:var(--a-red)">Remove</span>`:'›'}</button>
+ <div class="card"><div style="padding:12px 14px 0" class="row"><b style="flex:1">Bill details</b><span class="sm mut">every charge shown</span></div>${billHTML(b)}</div>
+ <div class="card" style="padding:13px 14px;display:flex;flex-direction:column;gap:8px"><b>Tip your delivery partner <span class="sm mut" style="font-weight:600">· optional</span></b><div class="row" style="gap:8px">${[20,30,50].map(t=>`<button class="chip ${S.tip===t?'on':''}" data-act="tip" data-v="${t}">${R}${t}</button>`).join('')}${S.tip?'<button class="lnk sm" data-act="tip" data-v="0" style="color:var(--a-mut)">No tip</button>':''}</div><span class="note">Nothing is pre-selected. 100% of the tip goes to the partner.</span></div>
+ <button class="card row" data-act="voucher" style="padding:13px 14px;text-align:left;width:100%;background:#FFF8F1;border-color:#F6D9BF"><span class="chk ${S.voucher?'on':''}">${S.voucher?'✓':''}</span><span style="flex:1"><b class="sm">Add a free Dining voucher worth ₹300</b><br><span class="note">Optional · ₹0 · not added unless you tick it</span></span></button>
+ <button class="card row" data-act="donate" style="padding:13px 14px;text-align:left;width:100%"><span class="chk ${S.donate?'on':''}">${S.donate?'✓':''}</span><span style="flex:1"><b class="sm">Donate ₹3 to Feeding India</b><br><span class="note">Optional · off unless you tick it</span></span></button>
+ <div class="card row" style="padding:13px 14px"><span style="font-size:20px">${S.addr?'💼':'🏠'}</span><span style="flex:1;min-width:0"><b class="sm">Delivering to ${a[0]}</b><br><span class="sm mut">${a[1]}, ${a[2]}</span></span><button class="lnk sm" data-go="addr">Change</button></div>
+ <p class="note">Cancellation: free within 60 seconds of placing the order. After that, the restaurant may have started cooking (sample policy).</p></div></div>
+ <div class="foot" style="display:flex;flex-direction:column;gap:6px"><div class="row sm" style="justify-content:space-between"><span class="mut">Food ${fmt(b.items-b.disc)} + fees &amp; taxes ${fmt(b.fees)}${b.tip||b.don?` + extras ${fmt(b.tip+b.don)}`:''}</span><button class="lnk sm" data-act="billjump">See bill</button></div><button class="btn" data-go="pay">Proceed to pay · ${fmt(b.total)}</button></div>`},
+coupons:()=>{const b=bill();return `${sb()}<div class="body">${hdr('Apply coupon','cart')}
+ <div class="pad" style="display:flex;flex-direction:column;gap:12px"><div class="note" style="background:#F2F7FF;border-radius:10px;padding:9px 11px;color:#244C9A;font-weight:700">Your non-deal items add up to ${fmt(b.nonDeal)}. Deal items already have a lower price, so coupons don’t count them.</div>
+ ${COUP.map(c=>{const ok=b.nonDeal>=c.min;return `<div class="card" style="padding:14px;display:flex;flex-direction:column;gap:6px;${ok?'':'opacity:.75'}"><div class="row" style="justify-content:space-between"><span style="font:800 13px var(--mono);border:1.5px dashed ${ok?'var(--a-red)':'#BDBDBD'};border-radius:7px;padding:3px 8px;color:${ok?'var(--a-red)':'var(--a-mut)'}">${c.code}</span>${ok?`<button class="btn sm" data-act="apply" data-c="${c.code}">${S.coupon===c.code?'Applied ✓':'Apply'}</button>`:'<span class="sm mut" style="font-weight:700">Not available</span>'}</div><b>${c.t}</b><span class="sm mut">${c.d}</span>${ok?`<span class="sm" style="color:var(--a-green);font-weight:800">You save ${fmt(c.calc(b.nonDeal))}</span>`:`<span class="sm" style="color:#B5162A;font-weight:700">Add ${fmt(c.min-b.nonDeal)} more of non-deal items to use this.</span>`}</div>`}).join('')}</div></div>`},
+pay:()=>{const b=bill();const P=[['upi','Google Pay UPI','🟦','Recommended'],['phonepe','PhonePe UPI','🟪',''],['card','HDFC Visa •••• 0000 (sample)','💳',''],['cod','Cash on delivery','💵','Pay the rider in cash or UPI']];
+ return `${sb()}<div class="body">${hdr('Payment','cart')}
+ <div class="pad" style="display:flex;flex-direction:column;gap:12px">
+ <div class="card" style="overflow:hidden"><button data-act="billtog" style="width:100%;border:0;background:#FFF5F6;padding:13px 14px;display:flex;justify-content:space-between;align-items:center"><span style="text-align:left"><span class="sm mut">Bill total</span><br><b style="font-size:20px">${fmt(b.total)}</b></span><b style="color:var(--a-red)">${S.billOpen?'Hide bill ▴':'View bill ▾'}</b></button>${S.billOpen?billHTML(b,1):''}</div>
+ <div class="sec" style="margin:4px 0 0">Choose how to pay</div>
+ <div class="card" style="padding:2px 14px">${P.map(([k,n,i,s])=>`<button class="opt" data-act="pm" data-k="${k}" style="width:100%;border-left:0;border-right:0;border-top:0;background:none;text-align:left"><span class="row"><span style="font-size:20px">${i}</span><span><b class="sm" style="font-size:13.5px">${n}</b>${s?`<br><span class="note">${s}</span>`:''}</span></span><span class="radio ${S.pay===k?'on':''}"></span></button>`).join('')}</div>
+ <p class="note">🔒 Demo only. No money moves and no payment app opens.</p></div></div>
+ <div class="foot"><button class="btn" data-act="paynow">${S.pay==='cod'?'Place order':'Pay'} ${fmt(b.total)}</button></div>`},
+proc:()=>`${sb()}<div class="body" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;text-align:center;padding:30px"><div class="spin"></div><b style="font-size:17px">${S.pay==='cod'?'Placing your order…':'Confirming payment…'}</b><span class="mut sm">Please don’t close the app or press back.</span></div>`,
+placed:()=>{const b=bill();return `${sb()}<div class="body" style="background:linear-gradient(180deg,#E9F7EE,#fff 45%)"><div class="pad" style="display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center;padding-top:50px">
+ <div class="pop" style="width:84px;height:84px;border-radius:50%;background:var(--a-green);color:#fff;display:grid;place-items:center;font-size:44px;font-weight:900">✓</div>
+ <h2 style="margin:0;font:900 22px var(--body)">Order placed!</h2><span class="mut">Order #${S.orderId} · ${S.pay==='cod'?'Pay on delivery':'Paid'} ${fmt(b.total)}</span>
+ <div class="card" style="width:100%;padding:14px;text-align:left;display:flex;flex-direction:column;gap:8px;margin-top:8px">
+  <div class="row"><span style="font-size:22px">🍔</span><span style="flex:1"><b>Seoul Burgers & Shakes</b><br><span class="sm mut">${b.count} item${b.count>1?'s':''} · arriving in about ${S.eta} min</span></span></div>
+  <div class="row"><span style="font-size:22px">${S.addr?'💼':'🏠'}</span><span class="sm" style="flex:1">${addrs[S.addr][1]}, ${addrs[S.addr][2]}</span></div>
+  <div class="note">You can cancel for free for the next 60 seconds.</div></div></div></div>
+ <div class="foot" style="display:flex;flex-direction:column;gap:8px"><button class="btn" data-go="track">Track order</button><button class="btn gh" data-go="summary">View order summary</button></div>`},
+track:()=>{const st=['Order confirmed','Food is being prepared','Picked up by Rohit','On the way','Delivered'];const done=S.stage>=4;
+ const pos=[0,.15,.4,.75,1][S.stage];
+ return `${sb(1)}<div class="body">
+ <div style="background:var(--a-red);color:#fff;padding:4px 16px 18px;display:flex;flex-direction:column;gap:4px"><div class="row" style="justify-content:space-between"><button class="back" data-go="home" style="background:rgba(255,255,255,.2);color:#fff" aria-label="Home">←</button><button class="lnk sm" data-go="summary" style="color:#fff;text-decoration:underline">Order summary</button></div>
+  <span class="sm" style="opacity:.9">Seoul Burgers & Shakes · #${S.orderId}</span><b style="font-size:22px">${done?'Delivered. Enjoy your meal!':st[S.stage]}</b><span style="font-weight:700">${done?'Delivered on time':`Arriving in ${S.eta} min`}</span></div>
+ <div style="height:220px;position:relative;background:#EEF3EA;overflow:hidden">
+  <svg viewBox="0 0 360 220" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" aria-label="Map showing rider route">
+   <rect width="360" height="220" fill="#EEF3EA"/><g stroke="#FFFFFF" stroke-width="14" fill="none"><path d="M-10 60 H370"/><path d="M-10 160 H370"/><path d="M90 -10 V230"/><path d="M250 -10 V230"/></g>
+   <rect x="110" y="80" width="120" height="60" rx="8" fill="#D9E8D0"/><rect x="270" y="20" width="80" height="30" rx="6" fill="#DCE3EC"/><rect x="10" y="90" width="60" height="50" rx="6" fill="#DCE3EC"/>
+   <path id="rt" d="M40 60 H90 V160 H250 V185 H320" stroke="#E23744" stroke-width="4" fill="none" stroke-dasharray="7 6"/>
+   <circle cx="40" cy="60" r="11" fill="#fff" stroke="#1C1C1C" stroke-width="2"/><text x="40" y="65" font-size="12" text-anchor="middle">🍔</text>
+   <circle cx="320" cy="185" r="11" fill="#fff" stroke="#24963F" stroke-width="2"/><text x="320" y="190" font-size="12" text-anchor="middle">🏠</text>
+   <g id="rider"><circle r="15" fill="#E23744"/><text y="5" font-size="15" text-anchor="middle">🛵</text></g></svg></div>
+ <div class="pad" style="display:flex;flex-direction:column;gap:12px;padding-top:14px">
+ ${S.stage>=2&&!done?`<div class="card row" style="padding:12px 14px"><span class="food" style="width:44px;height:44px;font-size:24px;background:var(--a-soft);border-radius:50%">🧑</span><span style="flex:1"><b>Rohit is your delivery partner</b><br><span class="sm mut">Vaccinated · 4.8 ★ · Masked</span></span><button class="btn sm" data-act="toast" data-m="Demo: calling is disabled. Rider number is masked for privacy.">📞 Call</button></div>`:''}
+ <div class="card" style="padding:14px 0"><div class="tl">${st.map((s,i)=>`<div class="s ${i<S.stage||done?'done':i===S.stage?'cur':''}"><span class="d">${i<S.stage||done?'✓':''}</span><span><b class="sm" style="font-size:13.5px">${s}</b><br><span class="note">${['Restaurant accepted your order','Usually takes 10–12 min','Rider has your food','Following the fastest route','Handed over at your door'][i]}</span></span></div>`).join('')}</div></div>
+ ${done?(S.rated?`<div class="card" style="padding:14px;text-align:center"><b>Thanks for rating ${'★'.repeat(S.rated)}</b></div>`:`<div class="card" style="padding:14px;text-align:center;display:flex;flex-direction:column;gap:6px"><b>How was your food?</b><div class="row" style="justify-content:center">${[1,2,3,4,5].map(n=>`<button data-act="rate" data-v="${n}" style="border:0;background:none;font-size:28px;color:#F1B000" aria-label="${n} stars">☆</button>`).join('')}</div></div>`):`<button class="btn gh" data-act="skip">Skip ahead (demo) ›</button>`}
+ <div class="row" style="gap:10px;padding-bottom:16px"><button class="btn gh" data-act="toast" data-m="Help: chat with support about this order (demo)">💬 Help</button><button class="btn gh" data-act="toast" data-m="Delivery instruction added: leave at the door (demo)">🚪 Instructions</button></div></div></div>`},
+summary:()=>{const b=bill();return `${sb()}<div class="body">${hdr('Order summary','track')}
+ <div class="pad" style="display:flex;flex-direction:column;gap:12px;padding-bottom:16px">
+ <div class="card" style="padding:14px;display:flex;flex-direction:column;gap:4px"><div class="row" style="justify-content:space-between"><b>Seoul Burgers & Shakes</b><span class="sm" style="font-weight:800;color:${S.stage>=4?'var(--a-green)':'var(--a-red)'}">${S.stage>=4?'Delivered':'In progress'}</span></div><span class="sm mut">Sector 85, Gurugram</span><span class="sm mut">Order #${S.orderId} · ${S.placedAt}</span></div>
+ <div class="card" style="padding:4px 14px">${b.L.map(l=>`<div class="row" style="padding:10px 0;border-bottom:1px solid var(--a-line)"><span class="veg ${l.m.veg?'':'nv'}"></span><span class="sm" style="flex:1"><b>${l.q} × ${l.m.name}</b>${l.id==='og'?` <span class="mut">(${l.o==='cheese'?'with cheese':'without cheese'})</span>`:''}</span><b class="sm">${fmt(l.p*l.q)}</b></div>`).join('')}</div>
+ <div class="card">${billHTML(b,1)}</div>
+ <div class="card" style="padding:14px;display:flex;flex-direction:column;gap:10px">
+  <div class="row"><span>💳</span><span class="sm" style="flex:1"><b>Payment</b><br>${{upi:'Google Pay UPI',phonepe:'PhonePe UPI',card:'HDFC Visa •••• 0000 (sample)',cod:'Cash on delivery'}[S.pay]} · ${S.pay==='cod'?'due on delivery':'paid'}</span></div>
+  <div class="row"><span>${S.addr?'💼':'🏠'}</span><span class="sm" style="flex:1"><b>Delivered to ${addrs[S.addr][0]}</b><br>${addrs[S.addr][1]}, ${addrs[S.addr][2]}</span></div></div>
+ <div class="row" style="gap:10px"><button class="btn gh" data-act="toast" data-m="Invoice sent to your registered email (demo)">🧾 Get invoice</button><button class="btn gh" data-act="reorderall">↺ Reorder</button></div>
+ <button class="btn gh" data-act="toast" data-m="Support chat opened (demo)">💬 Need help with this order?</button>
+ ${S.stage<4?'<button class="btn" data-go="track">Back to live tracking</button>':''}</div></div>`},
+orders:()=>`${sb()}<div class="body">${hdr('Your orders','home')}<div class="pad" style="display:flex;flex-direction:column;gap:12px">
+ ${S.orderId?`<button class="card" data-go="${S.stage>=4?'summary':'track'}" style="padding:14px;text-align:left;display:flex;flex-direction:column;gap:4px;border-color:var(--a-red)"><span class="row" style="justify-content:space-between;width:100%"><b>Seoul Burgers & Shakes</b><span class="sm" style="font-weight:800;color:${S.stage>=4?'var(--a-green)':'var(--a-red)'}">${S.stage>=4?'Delivered':'● Live'}</span></span><span class="sm mut">#${S.orderId} · ${fmt(bill().total)} · ${S.placedAt}</span><span class="sm" style="color:var(--a-red);font-weight:800">${S.stage>=4?'View summary ›':'Track order ›'}</span></button>`:'<p class="mut sm">No order placed yet in this demo. Your past orders are below.</p>'}
+ ${[['Boba Bhai – Bubble Tea','2 × Taro Bubble Tea','₹512.40','12 Oct, 8:10 PM','tb'],['Seoul Burgers & Shakes','1 × The OG Veggie Burger','₹176.85','5 Oct, 1:25 PM','og']].map(o=>`<div class="card" style="padding:14px;display:flex;flex-direction:column;gap:4px"><span class="row" style="justify-content:space-between"><b>${o[0]}</b><span class="sm" style="color:var(--a-green);font-weight:800">Delivered</span></span><span class="sm mut">${o[1]} · ${o[2]} · ${o[3]}</span><button class="lnk sm" data-act="reorder" data-id="${o[4]}" style="align-self:flex-start">↺ Reorder</button></div>`).join('')}</div></div>${tabs('orders')}`,
+profile:()=>`${sb()}<div class="body">${hdr('Profile','home')}<div class="pad" style="display:flex;flex-direction:column;gap:12px">
+ <div class="card row" style="padding:16px"><span class="food" style="width:54px;height:54px;border-radius:50%;background:#FFE3E6;font-size:22px;font-weight:900;color:var(--a-red)">V</span><span style="flex:1"><b style="font-size:16px">Varun (sample user)</b><br><span class="sm mut">+91 ${S.phone}</span></span></div>
+ <div class="card" style="padding:2px 14px">${[['🧾','Your orders','orders'],['📍','Saved addresses','addr'],['🏷️','Coupons','coupons'],['💬','Help & support',''],['⚙️','Settings','']].map(([i,n,g])=>`<button class="opt" ${g?`data-go="${g}"`:`data-act="toast" data-m="${n} (demo)"`} style="width:100%;border-left:0;border-right:0;border-top:0;background:none;text-align:left"><span class="row"><span>${i}</span><b class="sm" style="font-size:13.5px">${n}</b></span>›</button>`).join('')}</div>
+ <button class="btn gh" data-act="logout" style="color:var(--a-red)">Log out</button></div></div>${tabs('profile')}`
+};
+function restCard(r){return `<button class="card" data-act="openr" data-id="${r.id}" style="padding:0;overflow:hidden;text-align:left;width:100%"><div style="height:120px;background:${r.bg};display:grid;place-items:center;font-size:64px;position:relative">${r.e}${r.deal?`<span style="position:absolute;left:10px;bottom:8px;background:#fff;border-radius:6px;padding:2px 7px;font-size:11.5px;font-weight:800;color:var(--a-blue)">🏷️ ${r.deal}</span>`:''}</div><div style="padding:10px 12px;display:flex;flex-direction:column;gap:2px"><span class="row" style="justify-content:space-between"><b style="font-size:15px">${r.name}</b><span class="rate">${r.r} ★</span></span><span class="sm mut">${r.cui}</span><span class="sm">🕒 ${r.t} · ${r.km} · <span class="free">Free delivery</span></span></div></button>`}
+
+/* ---------- REAL APP (before) ---------- */
+const REAL=[
+ ['S1','Home','13 Oct 2026','Search is first and clear. Many promos compete for attention; the address is cut after “Sect…”.',['⑤ Truncation','⑥ Busy home'],[]],
+ ['S2','Search','13 Oct 2026','Recent searches and a dish grid make starting easy.',[],['✓ Recognition over recall']],
+ ['S3','Results','13 Oct 2026','Cards show time, distance and free delivery. Long names are cut off.',['⑤ Truncation'],['✓ Useful card info']],
+ ['S4','Restaurant','13 Oct 2026','“Items starting at ₹99”, “5 offers”, a Gold banner and deal sections all talk about price.',['① Price signals'],['✓ Schedule for later']],
+ ['S5','Menu','13 Oct 2026','Each item repeats a struck price, a “Get for” price and “NOT ELIGIBLE FOR COUPONS”.',['① Price signals','② Menu button'],[]],
+ ['S5b','Menu, scrolled','13 Oct 2026','The floating Menu button covers about 27% of an ADD button and the “customisable” hint.',['② Menu button'],[]],
+ ['S7','Customise','13 Oct 2026','A required cheese choice sits above full-price drinks and a combo listed as “Add-ons”.',['④ Add-ons'],['✓ Live price in Add item']],
+ ['C1','Cart','19 Oct 2026 (another order)','“Upto 50% OFF applied” sits next to another coupon to apply; a free Dining voucher is already ADDED; the address is cut off.',['① Offer stacking unclear','⑦ Pre-added voucher','⑤ Truncation'],['✓ Fee labels have dotted “explain” underlines']],
+ ['C2','Bill summary','19 Oct 2026','The full bill IS shown: item total, delivery partner fee (₹45 → ₹0 with Gold), platform fee ₹14.99, GST ₹31.07, to pay ₹613.56. Tip is optional.',['③ corrected: breakdown exists, one tap away'],['✓ Clear, itemised bill','✓ Tip not pre-selected']],
+ ['S8','Payment','13 Oct 2026','Payment methods are grouped. The header shows “Bill total” with a collapse arrow; the lines sit behind it.',['③ Minor: total collapsed'],['✓ Saved methods first']]
+];
+REAL.forEach(([img,t,d,txt,bad,good],i)=>{V['r_'+i]=()=>`<div style="position:relative;flex:1;min-height:0;display:flex;flex-direction:column;background:#111">
+ <button data-act="rnext" aria-label="Next real screen" style="flex:1;min-height:0;border:0;padding:0;background:#111;overflow:hidden;cursor:pointer"><img src="shots/${img}.jpg" alt="Real Zomato screen: ${t}" style="width:100%;display:block"></button>
+ <div style="position:absolute;left:10px;right:10px;bottom:10px;background:rgba(255,255,255,.97);border-radius:16px;padding:12px 14px;display:flex;flex-direction:column;gap:6px;box-shadow:0 10px 30px rgba(0,0,0,.35)">
+  <div class="row" style="justify-content:space-between"><b style="font-size:14px">${i+1}/${REAL.length} · ${t}</b><span class="note">REAL · ${d}</span></div>
+  <span class="sm">${txt}</span>
+  <div class="row" style="flex-wrap:wrap;gap:5px">${bad.map(x=>`<span class="sm" style="background:#FDECEE;color:#B5162A;border-radius:6px;padding:1px 7px;font-weight:800">${x}</span>`).join('')}${good.map(x=>`<span class="sm" style="background:#E5F5EC;color:#156B3B;border-radius:6px;padding:1px 7px;font-weight:800">${x}</span>`).join('')}</div>
+  <div class="row" style="gap:8px"><button class="btn gh sm" data-act="rprev" ${i?'':'disabled'} style="flex:1">← Back</button><button class="btn sm" data-act="rnext" style="flex:2">${i<REAL.length-1?'Next screen →':'See the redesign →'}</button></div></div></div>`});
+/* ---------- RESTAURANT PARTNER ---------- */
+const PV={fssai:v=>/^\d{14}$/.test(v.replace(/\s/g,''))?'':'FSSAI licence number has 14 digits',
+ gst:v=>!v?'':/^\d{2}[A-Z]{5}\d{4}[A-Z][1-9A-Z]Z[0-9A-Z]$/.test(v.toUpperCase())?'':'GSTIN has 15 characters, e.g. 06ABCDE1234F1Z5',
+ pan:v=>/^[A-Z]{5}\d{4}[A-Z]$/.test(v.toUpperCase())?'':'PAN looks like ABCDE1234F',
+ ifsc:v=>/^[A-Z]{4}0[A-Z0-9]{6}$/.test(v.toUpperCase())?'':'IFSC has 11 characters, e.g. HDFC0001234',
+ acc:v=>/^\d{9,18}$/.test(v.replace(/\s/g,''))?'':'Account number is 9–18 digits'};
+const pfresh=()=>({name:'Spice Route Kitchen',loc:'Sector 85, Gurugram',pin:false,open:'11:00',close:'23:00',cui:['North Indian','Chinese'],c2:500,fssai:'',gst:'',pan:'',ifsc:'',acc:'',noGst:false,touched:{},menuUp:false,photos:0,agree:false,ov:400,dist:'mid',online:true,rush:false,ost:'new',osec:90,prep:15,oos:{},offer:{pct:20,cap:100,min:299,on:false},payOpen:null,status:1});
+const PMENU=[['Paneer Butter Masala',289,1],['Dal Makhani',229,1],['Chicken Biryani',319,0],['Veg Hakka Noodles',199,1],['Chilli Chicken',279,0],['Butter Naan',59,1]];
+const pcalc=(v,dist)=>{const com=Math.round(v*.20*100)/100;const g=Math.round(com*.18*100)/100;let ld=dist==='mid'&&v>150?20:dist==='far'?40:0;const cap=v*.30;if(com+g+ld>cap)ld=Math.max(0,Math.round((cap-com-g)*100)/100);return {com,g,ld,net:Math.round((v-com-g-ld)*100)/100}};
+const PIn=(id,label,val,err,o={})=>`<div class="pf"><label for="${id}" class="sm" style="font-weight:800;color:#555">${label} ${o.opt?'<span class="mut">(optional)</span>':'<span style="color:var(--a-red)">*</span>'}</label><div class="inp" style="${err?'border-color:#D12B24;background:#FFF8F7':val&&!err?'border-color:#24963F':''}"><input id="${id}" value="${val}" ${o.attr||''} autocomplete="off" style="text-transform:${o.up?'uppercase':'none'}">${val&&!err?'<b style="color:var(--a-green)">✓</b>':''}</div><span class="note" style="color:${err?'#C0231C':'var(--a-mut)'};font-weight:${err?800:600}">${err||o.help||''}</span></div>`;
+const pprog=n=>`<div style="display:flex;gap:4px;padding:0 14px">${[1,2,3,4,5].map(i=>`<i style="flex:1;height:4px;border-radius:4px;background:${i<=n?'var(--a-red)':'#EAEAEA'}"></i>`).join('')}</div><div class="note" style="padding:5px 14px 2px">Step ${n} of 5 · saved as you go</div>`;
+const phdr=(t,back)=>`<div class="hdr"><button class="back" data-go="${back}" aria-label="Back">←</button><h1>${t}</h1><button class="lnk sm" data-act="toast" data-m="Partner support: chat or call back within 2 hours (demo)">Help</button></div>`;
+const ptabs=on=>`<nav class="tabs">${[['p_live','📋','Orders'],['p_menu2','🍽️','Menu'],['p_offer','🏷️','Offers'],['p_payout','💰','Payouts']].map(([s,i,l])=>`<button data-go="${s}" class="${on===s?'on':''}"><i>${i}</i>${l}</button>`).join('')}</nav>`;
+Object.assign(V,{
+p_welcome:()=>`${sb()}<div class="banner">Prototype · sample data only · nothing is sent</div><div class="body">
+ <div style="margin:10px 14px 0;border-radius:22px;background:linear-gradient(150deg,#2B0F12,#7A1420 60%,#E23744);color:#fff;padding:22px;display:flex;flex-direction:column;gap:8px;position:relative;overflow:hidden">
+  <div style="position:absolute;right:-6px;top:-4px;font-size:92px;opacity:.95">🍳</div>
+  <span style="font:700 11px var(--mono);letter-spacing:.14em;opacity:.8">FOR RESTAURANT OWNERS</span>
+  <b style="font:800 26px/1.1 var(--display);max-width:230px">Get your kitchen online with Zomato</b>
+  <span style="opacity:.9;font-weight:600">Reach customers near you. No upfront fee to register (as reported); commission per order.</span></div>
+ <div class="pad" style="display:flex;flex-direction:column;gap:10px;margin-top:14px">
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:center">${[['📝','Register','~45 min'],['🔎','Verification','3–7 days'],['🚀','Go live','same day']].map(([e,a,b])=>`<div class="card" style="padding:10px 4px"><div style="font-size:22px">${e}</div><b class="sm">${a}</b><div class="note">${b}</div></div>`).join('')}</div>
+  <div class="card" style="padding:12px 14px"><b>You’ll need</b><div class="sm" style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:6px"><span>📄 FSSAI licence</span><span>🧾 PAN</span><span>🏦 Bank details</span><span>🧮 GSTIN (if registered)</span><span>📋 Menu with prices</span><span>📷 5+ photos</span></div></div></div></div>
+ <div class="foot" style="display:flex;flex-direction:column;gap:8px"><button class="btn" data-go="p_login">Register your restaurant</button><button class="btn gh" data-act="pskip">I’m already a partner · Log in</button></div>`,
+p_login:()=>`${sb()}<div class="body">${phdr('Create partner account','p_welcome')}<div class="pad" style="display:flex;flex-direction:column;gap:12px">
+ <p class="mut" style="margin:0">Use the owner’s or manager’s mobile. You can add staff later.</p>
+ <label class="inp" for="pph"><b>🇮🇳 +91</b><input id="pph" value="98765 43210" inputmode="numeric" aria-label="Mobile number"></label>
+ <label class="inp" for="pem"><span>✉️</span><input id="pem" value="owner@spiceroute.example" aria-label="Email"></label>
+ <div class="box" style="background:#EEF4FF;color:#1E4BB0;border-radius:10px;padding:10px 12px;font-size:12.5px;font-weight:700">We’ll send a code to verify. Documents come later; you can save and continue any time.</div></div></div>
+ <div class="foot"><button class="btn" data-go="p_check">Verify with OTP · auto-filled (demo)</button></div>`,
+p_check:()=>`${sb()}<div class="body">${phdr('Before you start','p_login')}<div class="pad" style="display:flex;flex-direction:column;gap:10px">
+ <b style="font:800 20px/1.2 var(--display)">Keep these ready. It takes about 45 minutes.</b>
+ ${[['📄','FSSAI licence','14-digit number. No licence yet? You can apply first.','FSSAI'],['🧾','PAN','Business or owner PAN'],['🧮','GSTIN','Only if your business is GST-registered'],['🏦','Bank account','Account number, IFSC and a cancelled cheque'],['📋','Menu','Items, prices and descriptions; a photo of your menu works'],['📷','Photos','5+ dish, kitchen and outside photos, landscape']].map(([e,a,b,l])=>`<div class="card row" style="padding:11px 12px;align-items:flex-start"><span style="font-size:20px">${e}</span><span style="flex:1"><b class="sm" style="font-size:13.5px">${a}</b><br><span class="note">${b}</span></span>${l?'<button class="lnk sm" data-act="toast" data-m="Opens FSSAI registration guidance (demo)">Apply</button>':''}</div>`).join('')}
+ <div class="note">After you submit: document check, menu review, an onboarding call, then go live. Usually 3–7 working days (as reported by partner guides).</div></div></div>
+ <div class="foot"><button class="btn" data-go="p_details">Start registration</button></div>`,
+p_details:()=>{const P=S.p;return `${sb()}<div class="body">${phdr('Restaurant details','p_check')}${pprog(1)}<div class="pad" style="display:flex;flex-direction:column;gap:12px;padding-top:8px;padding-bottom:16px">
+ ${PIn('pd_name','Restaurant name',P.name,P.name.trim().length<3?'Enter the name customers will see':'')}
+ <div class="pf"><label class="sm" style="font-weight:800;color:#555">Location <span style="color:var(--a-red)">*</span></label>
+ <button data-act="ppin" style="border:1.5px solid ${P.pin?'#24963F':'#D9D9D9'};border-radius:12px;padding:0;overflow:hidden;background:#EEF3EA;height:110px;position:relative;width:100%"><svg viewBox="0 0 340 110" width="100%" height="110" aria-hidden="true"><rect width="340" height="110" fill="#EEF3EA"/><path d="M0 40H340M0 85H340M90 0V110M230 0V110" stroke="#fff" stroke-width="10"/><rect x="110" y="50" width="100" height="25" rx="4" fill="#D9E8D0"/></svg><span style="position:absolute;left:50%;top:38%;transform:translate(-50%,-50%);font-size:28px">📍</span><span style="position:absolute;left:8px;bottom:6px;background:#fff;border-radius:6px;padding:2px 8px;font-size:11.5px;font-weight:800">${P.pin?'✓ Pinned: Plot 14, '+P.loc:'Tap to drop the pin on your entrance'}</span></button></div>
+ <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">${PIn('pd_open','Opens at',P.open,'',{attr:'type="time"'})}${PIn('pd_close','Closes at',P.close,'',{attr:'type="time"'})}</div>
+ <div class="pf"><label class="sm" style="font-weight:800;color:#555">Cuisines · pick up to 3 <span style="color:var(--a-red)">*</span></label><div class="row" style="flex-wrap:wrap;gap:6px">${['North Indian','Chinese','South Indian','Biryani','Pizza','Desserts'].map(c=>`<button class="chip ${P.cui.includes(c)?'on':''}" data-act="pcui" data-v="${c}">${c}</button>`).join('')}</div></div>
+ ${PIn('pd_c2','Average cost for two (₹)',String(P.c2),P.c2<100?'Enter a realistic amount':'',{attr:'inputmode="numeric"',help:'Shown to customers as a price guide'})}</div></div>
+ <div class="foot"><button class="btn" data-go="p_docs" ${!P.pin||P.name.trim().length<3||!P.cui.length?'disabled':''}>${P.pin?'Save and continue':'Drop the map pin to continue'}</button></div>`},
+p_docs:()=>{const P=S.p,t=P.touched;const e=k=>t[k]?PV[k](P[k]):'';const ok=['fssai','pan','ifsc','acc'].every(k=>!PV[k](P[k]))&&(P.noGst||!PV.gst(P.gst)&&P.gst);return `${sb()}<div class="body">${phdr('Documents','p_details')}${pprog(2)}<div class="pad" style="display:flex;flex-direction:column;gap:12px;padding-top:8px;padding-bottom:16px">
+ <div class="row" style="justify-content:space-between"><span class="note">Each number is format-checked as you type.</span><button class="lnk sm" data-act="pfill">Fill sample</button></div>
+ ${PIn('pd_fssai','FSSAI licence number',P.fssai,e('fssai'),{attr:'inputmode="numeric" maxlength="14"'})}
+ ${P.noGst?'':PIn('pd_gst','GSTIN',P.gst,e('gst'),{up:1,attr:'maxlength="15"'})}
+ <button class="row sm" data-act="pnogst" style="border:0;background:none;padding:0;text-align:left"><span class="chk ${P.noGst?'on':''}">${P.noGst?'✓':''}</span> My business is not GST-registered</button>
+ ${PIn('pd_pan','PAN',P.pan,e('pan'),{up:1,attr:'maxlength="10"'})}
+ <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">${PIn('pd_ifsc','IFSC',P.ifsc,e('ifsc'),{up:1,attr:'maxlength="11"'})}${PIn('pd_acc','Account number',P.acc,e('acc'),{attr:'inputmode="numeric" maxlength="18"'})}</div>
+ <div class="card row" style="padding:10px 12px"><span style="font-size:20px">📎</span><span class="sm" style="flex:1"><b>Upload photos of documents</b><br><span class="note">FSSAI, PAN, cancelled cheque · JPG or PDF</span></span><span class="sm" style="color:var(--a-green);font-weight:800">${ok?'3 added ✓':'—'}</span></div>
+ <p class="note" style="margin:0">🔒 Used only for verification and payouts. Never shown to customers.</p></div></div>
+ <div class="foot"><button class="btn" data-go="p_menu" ${ok?'':'disabled'}>${ok?'Save and continue':'Complete the fields above'}</button></div>`},
+p_menu:()=>{const P=S.p;return `${sb()}<div class="body">${phdr('Menu & photos','p_docs')}${pprog(3)}<div class="pad" style="display:flex;flex-direction:column;gap:12px;padding-top:8px;padding-bottom:16px">
+ ${P.menuUp?`<div class="box" style="background:#E5F5EC;color:#156B3B;border-radius:10px;padding:10px 12px;font-size:12.5px;font-weight:800">✓ We read 6 items from your menu photo. Check prices before you continue.</div>
+ <div class="card" style="padding:2px 12px">${PMENU.map(([n,p,v],i)=>`<div class="row" style="padding:9px 0;border-bottom:1px solid var(--a-line)"><span class="veg ${v?'':'nv'}"></span><span class="sm" style="flex:1;font-weight:700">${n}</span><span class="sm" style="font-weight:800">₹${p}</span><button class="lnk sm" data-act="toast" data-m="Edit item: name, price, description, photo (demo)">Edit</button></div>`).join('')}</div>
+ <div class="row" style="justify-content:space-between"><b class="sm">Photos ${P.photos}/5</b><button class="btn sm gh" data-act="pphoto" ${P.photos>=5?'disabled':''}>＋ Add photo</button></div>
+ <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px">${['🍛','🍗','🍜','🥘','🏪'].map((e,i)=>`<div class="food" style="height:52px;font-size:24px;background:${i<P.photos?'#FFE3C2':'#F2F2F2'};border-radius:10px">${i<P.photos?e:''}</div>`).join('')}</div>`
+ :`<button class="card" data-act="pmenuup" style="padding:22px 14px;text-align:center;border-style:dashed;border-width:2px"><div style="font-size:36px">📸</div><b>Upload a photo or PDF of your menu</b><br><span class="note">We’ll turn it into items you can edit. Takes about a minute.</span></button>
+ <button class="lnk sm" data-act="pmenuup" style="align-self:center">Or add items one by one</button>`}</div></div>
+ <div class="foot"><button class="btn" data-go="p_terms" ${P.menuUp&&P.photos>=5?'':'disabled'}>${!P.menuUp?'Add your menu first':P.photos<5?`Add ${5-P.photos} more photo${5-P.photos>1?'s':''}`:'Save and continue'}</button></div>`},
+p_terms:()=>{const P=S.p;const c=pcalc(P.ov,P.dist);return `${sb()}<div class="body">${phdr('Fees and payout','p_menu')}${pprog(4)}<div class="pad" style="display:flex;flex-direction:column;gap:12px;padding-top:8px;padding-bottom:16px">
+ <b style="font:800 19px/1.2 var(--display)">What you earn on an order</b>
+ <div class="card" style="padding:12px 14px;display:flex;flex-direction:column;gap:8px">
+  <div class="row" style="justify-content:space-between"><span class="sm">Order value</span><b>₹${P.ov}</b></div>
+  <input id="p_ov" type="range" min="150" max="1200" step="50" value="${P.ov}" aria-label="Order value" style="width:100%;accent-color:#E23744">
+  <div class="row" style="gap:6px">${[['near','Under 4 km'],['mid','4–6 km'],['far','Over 6 km']].map(([k,l])=>`<button class="chip ${P.dist===k?'on':''}" data-act="pdist" data-v="${k}">${l}</button>`).join('')}</div></div>
+ <div class="card"><div class="bill">
+  <div class="l"><span>Order value</span><span>₹${P.ov}</span></div>
+  <div class="l"><span>Commission (20%, sample) <button class="info" data-act="info" data-k="pcom">i</button></span><span>−₹${c.com.toFixed(2)}</span></div>
+  <div class="l"><span>GST on commission (18%)</span><span>−₹${c.g.toFixed(2)}</span></div>
+  <div class="l"><span>Long-distance fee <button class="info" data-act="info" data-k="pld">i</button></span><span>${c.ld?'−₹'+c.ld.toFixed(2):'₹0'}</span></div>
+  <div class="l t"><span>You receive</span><span style="color:var(--a-green)">₹${c.net.toFixed(2)}</span></div></div></div>
+ <div class="note">Your partner agreement sets the real commission. Discounts and ads are charged only if you turn them on, and each one is listed in your payout.</div>
+ <button class="card row" data-act="pagree" style="padding:12px;text-align:left;width:100%"><span class="chk ${P.agree?'on':''}">${P.agree?'✓':''}</span><span class="sm">I’ve read the commission and fee terms (sample)</span></button></div></div>
+ <div class="foot"><button class="btn" data-go="p_status" ${P.agree?'':'disabled'}>Submit for verification</button></div>`},
+p_status:()=>{const st=S.p.status;const steps=[['Submitted','Today'],['Documents checked','Usually 1–2 days'],['Menu reviewed','Usually 1–2 days'],['Onboarding call','We’ll call 98765 43210'],['Live on Zomato','Start taking orders']];return `${sb()}<div class="body">${phdr('Registration status','p_terms')}<div class="pad" style="display:flex;flex-direction:column;gap:12px;padding-bottom:16px">
+ <div class="card" style="padding:14px;background:#FFF8F1;border-color:#F6D9BF"><b style="font:800 18px var(--display)">${st>=5?'You’re live! 🎉':'Under review · expected in 3–7 working days'}</b><br><span class="sm mut">${S.p.name} · ${S.p.loc}</span></div>
+ <div class="card" style="padding:14px 0"><div class="tl">${steps.map(([a,b],i)=>`<div class="s ${i<st?'done':i===st?'cur':''}"><span class="d">${i<st?'✓':''}</span><span><b class="sm" style="font-size:13.5px">${a}</b><br><span class="note">${b}</span></span></div>`).join('')}</div></div>
+ <div class="row" style="gap:8px"><button class="btn gh sm" data-go="p_docs" style="flex:1">✏️ Edit details</button><button class="btn gh sm" data-act="padvance" style="flex:1">Skip ahead (demo) ›</button></div>
+ <p class="note" style="margin:0">If anything needs fixing, we’ll say exactly which field and why. No resubmitting everything.</p></div></div>
+ ${st>=5?'<div class="foot"><button class="btn" data-go="p_live">Open partner dashboard</button></div>':''}`},
+p_live:()=>{const P=S.p;return `${sb()}<div class="body"><div class="pad row" style="justify-content:space-between;padding-top:4px"><span><b style="font:800 18px var(--display)">${P.name}</b><br><span class="note">${P.loc}</span></span><button class="chip ${P.online?'on':''}" data-act="ponline">${P.online?'● Online':'○ Offline'}</button></div>
+ <div class="pad" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px">${[['Orders today','18'],['Sales','₹7,240'],['Rating','4.3 ★']].map(([a,b])=>`<div class="card" style="padding:9px"><span class="note">${a}</span><br><b>${b}</b></div>`).join('')}</div>
+ <div class="sec">New order</div>
+ <div class="pad">${P.ost==='new'?`<div class="card" style="padding:14px;border-color:var(--a-red);box-shadow:0 8px 20px -10px rgba(226,55,68,.5);display:flex;flex-direction:column;gap:8px"><div class="row" style="justify-content:space-between"><b>#ZM48211 · 3 items</b><b style="color:var(--a-red)">⏱ ${P.osec}s to accept</b></div>
+  <span class="sm">2 × Paneer Butter Masala · 4 × Butter Naan · 1 × Dal Makhani</span><span class="sm" style="background:#FFF6E6;color:#8A5200;border-radius:6px;padding:3px 8px;font-weight:800">Note: less spicy, please</span>
+  <div class="row" style="justify-content:space-between"><span class="sm">Prep time</span><span class="row" style="gap:6px"><button class="chip" data-act="pprep" data-v="-5">−5</button><b>${P.prep} min</b><button class="chip" data-act="pprep" data-v="5">+5</button></span></div>
+  <div class="row" style="justify-content:space-between"><span class="sm">Order value ₹1,043 · you receive</span><b style="color:var(--a-green)">₹${pcalc(1043,'near').net.toFixed(2)}</b></div>
+  <div class="row" style="gap:8px"><button class="btn gh" data-act="preject" style="flex:1">Reject</button><button class="btn" data-act="paccept" style="flex:2">Accept order</button></div></div>`
+  :P.ost==='prep'?`<div class="card" style="padding:14px;display:flex;flex-direction:column;gap:8px"><b>#ZM48211 · preparing</b><span class="sm mut">Rider assigned · arriving in ${P.prep} min</span><button class="btn" data-act="pready">Mark food ready</button></div>`
+  :`<div class="card" style="padding:14px;text-align:center"><b>${P.ost==='ready'?'✓ Handed to rider':'Order rejected · customer refunded'}</b><br><button class="lnk sm" data-act="pnew">Simulate another order</button></div>`}</div>
+ <div class="pad" style="margin-top:12px"><button class="card row" data-act="prush" style="width:100%;padding:12px;text-align:left"><span style="font-size:22px">🔥</span><span style="flex:1"><b class="sm" style="font-size:13.5px">Rush hour</b><br><span class="note">Adds 10 min to prep time for new orders</span></span><span class="chk ${P.rush?'on':''}">${P.rush?'✓':''}</span></button></div></div>${ptabs('p_live')}`},
+p_menu2:()=>{const P=S.p;return `${sb()}<div class="body">${phdr('Menu','p_live')}<div class="pad" style="display:flex;flex-direction:column;gap:10px">
+ <p class="note" style="margin:0">Out of stock? Switch it off and choose when it comes back, so you don’t forget.</p>
+ <div class="card" style="padding:2px 12px">${PMENU.map(([n,p,v])=>{const o=P.oos[n];return `<div class="row" style="padding:10px 0;border-bottom:1px solid var(--a-line)"><span class="veg ${v?'':'nv'}"></span><span style="flex:1"><b class="sm">${n}</b><br><span class="note">₹${p}${o?' · back '+o:''}</span></span><button class="chip ${o?'':'on'}" data-act="poos" data-v="${n}">${o?'Off':'In stock'}</button></div>`}).join('')}</div></div></div>${ptabs('p_menu2')}`},
+p_offer:()=>{const o=S.p.offer;const v=400;const d=Math.min(o.cap,Math.round(v*o.pct/100));const c=pcalc(v,'near');return `${sb()}<div class="body">${phdr('Create an offer','p_live')}<div class="pad" style="display:flex;flex-direction:column;gap:12px;padding-bottom:16px">
+ <div class="card" style="padding:12px 14px;display:flex;flex-direction:column;gap:8px"><b>${o.pct}% off up to ₹${o.cap} on orders above ₹${o.min}</b>
+  <div class="row" style="gap:6px">${[10,20,30].map(p=>`<button class="chip ${o.pct===p?'on':''}" data-act="poff" data-v="${p}">${p}%</button>`).join('')}</div></div>
+ <div class="card"><div class="bill"><b>On a ₹${v} order</b>
+  <div class="l"><span>Customer pays for food</span><span>₹${v-d}</span></div>
+  <div class="l"><span><b>You fund</b> the discount</span><span style="color:var(--a-red)">−₹${d}</span></div>
+  <div class="l"><span>Commission + GST + fees</span><span>−₹${(c.com+c.g+c.ld).toFixed(2)}</span></div>
+  <div class="l t"><span>You receive</span><span>₹${(c.net-d).toFixed(2)}</span></div></div></div>
+ <div class="box" style="background:#FFF6E6;color:#8A5200;border-radius:10px;padding:10px 12px;font-size:12.5px;font-weight:700">Nothing runs until you confirm. Every rupee you fund appears as its own line in your payout.</div></div></div>
+ <div class="foot"><button class="btn" data-act="poffon">${o.on?'✓ Offer is live · Turn off':'Confirm and start offer'}</button></div>${ptabs('p_offer')}`},
+p_payout:()=>{const sales=58420,com=sales*.2,g=com*.18,disc=S.p.offer.on?3250:0,ads=1500,ld=620;const net=sales-com-g-disc-ads-ld;const L=[['Sales (142 orders)',sales,'Delivered orders, 12–18 Oct'],['Commission (20%, sample)',-com,'As per your partner agreement'],['GST on commission (18%)',-g,'Tax on the commission'],['Discounts you funded',-disc,disc?'Offer “20% off” you started on 12 Oct · 41 orders':'No offers were running'],['Ads',-ads,'Campaign you approved on 10 Oct · budget cap ₹1,500'],['Long-distance fees',-ld,'31 orders delivered 4–6 km away']];return `${sb()}<div class="body">${phdr('Payouts','p_live')}<div class="pad" style="display:flex;flex-direction:column;gap:12px;padding-bottom:16px">
+ <div class="card" style="padding:14px;background:linear-gradient(150deg,#E5F5EC,#fff)"><span class="note">Next payout · Wed, 22 Oct</span><br><b style="font:800 28px var(--display)">₹${net.toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2})}</b><br><span class="note">to HDFC ••••6789</span></div>
+ <div class="card" style="padding:2px 14px">${L.map(([a,v,w],i)=>`<button class="opt" data-act="ppay" data-i="${i}" style="width:100%;border-left:0;border-right:0;border-top:0;background:none;text-align:left;flex-direction:column;align-items:stretch;gap:3px"><span class="row" style="justify-content:space-between"><b class="sm" style="font-size:13.5px">${a}</b><b class="sm" style="color:${v<0?'#B5162A':'var(--a-ink)'}">${v<0?'−':''}₹${Math.abs(v).toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2})}</b></span>${S.p.payOpen===i?`<span class="note">${w}</span>`:''}</button>`).join('')}</div>
+ <button class="btn gh" data-act="toast" data-m="Query raised on this payout. A partner manager replies within 24 hours (demo)">Question about a line? Raise a query</button>
+ <p class="note" style="margin:0">Tap any line to see why it was charged. Sample numbers.</p></div></div>${ptabs('p_payout')}`}
+});
+INFO.pcom=['Commission','A share of each order’s value that Zomato keeps. Partner guides report 18–25% plus GST for typical single outlets; your agreement sets the real rate. 20% is a sample.'];
+INFO.pld=['Long-distance fee','Reported from May 2025: ₹20 per order above ₹150 delivered 4–6 km away, ₹40 beyond 6 km, with total platform charges capped at 30% of order value (Outlook Business). Shown here before you agree.'];
+
+/* sheets */
+function sheetHTML(){
+ if(!S.sheet)return '';
+ if(S.sheet.t==='info'){const [h,p]=INFO[S.sheet.k];return `<div class="ov" data-act="close"><div class="sheet" data-stop="1"><div class="sh"><b style="font-size:16px">${h}</b><button class="x" data-act="close" aria-label="Close">✕</button></div><div class="sbd"><p style="margin:0 0 16px">${p}</p><button class="btn" data-act="close">Got it</button><div style="height:12px"></div></div></div></div>`}
+ if(S.sheet.t==='cust'){const c=S.cust;const base=199+(c.opt==='cheese'?20:0);const ex=c.pairs.reduce((a,id)=>a+MENU.find(m=>m.id===id).p,0);const tot=(base)*c.q+ex;
+  return `<div class="ov" data-act="close"><div class="sheet" data-stop="1"><div class="sh"><div class="row"><span class="food" style="width:52px;height:52px;font-size:28px;background:#FFE3C2">🍔</span><span><b style="font-size:16px">The OG Veggie Burger</b><br><span class="sm mut">Customise as per your taste</span></span></div><button class="x" data-act="close" aria-label="Close">✕</button></div>
+  <div class="sbd"><div class="card" style="padding:4px 14px;margin-bottom:12px"><div class="row" style="justify-content:space-between;padding-top:10px"><b>Make it yours</b><span class="sm" style="color:var(--a-red);font-weight:800">Required · pick 1</span></div>
+   ${[['plain','Without cheese',199],['cheese','With cheese',219]].map(([k,n,p])=>`<button class="opt" data-act="copt" data-k="${k}" style="width:100%;border-left:0;border-right:0;border-top:0;background:none"><span class="row"><span class="veg"></span>${n}</span><span class="row">${fmt(p)}<span class="radio ${c.opt===k?'on':''}"></span></span></button>`).join('')}</div>
+   <div class="card" style="padding:4px 14px;margin-bottom:12px"><button data-act="ptog" style="width:100%;border:0;background:none;display:flex;justify-content:space-between;padding:12px 0;font-weight:800"><span>Pair it with (optional) · ${PAIR.length}</span><span>${c.open?'▴':'▾'}</span></button>
+   ${c.open?PAIR.map(id=>{const m=MENU.find(x=>x.id===id);const on=c.pairs.includes(id);return `<button class="opt" data-act="pair" data-id="${id}" style="width:100%;border-left:0;border-right:0;border-top:0;background:none"><span class="row"><span class="veg"></span>${m.name}</span><span class="row">+${fmt(m.p)}<span class="chk ${on?'on':''}">${on?'✓':''}</span></span></button>`}).join('')+'<p class="note" style="padding-bottom:10px">Separate items, added to the cart at their own price. Nothing is pre-selected.</p>':''}</div></div>
+  <div class="foot row"><span class="step" style="width:100px;height:46px"><button data-act="cq" data-v="-1" aria-label="Fewer">−</button>${c.q}<button data-act="cq" data-v="1" aria-label="More">+</button></span><button class="btn" data-act="cadd" style="flex:1">Add item · ${fmt(tot)}</button></div></div></div>`}
+ return '';
+}
+function render(){
+ clearInterval(timer);timer=null;
+ scr.innerHTML=V[S.scr]()+sheetHTML()+`<div class="toast" id="toast" role="status"></div>`;
+ seen.add(S.scr);side();
+ if(S.scr==='p_live'&&S.p.ost==='new'){timer=setInterval(()=>{if(S.p.osec>0){S.p.osec--;const el=[...scr.querySelectorAll('b')].find(x=>/s to accept/.test(x.textContent));if(el)el.textContent='⏱ '+S.p.osec+'s to accept'}},1000)}
+ if(S.scr==='otp')startOtp();
+ if(S.scr==='track')placeRider(true);
+ const sq=document.getElementById('sq');if(sq){sq.focus();sq.setSelectionRange(sq.value.length,sq.value.length)}
+}
+function go(s,keepSheet){const m=s.startsWith('p_')?'P':s.startsWith('r_')?'R':'C';if(m!==mode)setMode(m,true);S.scr=s;if(!keepSheet)S.sheet=null;
+ if(s==='p_live'&&S.p.status<5)S.p.status=5;
+ if(['track','summary','placed'].includes(s)&&!S.orderId)placeOrder(true);
+ if(['cart','pay','coupons'].includes(s)&&!lines().length)sample();
+ if(s==='cust'){S.scr='menu';openCust();return}
+ if(s==='proc'){S.scr='proc';render();setTimeout(()=>{if(S.scr==='proc'){placeOrder();S.scr='placed';render()}},1600);return}
+ if(s==='track')startTrack();
+ render();const b=scr.querySelector('.body');if(b)b.scrollTop=0;}
+function sample(){S.cart={'og|plain':1,'cc':1}}
+function placeOrder(silent){if(!lines().length)sample();S.orderId='ZM'+(48210+Math.floor(Math.random()*900));const d=new Date();S.placedAt=d.toLocaleDateString('en-IN',{day:'numeric',month:'short'})+', '+d.toLocaleTimeString('en-IN',{hour:'numeric',minute:'2-digit'});S.stage=0;S.eta=28;S.rated=0}
+function startOtp(){if(S.otp.length<4&&!S._otpRun){S._otpRun=1;setTimeout(()=>{S._otpRun=0;if(S.scr==='otp'){S.otp='2468';render()}},1100)}
+ timer=setInterval(()=>{if(S.otpT>0){S.otpT--;const el=scr.querySelector('.sm.mut:last-child');if(S.scr==='otp'){if(S.otpT===0)render();else if(el)el.innerHTML='Didn’t get it? Resend in 0:'+String(S.otpT).padStart(2,'0')}}},1000)}
+function startTrack(){clearInterval(trackT);trackT=setInterval(()=>{if(S.stage<4){S.stage++;S.eta=[28,22,14,6,0][S.stage];if(S.scr==='track')render();else side()}else clearInterval(trackT)},5000)}
+function placeRider(){const p=scr.querySelector('#rt'),r=scr.querySelector('#rider');if(!p||!r)return;const L=p.getTotalLength();const f=[0,0,.35,.72,1][Math.min(S.stage,4)];const pt=p.getPointAtLength(L*f);r.setAttribute('transform',`translate(${pt.x},${pt.y})`)}
+function openCust(){S.cust={opt:S.opt.og||'plain',q:1,pairs:[],open:false};S.sheet={t:'cust'};render()}
+function toast(m){const t=scr.querySelector('#toast');if(!t)return;t.textContent=m;t.classList.add('on');clearTimeout(toast._t);toast._t=setTimeout(()=>t.classList.remove('on'),2200)}
+scr.addEventListener('click',e=>{
+ const el=e.target.closest('[data-go],[data-act]');
+ if(!el){return}
+ if(el.dataset.stop&&!e.target.closest('[data-act],[data-go]'))return;
+ if(el.dataset.go){e.preventDefault();go(el.dataset.go);return}
+ const a=el.dataset.act;
+ if(a==='close'){if(e.target.closest('[data-stop]')&&el.classList.contains('ov'))return;S.sheet=null;render();return}
+ e.stopPropagation();
+ const A={
+  toast:()=>toast(el.dataset.m),
+  login:()=>{const v=($('#ph').value||'').replace(/\D/g,'');if(v.length!==10){$('#pherr').textContent='Enter a 10-digit mobile number.';$('#pherr').style.color='#B5162A';return}S.phone=v.slice(0,5)+' '+v.slice(5);S.otp='';S.otpT=30;go('otp')},
+  verify:()=>go('addr'),
+  resend:()=>{S.otp='';S.otpT=30;render()},
+  addr:()=>{S.addr=+el.dataset.i;render()},
+  cat:()=>{S.q=el.dataset.q.toLowerCase();go('results')},
+  setq:()=>{S.q=el.dataset.q;render()},
+  clearq:()=>{S.q='';render()},
+  dish:()=>go('menu'),
+  openr:()=>{if(el.dataset.id!=='seoul'){toast('Demo: open Seoul Burgers & Shakes for the full menu');return}go('menu')},
+  filt:()=>{S.filters[el.dataset.k]^=1;render()},
+  add:()=>{const id=el.dataset.id;const m=MENU.find(x=>x.id===id);if(m.cust){openCust();return}S.cart[id]=(S.cart[id]||0)+1;render();toast(m.name+' added')},
+  dec:()=>{const id=el.dataset.id;if(id==='og'){const k=Object.keys(S.cart).filter(k=>k.startsWith('og|')&&S.cart[k]>0).pop();if(k)S.cart[k]--;}else S.cart[id]=Math.max(0,(S.cart[id]||0)-1);render()},
+  cinc:()=>{S.cart[el.dataset.k]++;render()},
+  cdec:()=>{S.cart[el.dataset.k]--;if(S.cart[el.dataset.k]<=0)delete S.cart[el.dataset.k];render()},
+  info:()=>{S.sheet={t:'info',k:el.dataset.k};render()},
+  copt:()=>{S.cust.opt=el.dataset.k;render()},
+  ptog:()=>{S.cust.open=!S.cust.open;render()},
+  pair:()=>{const id=el.dataset.id,p=S.cust.pairs;const i=p.indexOf(id);i<0?p.push(id):p.splice(i,1);render()},
+  cq:()=>{S.cust.q=Math.max(1,S.cust.q+ +el.dataset.v);render()},
+  cadd:()=>{const c=S.cust;const k='og|'+c.opt;S.cart[k]=(S.cart[k]||0)+c.q;c.pairs.forEach(id=>S.cart[id]=(S.cart[id]||0)+1);S.opt.og=c.opt;S.sheet=null;render();toast('Added to cart')},
+  apply:()=>{S.coupon=el.dataset.c;go('cart');toast(S.coupon+' applied')},
+  rmcoupon:()=>{S.coupon=null;render()},
+  tip:()=>{S.tip=+el.dataset.v;render()},
+  donate:()=>{S.donate=!S.donate;render()},
+  voucher:()=>{S.voucher=!S.voucher;render();toast(S.voucher?'Dining voucher added (₹0)':'Voucher removed')},
+  billjump:()=>{const el2=scr.querySelector('.bill');if(el2)el2.scrollIntoView({behavior:'smooth',block:'center'})},
+  billtog:()=>{S.billOpen=!S.billOpen;render()},
+  pm:()=>{S.pay=el.dataset.k;render()},
+  paynow:()=>go('proc'),
+  skip:()=>{if(S.stage<4){S.stage++;S.eta=[28,22,14,6,0][S.stage];render()}},
+  rate:()=>{S.rated=+el.dataset.v;render();toast('Thanks for your feedback')},
+  reorder:()=>{S.cart={};S.cart[el.dataset.id==='og'?'og|plain':el.dataset.id]=1;go('cart');toast('Added to cart from your past order')},
+  reorderall:()=>{go('cart');toast('Same items are in your cart')},
+  logout:()=>{clearInterval(trackT);S=fresh();go('login')}
+ };
+ (A[a]||(()=>{}))();
+});
+scr.addEventListener('input',e=>{const t=e.target,id=t.id;
+ if(id==='sq'){S.q=t.value;clearTimeout(scr._q);scr._q=setTimeout(render,180);return}
+ const PB={pd_name:'name',pd_open:'open',pd_close:'close',pd_fssai:'fssai',pd_gst:'gst',pd_pan:'pan',pd_ifsc:'ifsc',pd_acc:'acc'};
+ if(PB[id]){let v=t.value;if(['gst','pan','ifsc'].includes(PB[id]))v=v.toUpperCase();S.p[PB[id]]=v;S.p.touched[PB[id]]=1;soft(id);return}
+ if(id==='pd_c2'){S.p.c2=parseInt(t.value)||0;soft(id);return}
+ if(id==='p_ov'){S.p.ov=+t.value;soft(id);return}
+});
+scr.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.id==='ph'){scr.querySelector('[data-act="login"]').click()}if(e.key==='Enter'&&e.target.id==='sq'&&S.q.trim()){go('results')}});
+function soft(fid){const b=scr.querySelector('.body');const st=b?b.scrollTop:0;const el=document.getElementById(fid);let pos=null;try{pos=el&&el.selectionStart}catch(_){}render();const nb=scr.querySelector('.body');if(nb)nb.scrollTop=st;const n=document.getElementById(fid);if(n){n.focus();try{if(pos!=null)n.setSelectionRange(pos,pos)}catch(_){}}}
+/* partner + real actions */
+scr.addEventListener('click',e=>{const el=e.target.closest('[data-act]');if(!el)return;const a=el.dataset.act,P=S.p;
+ const A={pskip:()=>{P.status=5;go('p_live')},ppin:()=>{P.pin=true;render()},
+  pcui:()=>{const v=el.dataset.v,i=P.cui.indexOf(v);if(i>=0)P.cui.splice(i,1);else if(P.cui.length<3)P.cui.push(v);else toast('Pick up to 3 cuisines');render()},
+  pfill:()=>{Object.assign(P,{fssai:'10826999000123',gst:'06ABCDE1234F1Z5',pan:'ABCDE1234F',ifsc:'HDFC0001234',acc:'50100123456789'});['fssai','gst','pan','ifsc','acc'].forEach(k=>P.touched[k]=1);render();toast('Sample details filled (not real)')},
+  pnogst:()=>{P.noGst=!P.noGst;render()},pmenuup:()=>{P.menuUp=true;render();toast('Menu read: 6 items')},pphoto:()=>{P.photos=Math.min(5,P.photos+1);render()},
+  pdist:()=>{P.dist=el.dataset.v;render()},pagree:()=>{P.agree=!P.agree;render()},padvance:()=>{P.status=Math.min(5,P.status+1);render()},
+  ponline:()=>{P.online=!P.online;render();toast(P.online?'You’re online':'Paused: you won’t get new orders')},
+  pprep:()=>{P.prep=Math.max(5,Math.min(60,P.prep+ +el.dataset.v));render()},paccept:()=>{P.ost='prep';render();toast('Order accepted · rider assigned')},
+  preject:()=>{P.ost='rej';render()},pready:()=>{P.ost='ready';render();toast('Rider notified')},pnew:()=>{P.ost='new';P.osec=90;render()},
+  prush:()=>{P.rush=!P.rush;P.prep=Math.max(5,P.prep+(P.rush?10:-10));render()},
+  poos:()=>{const n=el.dataset.v;if(P.oos[n])delete P.oos[n];else P.oos[n]='at 6 PM';render()},
+  poff:()=>{P.offer.pct=+el.dataset.v;render()},poffon:()=>{P.offer.on=!P.offer.on;render();toast(P.offer.on?'Offer is live. It will show in your payout.':'Offer stopped')},
+  ppay:()=>{const i=+el.dataset.i;P.payOpen=P.payOpen===i?null:i;render()},
+  rnext:()=>{const i=+S.scr.slice(2);if(i<REAL.length-1)go('r_'+(i+1));else{go('menu');toast('Now the redesigned flow')}},
+  rprev:()=>{const i=+S.scr.slice(2);if(i>0)go('r_'+(i-1))}};
+ if(A[a]){e.stopPropagation();A[a]()}});
+/* side panel */
+function setMode(m,silent){mode=m;['C','P','R'].forEach(k=>{const b=$('#m'+k);b.classList.toggle('on',k===m);b.setAttribute('aria-selected',k===m)});$('#h2').textContent=LEDE[m][0];$('#lede').textContent=LEDE[m][1];
+ if(!silent)go(m==='C'?'login':m==='P'?'p_welcome':'r_0')}
+function side(){
+ const cur=S.sheet&&S.sheet.t==='cust'?'cust':S.scr;const F=FLOWS[mode],O=ORD[mode];
+ $('#flow').innerHTML=F.map(([g,items])=>`<div class="fg"><b>${g}</b><div class="fs">${items.map(([k,l])=>`<button data-j="${k}" class="${k===cur?'on':''} ${seen.has(k)?'seen':''}"><span class="n">${String(O.indexOf(k)+1).padStart(2,'0')}</span>${l}</button>`).join('')}</div></div>`).join('');
+ let n=NOTES[cur];if(!n&&cur.startsWith('r_')){const r=REAL[+cur.slice(2)];n=[['Tap the screenshot or Next to move on.','Compare with the Customer tab to see the redesign.'],[r[3]]]}n=n||[[],[]];
+ $('#try').innerHTML=n[0].map(x=>`<li>${x}</li>`).join('');$('#ux').innerHTML=n[1].map(x=>`<li>${x}</li>`).join('');
+ const i=O.indexOf(cur);$('#bar').style.width=(i<0?0:(i+1)/O.length*100)+'%';$('#pct').textContent=i<0?'':`Step ${i+1} of ${O.length}`;
+ $('#bPrev').disabled=i<=0;$('#bNext').disabled=i>=O.length-1;
+}
+function jump(k){
+ if(['otp'].includes(k)){S.otp='';S.otpT=30}
+ if(k==='cust'){if(mode!=='C')setMode('C',true);if(S.scr!=='menu'){S.scr='menu'}openCust();return}
+ if(k==='track'&&S.orderId&&S.stage>=4){S.stage=0;S.eta=28}
+ go(k);
+}
+$('#flow').addEventListener('click',e=>{const b=e.target.closest('[data-j]');if(b)jump(b.dataset.j)});
+const step=d=>{const cur=S.sheet&&S.sheet.t==='cust'?'cust':S.scr;const O=ORD[mode];const i=O.indexOf(cur);const k=O[Math.max(0,Math.min(O.length-1,i+d))];if(k==='proc'&&d<0){jump('pay');return}jump(k)};
+$('#bPrev').onclick=()=>step(-1);$('#bNext').onclick=()=>step(1);
+$('#bReset').onclick=()=>{clearInterval(trackT);S=fresh();seen=new Set();setMode(mode)};
+$('#mC').onclick=()=>setMode('C');$('#mP').onclick=()=>setMode('P');$('#mR').onclick=()=>setMode('R');
+document.addEventListener('keydown',e=>{if(e.target.tagName==='INPUT')return;if(e.key==='ArrowRight')step(1);if(e.key==='ArrowLeft')step(-1)});
+FLOWS.P=[['Register',[['p_welcome','Welcome'],['p_login','Account'],['p_check','Checklist']]],['Set up',[['p_details','Details'],['p_docs','Documents'],['p_menu','Menu & photos'],['p_terms','Fees & payout']]],['Verify',[['p_status','Status']]],['Run the restaurant',[['p_live','Orders'],['p_menu2','Stock'],['p_offer','Offers'],['p_payout','Payouts']]]];
+FLOWS.R=[['Real customer screens (before)',REAL.map((r,i)=>['r_'+i,r[1]])]];
+['C','P','R'].forEach(k=>ORD[k]=FLOWS[k].flatMap(g=>g[1].map(x=>x[0])));
+window.__zapp={S:()=>S,go,jump,setMode};
+S=fresh();
+const h0=(location.hash||'').slice(1);setMode(h0==='partner'?'P':h0==='real'?'R':'C');
+})();
+</script></html>

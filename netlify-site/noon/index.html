@@ -1,0 +1,48 @@
+<title>Noon UAE Heuristic Evaluation</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&family=Figtree:wght@400;600;700&display=swap">
+<style>
+/* Layout: one reading column; masthead, method line, a ruled findings list where each finding pairs the issue with its heuristic and fix, then redesign priorities. */
+:root{--bg:#f8f6f4;--card:#fff;--ink:#1c1a22;--mu:#5d5a68;--line:#e4e0e6;--accent:#d4a300;--accent-ink:#7a5b00;--on-accent:#fff;--soft:#f1eef2;
+--display:"Bricolage Grotesque",Figtree,system-ui,sans-serif;--body:Figtree,system-ui,-apple-system,"Segoe UI",sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#131116;--card:#1d1a22;--ink:#f3f1f5;--mu:#aca9b6;--line:#34303d;--soft:#25212c;--accent:#f2c94c;--accent-ink:#f2c94c;--on-accent:#140d10;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#131116;--card:#1d1a22;--ink:#f3f1f5;--mu:#aca9b6;--line:#34303d;--soft:#25212c;--accent:#f2c94c;--accent-ink:#f2c94c;--on-accent:#140d10;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 var(--body);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:40px 64px}
+.col{max-width:820px;margin:0 auto;display:flex;flex-direction:column;gap:36px}
+.eyebrow{font:700 12px var(--body);letter-spacing:.16em;text-transform:uppercase;color:var(--accent-ink)}
+h1{font:800 clamp(34px,7vw,56px)/1.02 var(--display);letter-spacing:-.03em;margin:8px 0 12px;text-wrap:balance}
+.lead{color:var(--mu);max-width:60ch;margin:0 0 18px}
+.meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.meta div{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.meta b{display:block;font:700 11px var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--mu);margin-bottom:2px}
+.acts{display:flex;gap:10px;flex-wrap:wrap}
+a.b{display:inline-block;text-decoration:none;font:700 14.5px var(--body);padding:11px 18px;border-radius:10px;border:1px solid var(--line);color:var(--ink);background:var(--card)}
+a.b.p{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+a.b:hover{border-color:var(--accent)}
+a:focus-visible{outline:2.5px solid var(--accent);outline-offset:2px;border-radius:6px}
+h2{font:800 24px var(--display);letter-spacing:-.015em;margin:0 0 12px}
+.f{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:12px;display:flex;flex-direction:column;gap:8px}
+.f h3{font:800 18px var(--display);margin:0;display:flex;gap:10px;align-items:baseline}
+.f h3 i{font:800 13px var(--body);font-style:normal;color:var(--accent-ink)}
+.f p{margin:0;color:var(--mu)}
+.f dl{margin:0;display:grid;grid-template-columns:110px minmax(0,1fr);gap:6px 12px;font-size:15px}
+.f dt{font:700 11px/1.9 var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--mu)}
+.f dd{margin:0}
+.law{display:inline-block;font:700 12px var(--body);border:1.5px solid var(--accent);color:var(--accent-ink);border-radius:6px;padding:2px 8px}
+.recs{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+.recs div{background:var(--soft);border-radius:12px;padding:14px}
+.recs b{display:block;font:800 16px var(--display);margin-bottom:4px}
+.recs span{color:var(--mu);font-size:14.5px}
+.foot{color:var(--mu);font-size:13px;border-top:1px solid var(--line);padding-top:16px}
+@media (max-width:520px){.f dl{grid-template-columns:1fr}.f dt{line-height:1.4}}
+</style>
+<main class="col">
+<header><div class="eyebrow">UX heuristic evaluation · e-commerce</div><h1>Noon UAE: the first-time buyer journey</h1><p class="lead">A new user signs up, browses, adds a product to the cart and tries to check out. The journey ends at a real unserviceable-address block, which is evaluated as part of the flow.</p>
+<div class="acts"><a class="b p" href="Noon_UAE_UX_Heuristic_Evaluation.pdf">Open PDF deck</a><a class="b" href="https://github.com/varunkumar1989/Case-studies/tree/claude/serene-dijkstra-0rpgsz/Noon" target="_blank" rel="noopener">GitHub folder</a></div></header>
+<section class="meta"><div><b>Product</b>Noon.com (UAE) web app</div><div><b>Flow</b>Sign up, browse, product page, cart, checkout attempt</div><div><b>Method</b>Nielsen&#x27;s 10 heuristics and UX laws</div><div><b>Evidence</b>Expert walkthrough on desktop, Oct 2026</div></section>
+<section><h2>Findings</h2><article class="f"><h3><i>#1</i>Cluttered sign-up modal</h3><p>Rotating decorative icons dominate the screen, so the login fields feel secondary.</p><dl><dt>Principle</dt><dd><span class="law">Aesthetic and minimalist design</span></dd><dt>Fix</dt><dd>Remove the icon carousel and make the email field and button the focus.</dd></dl></article><article class="f"><h3><i>#2</i>Email OTP detour</h3><p>The email holds a link, not the code. The code appears on a web page and must be copied back into the app: three steps to enter one code.</p><dl><dt>Principle</dt><dd><span class="law">Jakob&#x27;s Law</span></dd><dt>Fix</dt><dd>Show the 6-digit code in the email body and support autofill.</dd></dl></article><article class="f"><h3><i>#3</i>Product page overload</h3><p>Coupons, cashback, delivery options, an AI assistant, seller card, payment offers and ads compete at once.</p><dl><dt>Principle</dt><dd><span class="law">Miller&#x27;s Law</span></dd><dt>Fix</dt><dd>Group into collapsible sections so only one or two chunks show by default.</dd></dl></article><article class="f"><h3><i>#4</i>Unexplained 5.0 rating</h3><p>A prominent 5.0 rating sits above a reviews panel that says there are no reviews yet.</p><dl><dt>Principle</dt><dd><span class="law">Consistency and standards</span></dd><dt>Fix</dt><dd>Hide the rating until a minimum count, or label its source.</dd></dl></article><article class="f"><h3><i>#5</i>Cart distractions</h3><p>Five recommended products, coupon prompts, cashback and installment offers surround the checkout button.</p><dl><dt>Principle</dt><dd><span class="law">Aesthetic and minimalist design</span></dd><dt>Fix</dt><dd>Move cross-sell below the fold or after checkout.</dd></dl></article><article class="f"><h3><i>#6</i>Dead-end address error</h3><p>“Outside serviceable location” offers no nearby zone, pickup point or explanation.</p><dl><dt>Principle</dt><dd><span class="law">Help users recover from errors</span></dd><dt>Fix</dt><dd>Suggest the nearest covered zone or a pickup locker in the error state.</dd></dl></article><article class="f"><h3><i>#7</i>Small modal close buttons</h3><p>Close buttons are about 24px, low contrast and far from where the cursor rests.</p><dl><dt>Principle</dt><dd><span class="law">Fitts&#x27;s Law</span></dd><dt>Fix</dt><dd>Enlarge hit areas to at least 40px with stronger contrast.</dd></dl></article></section>
+<section><h2>Redesign direction</h2><div class="recs"><div><b>Simplify onboarding</b><span>Drop the carousel; show the OTP inline in the email.</span></div><div><b>Chunk the product page</b><span>Collapse offers, delivery and cross-sell.</span></div><div><b>Protect checkout</b><span>Remove recommendation rails from the cart.</span></div><div><b>Make errors recoverable</b><span>Offer the nearest serviceable option on the same screen.</span></div><div><b>Fix cursor targets</b><span>Close buttons at 40px or more.</span></div><div><b>Earn the star rating</b><span>Caveat ratings that have no written reviews.</span></div></div></section>
+<p class="foot">Independent educational evaluation by Varun Kumar. Not affiliated with Noon. Findings are from the expert walkthrough in the linked deck.</p>
+</main>

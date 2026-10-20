@@ -1,0 +1,48 @@
+<title>Klook UX Evaluation</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&family=Figtree:wght@400;600;700&display=swap">
+<style>
+/* Layout: one reading column; masthead, method line, a ruled findings list where each finding pairs the issue with its heuristic and fix, then redesign priorities. */
+:root{--bg:#f8f6f4;--card:#fff;--ink:#1c1a22;--mu:#5d5a68;--line:#e4e0e6;--accent:#e8672e;--accent-ink:#a8420f;--on-accent:#fff;--soft:#f1eef2;
+--display:"Bricolage Grotesque",Figtree,system-ui,sans-serif;--body:Figtree,system-ui,-apple-system,"Segoe UI",sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#131116;--card:#1d1a22;--ink:#f3f1f5;--mu:#aca9b6;--line:#34303d;--soft:#25212c;--accent:#ff9760;--accent-ink:#ff9760;--on-accent:#140d10;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#131116;--card:#1d1a22;--ink:#f3f1f5;--mu:#aca9b6;--line:#34303d;--soft:#25212c;--accent:#ff9760;--accent-ink:#ff9760;--on-accent:#140d10;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 var(--body);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:40px 64px}
+.col{max-width:820px;margin:0 auto;display:flex;flex-direction:column;gap:36px}
+.eyebrow{font:700 12px var(--body);letter-spacing:.16em;text-transform:uppercase;color:var(--accent-ink)}
+h1{font:800 clamp(34px,7vw,56px)/1.02 var(--display);letter-spacing:-.03em;margin:8px 0 12px;text-wrap:balance}
+.lead{color:var(--mu);max-width:60ch;margin:0 0 18px}
+.meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.meta div{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.meta b{display:block;font:700 11px var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--mu);margin-bottom:2px}
+.acts{display:flex;gap:10px;flex-wrap:wrap}
+a.b{display:inline-block;text-decoration:none;font:700 14.5px var(--body);padding:11px 18px;border-radius:10px;border:1px solid var(--line);color:var(--ink);background:var(--card)}
+a.b.p{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+a.b:hover{border-color:var(--accent)}
+a:focus-visible{outline:2.5px solid var(--accent);outline-offset:2px;border-radius:6px}
+h2{font:800 24px var(--display);letter-spacing:-.015em;margin:0 0 12px}
+.f{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:12px;display:flex;flex-direction:column;gap:8px}
+.f h3{font:800 18px var(--display);margin:0;display:flex;gap:10px;align-items:baseline}
+.f h3 i{font:800 13px var(--body);font-style:normal;color:var(--accent-ink)}
+.f p{margin:0;color:var(--mu)}
+.f dl{margin:0;display:grid;grid-template-columns:110px minmax(0,1fr);gap:6px 12px;font-size:15px}
+.f dt{font:700 11px/1.9 var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--mu)}
+.f dd{margin:0}
+.law{display:inline-block;font:700 12px var(--body);border:1.5px solid var(--accent);color:var(--accent-ink);border-radius:6px;padding:2px 8px}
+.recs{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+.recs div{background:var(--soft);border-radius:12px;padding:14px}
+.recs b{display:block;font:800 16px var(--display);margin-bottom:4px}
+.recs span{color:var(--mu);font-size:14.5px}
+.foot{color:var(--mu);font-size:13px;border-top:1px solid var(--line);padding-top:16px}
+@media (max-width:520px){.f dl{grid-template-columns:1fr}.f dt{line-height:1.4}}
+</style>
+<main class="col">
+<header><div class="eyebrow">UX evaluation and redesign · travel booking</div><h1>Klook: booking a full-day speedboat excursion</h1><p class="lead">A multi-option booking flow with dates, transport tiers, group size and dynamic pricing. High cognitive load makes it a good test of hierarchy and error prevention.</p>
+<div class="acts"><a class="b p" href="Klook_UX_Evaluation_Redesign.pdf">Open PDF deck</a><a class="b" href="https://github.com/varunkumar1989/Case-studies/tree/claude/serene-dijkstra-0rpgsz/Klook" target="_blank" rel="noopener">GitHub folder</a></div></header>
+<section class="meta"><div><b>Product</b>Klook travel and experiences marketplace</div><div><b>Flow</b>Book a multi-option speedboat excursion</div><div><b>Method</b>Nielsen&#x27;s heuristics and UX laws</div><div><b>Output</b>8-slide deck with a usability matrix</div></section>
+<section><h2>Findings</h2><article class="f"><h3><i>#1</i>Package choice paralysis</h3><p>Early and late departures and group offers are clustered with poor hierarchy, creating a dense wall of choices.</p><dl><dt>Principle</dt><dd><span class="law">Hick&#x27;s Law; aesthetic and minimalist design</span></dd><dt>Fix</dt><dd>Use progressive disclosure: Step 1 choose time, Step 2 choose transfer.</dd></dl></article><article class="f"><h3><i>#2</i>Micro touch targets</h3><p>The plus and minus adjusters for adults and children are tiny text icons spaced tightly.</p><dl><dt>Principle</dt><dd><span class="law">Fitts&#x27;s Law</span></dd><dt>Fix</dt><dd>Make targets at least 48 by 48px with a grey fill on each icon.</dd></dl></article><article class="f"><h3><i>#3</i>Dead-end promo errors</h3><p>An invalid code shows a generic dark toast: “Invalid promo code. Please double check.”</p><dl><dt>Principle</dt><dd><span class="law">Help users recognize, diagnose and recover from errors</span></dd><dt>Fix</dt><dd>Say why (expired, minimum spend not met) and suggest other coupons.</dd></dl></article><article class="f"><h3><i>#4</i>Chaotic pickup mapping</h3><p>Overlapping semi-transparent polygons with floating price tags make it hard to verify the hotel zone.</p><dl><dt>Principle</dt><dd><span class="law">Visibility of system status; match with the real world</span></dd><dt>Fix</dt><dd>Replace the map with address autocomplete that shows the surcharge in a text banner.</dd></dl></article><article class="f"><h3><i>#5</i>Intrusive upsell banner</h3><p>A bright Satisfaction Guarantee banner right before payment adds visual noise.</p><dl><dt>Principle</dt><dd><span class="law">Aesthetic and minimalist design</span></dd><dt>Fix</dt><dd>Condense it into a single-line toggle in the price breakdown.</dd></dl></article></section>
+<section><h2>Redesign direction</h2><div class="recs"><div><b>Structural clarity</b><span>A step-wise configuration wizard that isolates high-stakes choices.</span></div><div><b>Interaction engineering</b><span>Larger tap boundaries on all primary configuration controls.</span></div><div><b>Logistics simplification</b><span>Address validation that says whether free pickup applies.</span></div><div><b>Intelligent error handling</b><span>Contextual guidance instead of static dead-end pop-ups.</span></div></div></section>
+<p class="foot">Independent educational evaluation by Varun Kumar. Not affiliated with Klook.</p>
+</main>
