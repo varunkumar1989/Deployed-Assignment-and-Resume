@@ -33,20 +33,46 @@ h2{font:800 24px var(--display);letter-spacing:-.015em;margin:0 0 4px}
 details{margin-top:6px}
 summary{cursor:pointer;font:700 14px var(--body);color:var(--mu);padding:10px 2px}
 .foot{color:var(--mu);font-size:13px;border-top:1px solid var(--line);padding-top:16px}
+.feat-g{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:14px}
+.fc{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.fc .t{font:700 11px var(--body);letter-spacing:.14em;text-transform:uppercase;color:var(--accent-ink)}
+.fc h3{font:800 22px var(--display);letter-spacing:-.015em;margin:0}
+.fc p{margin:0;color:var(--mu);font-size:15px}
+.fc .l{display:flex;gap:8px;flex-wrap:wrap;margin-top:auto;padding-top:6px}
+.fc .l a{font:700 13.5px var(--body);text-decoration:none;color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:7px 12px}
+.fc .l a.p{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.fc .l a:hover{border-color:var(--accent)}
+.tags{display:flex;gap:8px;flex-wrap:wrap}.tags span{border:1px solid var(--line);background:var(--card);border-radius:99px;padding:6px 13px;font:600 14px var(--body)}
+@media (max-width:420px){.feat-g{grid-template-columns:1fr}}
 @media (max-width:560px){.item{grid-template-columns:1fr}}
 </style>
 
 <main class="col">
   <header>
-    <div class="eyebrow">Product and UX case studies</div>
+    <div class="eyebrow">Resume · product and UX case studies</div>
     <h1>Varun Kumar</h1>
-    <p class="lead">Clickable prototypes, UX evaluations and decks. Open the resume, or pick a project below.</p>
+    <p class="lead">Four full case studies with decks and PDFs, plus clickable prototypes. Open the resume, or start with the featured work.</p>
     <div class="acts">
       <a class="b p" href="https://varun-pm-resume.netlify.app/" target="_blank" rel="noopener">Resume site</a>
       <a class="b" href="https://github.com/varunkumar1989/Resume" target="_blank" rel="noopener">Resume repository</a>
       <a class="b" href="https://github.com/varunkumar1989/Case-studies" target="_blank" rel="noopener">Case-studies repository</a>
     </div>
   </header>
+
+  <section>
+    <h2>Featured work</h2><p class="sub">Each study links to its artifact and PDFs</p>
+    <div class="feat-g">
+      <div class="fc"><div class="t">Travel · owner and guest flows</div><h3>OYO</h3><p>11 issues in the owner listing journey, mapped to heuristics and UX laws, with a clickable prototype.</p><div class="l"><a class="p" href="https://claude.ai/artifact/X16m61bmq12RqtwcoXgvqB" target="_blank" rel="noopener">Artifact</a><a href="https://oyo-varun-v3.netlify.app/#p1" target="_blank" rel="noopener">Netlify</a><a href="https://github.com/varunkumar1989/Case-studies/blob/claude/serene-dijkstra-0rpgsz/OYO/OYO_UX_Evaluation_v3_10_Pages.pdf" target="_blank" rel="noopener">PDF 10 pages</a><a href="https://github.com/varunkumar1989/Case-studies/blob/claude/serene-dijkstra-0rpgsz/OYO/OYO_UX_Evaluation_v3_Detailed_Report.pdf" target="_blank" rel="noopener">Report 23 pages</a></div></div>
+      <div class="fc"><div class="t">Food delivery · customer flow</div><h3>Zomato</h3><p>Login to tracking prototype with a full bill, plus a 19-page and a 10-page deck.</p><div class="l"><a class="p" href="https://claude.ai/artifact/GQAmKHgKsu1PChwp24CcMY" target="_blank" rel="noopener">Artifact</a><a href="https://github.com/varunkumar1989/Case-studies/blob/claude/serene-dijkstra-0rpgsz/Zomato/Zomato_UX_Deck_10_Pages.pdf" target="_blank" rel="noopener">PDF 10 pages</a><a href="https://github.com/varunkumar1989/Case-studies/blob/claude/serene-dijkstra-0rpgsz/Zomato/Zomato_UX_Deck_19_Pages.pdf" target="_blank" rel="noopener">PDF 19 pages</a></div></div>
+      <div class="fc"><div class="t">E-commerce · first-time buyer</div><h3>Noon UAE</h3><p>Expert walkthrough from sign-up to a blocked checkout, with 7 findings and 6 redesign directions.</p><div class="l"><a class="p" href="https://claude.ai/artifact/WnJNSE1AYzAQHhnBinYGzt" target="_blank" rel="noopener">Artifact</a><a href="https://github.com/varunkumar1989/Case-studies/blob/claude/serene-dijkstra-0rpgsz/Noon/Noon_UAE_UX_Heuristic_Evaluation.pdf" target="_blank" rel="noopener">PDF 16 pages</a></div></div>
+      <div class="fc"><div class="t">Travel booking · multi-option flow</div><h3>Klook</h3><p>Speedboat excursion booking: choice paralysis, tiny touch targets and dead-end errors.</p><div class="l"><a class="p" href="https://claude.ai/artifact/NgvkYSWfS4hdnmYe1kjYhf" target="_blank" rel="noopener">Artifact</a><a href="https://github.com/varunkumar1989/Case-studies/blob/claude/serene-dijkstra-0rpgsz/Klook/Klook_UX_Evaluation_Redesign.pdf" target="_blank" rel="noopener">PDF 8 slides</a></div></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Methods and tools</h2><p class="sub">Drawn from the case studies below</p>
+    <div class="tags"><span>Nielsen's 10 heuristics</span><span>Jakob's, Hick's, Fitts's, Miller's laws</span><span>Peak–End Rule</span><span>Heuristic evaluation</span><span>Journey mapping</span><span>Personas</span><span>Clickable prototypes</span><span>Usability test plans</span><span>Success metrics</span><span>Priority ranking P1 to P3</span></div>
+  </section>
 
   <section>
     <h2>OYO</h2><p class="sub">Guest and owner journeys, UX evaluation, prototype</p>
@@ -106,5 +132,5 @@ summary{cursor:pointer;font:700 14px var(--body);color:var(--mu);padding:10px 2p
     </div>
   </section>
 
-  <p class="foot">Independent educational case studies. Not affiliated with OYO, Zomato, Slack, Snapdeal or any other company named. Sample data only.</p>
+  <p class="foot">Independent educational case studies. Not affiliated with OYO, Zomato, Noon, Klook, Slack, Snapdeal or any other company named. Prototypes use sample data only.</p>
 </main>
