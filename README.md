@@ -13,6 +13,9 @@ Drag the [`resume-site`](./resume-site) folder onto Netlify (Deploys, then "drag
 | `case-studies/zomato/` | Zomato Customer & Partner prototype, 10-slide deck, 19-page report |
 | `case-studies/noon/` | Noon UAE heuristic evaluation (page and 16-page PDF) |
 | `case-studies/klook/` | Klook UX evaluation (page and 8-slide PDF) |
+| `case-studies/nykaa/` | Nykaa UX teardown (page, 11-page report, 7-page deck) |
+| `case-studies/skillos/` | SkillOS B2B SaaS strategy (page, 5-page PDF, 15-page deck) |
+| `case-studies/uber/` | Uber Find My Ride (page, 5-page PDF) |
 
 ## Edit the resume
 
@@ -28,6 +31,9 @@ Dragging a folder replaces the whole Netlify site, so deploy the complete `resum
 | Zomato Customer & Partner Prototype | [zomato-varun.netlify.app](https://zomato-varun.netlify.app/) | [Open](https://claude.ai/artifact/NL8yiaHhdPBHo8Gx5SPfBL) |
 | Noon UAE Heuristic Evaluation | `/case-studies/noon/` | [Open](https://claude.ai/artifact/WnJNSE1AYzAQHhnBinYGzt) |
 | Klook UX Evaluation | `/case-studies/klook/` | [Open](https://claude.ai/artifact/NgvkYSWfS4hdnmYe1kjYhf) |
+| Nykaa UX Teardown | `/case-studies/nykaa/` | [Open](https://claude.ai/artifact/A7z8NgDnJfHCj6vKSRjcvB) |
+| SkillOS Product Strategy | `/case-studies/skillos/` | [Open](https://claude.ai/artifact/SctuM4AvyfXhhDxD2apubX) |
+| Uber Find My Ride | `/case-studies/uber/` | [Open](https://claude.ai/artifact/P3Z2SHTh8hFqwXZc7NhwgF) |
 | Portfolio | | [Open](https://claude.ai/artifact/LSjCZrSgrP9G5gLKr24vPw) |
 | Resume page | | [Open](https://claude.ai/artifact/5KQ9ZnahDY4vX5mSAvBNho) |
 
