@@ -1,0 +1,48 @@
+<title>Uber Find My Ride Case Study</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&family=Figtree:wght@400;600;700&display=swap">
+<style>
+/* Layout: one reading column; masthead, method line, a ruled findings list where each finding pairs the issue with its heuristic and fix, then redesign priorities. */
+:root{--bg:#f8f6f4;--card:#fff;--ink:#1c1a22;--mu:#5d5a68;--line:#e4e0e6;--accent:#1f1f1f;--accent-ink:#1f1f1f;--on-accent:#fff;--soft:#f1eef2;
+--display:"Bricolage Grotesque",Figtree,system-ui,sans-serif;--body:Figtree,system-ui,-apple-system,"Segoe UI",sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#131116;--card:#1d1a22;--ink:#f3f1f5;--mu:#aca9b6;--line:#34303d;--soft:#25212c;--accent:#e6e6e6;--accent-ink:#e6e6e6;--on-accent:#140d10;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#131116;--card:#1d1a22;--ink:#f3f1f5;--mu:#aca9b6;--line:#34303d;--soft:#25212c;--accent:#e6e6e6;--accent-ink:#e6e6e6;--on-accent:#140d10;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 var(--body);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:40px 64px}
+.col{max-width:820px;margin:0 auto;display:flex;flex-direction:column;gap:36px}
+.eyebrow{font:700 12px var(--body);letter-spacing:.16em;text-transform:uppercase;color:var(--accent-ink)}
+h1{font:800 clamp(34px,7vw,56px)/1.02 var(--display);letter-spacing:-.03em;margin:8px 0 12px;text-wrap:balance}
+.lead{color:var(--mu);max-width:60ch;margin:0 0 18px}
+.meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.meta div{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.meta b{display:block;font:700 11px var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--mu);margin-bottom:2px}
+.acts{display:flex;gap:10px;flex-wrap:wrap}
+a.b{display:inline-block;text-decoration:none;font:700 14.5px var(--body);padding:11px 18px;border-radius:10px;border:1px solid var(--line);color:var(--ink);background:var(--card)}
+a.b.p{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+a.b:hover{border-color:var(--accent)}
+a:focus-visible{outline:2.5px solid var(--accent);outline-offset:2px;border-radius:6px}
+h2{font:800 24px var(--display);letter-spacing:-.015em;margin:0 0 12px}
+.f{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:12px;display:flex;flex-direction:column;gap:8px}
+.f h3{font:800 18px var(--display);margin:0;display:flex;gap:10px;align-items:baseline}
+.f h3 i{font:800 13px var(--body);font-style:normal;color:var(--accent-ink)}
+.f p{margin:0;color:var(--mu)}
+.f dl{margin:0;display:grid;grid-template-columns:110px minmax(0,1fr);gap:6px 12px;font-size:15px}
+.f dt{font:700 11px/1.9 var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--mu)}
+.f dd{margin:0}
+.law{display:inline-block;font:700 12px var(--body);border:1.5px solid var(--accent);color:var(--accent-ink);border-radius:6px;padding:2px 8px}
+.recs{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+.recs div{background:var(--soft);border-radius:12px;padding:14px}
+.recs b{display:block;font:800 16px var(--display);margin-bottom:4px}
+.recs span{color:var(--mu);font-size:14.5px}
+.foot{color:var(--mu);font-size:13px;border-top:1px solid var(--line);padding-top:16px}
+@media (max-width:520px){.f dl{grid-template-columns:1fr}.f dt{line-height:1.4}}
+</style>
+<main class="col">
+<header><div class="eyebrow">Product discovery case study · ride-hailing</div><h1>Uber: solving the last-100-metre pickup problem</h1><p class="lead">Where the app drops a pin and where the driver stands often differ in malls, airports, tech parks and gated communities. This study follows Assumptions, Hypotheses, Evidence, Validated insights.</p>
+<div class="acts"><a class="b p" href="Uber_Find_My_Ride_Case_Study_5_Page.pdf">Case study (5 pages)</a><a class="b" href="https://github.com/varunkumar1989/Case-studies/tree/claude/serene-dijkstra-0rpgsz/Uber" target="_blank" rel="noopener">GitHub folder</a></div></header>
+<section class="meta"><div><b>Product</b>Uber India, pickup experience</div><div><b>Research</b>25-response survey and 10 rider interviews in Bengaluru</div><div><b>Framework</b>Assumptions, hypotheses, evidence, validated insights</div><div><b>Output</b>5-page case study</div></section>
+<section><h2>What the research found</h2><article class="f"><h3><i>#1</i>Riders are often unsure where to wait</h3><p>About 75% of surveyed riders wander searching for their ride at least sometimes, and about 50% report unexpectedly long waits.</p><dl><dt>Evidence</dt><dd><span class="law">Survey, n=25, Bengaluru</span></dd><dt>Implication</dt><dd>Pickup confusion is routine, not a rare edge case.</dd></dl></article><article class="f"><h3><i>#2</i>A passive pin does not recover a lost pickup</h3><p>All surveyed riders phone the driver once the driver cannot find them. Long wait is the top stated cancellation reason.</p><dl><dt>Evidence</dt><dd><span class="law">Survey, n=25; interview coding</span></dd><dt>Implication</dt><dd>A shared meet-here signal is needed alongside better positioning.</dd></dl></article><article class="f"><h3><i>#3</i>Multi-exit buildings fail repeatedly</h3><p>Towers and malls with two or more gates default the pin to the wrong one. Malls account for 44% of confusion locations, office parks 32% and airports 16%.</p><dl><dt>Evidence</dt><dd><span class="law">Survey and interviews</span></dd><dt>Implication</dt><dd>Exit-specific pickup guidance for dense venues.</dd></dl></article><article class="f"><h3><i>#4</i>It is not only a GPS problem</h3><p>The hypothesis that pin accuracy alone would fix most complaints was only partially confirmed: positioning is the technical root, and human coordination is a second gap.</p><dl><dt>Evidence</dt><dd><span class="law">Interview coding and competitor teardown</span></dd><dt>Implication</dt><dd>Fix positioning and coordination together.</dd></dl></article><article class="f"><h3><i>#5</i>Nobody has fixed the everyday, un-zoned pickup</h3><p>Airport zones and PIN dispatch cover the airport case. Competitors in India and abroad have not shipped a general-purpose fix for malls, tech parks, hospitals and gates.</p><dl><dt>Evidence</dt><dd><span class="law">Competitor teardown of ten companies</span></dd><dt>Implication</dt><dd>The opportunity sits in everyday pickups outside designated zones.</dd></dl></article></section>
+<section><h2>Impact and context</h2><div class="recs"><div><b>Modeled impact</b><span>About 1 in 6 rides in the affected segment cancelled over pickup confusion, and about 86 million dollars a year in modeled recoverable value. These are research-team estimates, not Uber data.</span></div><div><b>Who it affects</b><span>Tech-park commuters, mall visitors, airport travellers and first-time riders.</span></div><div><b>Market context</b><span>Rapido&#x27;s monthly users overtook Uber and Ola in early 2026, and 2025 aggregator rules put a cost on cancellations.</span></div><div><b>Compliance</b><span>Live location is personal data under India&#x27;s DPDP Act, so any feature must be consent-clean.</span></div></div></section>
+<p class="foot">Independent educational case study by Varun Kumar. Not affiliated with Uber. Figures marked modeled are research-team estimates, not Uber-disclosed data.</p>
+</main>

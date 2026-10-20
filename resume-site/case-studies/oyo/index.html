@@ -1,0 +1,1262 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>OYO Two Journeys</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="OYO UX evaluation and redesign by Varun Kumar: a clickable prototype for guests and owners, with the 10-page deck and detailed report.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700;800;900&display=swap">
+<style>/* Phone frame and concept-screen components. Everything is in em so a frame scales by font-size. */
+.ph{--r:#e8292b;--ink:#17171c;--mu:#6b6b76;--ln:#e6e6ea;--soft:#f4f4f6;--ok:#1e8e5a;--okbg:#e6f4ec;--err:#c62828;--errbg:#fdecea;--warn:#8a5a00;--warnbg:#fff4dc;
+  font-size:13px;width:23em;border-radius:2.6em;background:#0d0d10;padding:.55em;box-shadow:0 1.2em 2.6em rgba(0,0,0,.22);flex:none}
+.ph .s{position:relative;border-radius:2.1em;overflow:hidden;background:#fff;aspect-ratio:9/19.5;color:var(--ink);font-family:Inter,system-ui,sans-serif}
+.ph .s>img{display:block;width:100%;height:100%;object-fit:cover;object-position:top}
+.ph.mini{font-size:6.6px}
+.c{position:absolute;inset:0;display:flex;flex-direction:column;font-size:1em;line-height:1.35}
+.c .sb{display:flex;justify-content:space-between;padding:.9em 1.6em .3em;font-weight:600;font-size:.85em}
+.c .hd{display:flex;align-items:center;gap:.7em;padding:.5em 1.2em .7em;border-bottom:1px solid var(--ln)}
+.c .hd b{font-size:1.15em;font-weight:800}
+.c .lg{color:var(--r);font-weight:900;font-size:1.3em;letter-spacing:-.02em}
+.c .bd{flex:1;overflow:auto;padding:1em 1.2em;display:flex;flex-direction:column;gap:.75em}
+.c .cf{padding:.8em 1.2em 1.3em;display:flex;gap:.6em}
+.c h3{font-size:1.35em;font-weight:800;letter-spacing:-.01em;line-height:1.2;margin:0}
+.c p{margin:0;color:var(--mu);font-size:.92em}
+.c .btn{flex:1;border:0;border-radius:.7em;padding:.95em;font:700 1em Inter,sans-serif;background:var(--ink);color:#fff;cursor:pointer;text-align:center}
+.c .btn.r{background:var(--r)}.c .btn.g{background:#fff;color:var(--ink);border:1px solid var(--ln)}
+.c .bd>.btn{flex:none}
+.c .btn[disabled]{background:#c9c9cf;color:#fff;cursor:not-allowed}
+.c .card{background:var(--soft);border-radius:.8em;padding:.8em;display:flex;flex-direction:column;gap:.5em}
+.c .chk{display:flex;gap:.6em;align-items:flex-start;font-size:.95em}
+.c .chk i{flex:none;width:1.3em;height:1.3em;border-radius:50%;background:var(--ok);color:#fff;font-style:normal;font-size:.75em;display:flex;align-items:center;justify-content:center;margin-top:.15em}
+.c .fld{display:flex;flex-direction:column;gap:.25em}
+.c .fld label{font-size:.78em;font-weight:700;color:var(--mu)}
+.c .fld label em{color:var(--r);font-style:normal}
+.c .in{border:1.5px solid var(--ln);border-radius:.6em;padding:.65em .7em;font-size:.95em;background:#fff}
+.c .in.bad{border-color:var(--err);background:var(--errbg)}.c .in.good{border-color:var(--ok)}
+.c .msg{font-size:.78em;font-weight:600}.c .msg.e{color:var(--err)}.c .msg.o{color:var(--ok)}
+.c .note{border-radius:.7em;padding:.65em .8em;font-size:.85em;font-weight:600}
+.c .note.w{background:var(--warnbg);color:var(--warn)}.c .note.o{background:var(--okbg);color:var(--ok)}.c .note.e{background:var(--errbg);color:var(--err)}
+.c .stp{display:flex;align-items:center;justify-content:space-between;gap:.5em}
+.c .stp .ctl{display:flex;align-items:center;gap:.4em}
+.c .stp button{width:2.6em;height:2.6em;border-radius:.6em;border:1.5px solid var(--ln);background:#fff;font:700 1.2em Inter,sans-serif;cursor:pointer;color:var(--ink)}
+.c .stp output{min-width:2.6em;text-align:center;font-weight:800;font-size:1.15em}
+.c .otp{display:flex;gap:.6em;justify-content:center}.c .otp span{width:2.6em;height:3em;border:1.5px solid var(--ok);border-radius:.6em;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.2em;background:var(--okbg)}
+.c .thumbs{display:grid;grid-template-columns:repeat(3,1fr);gap:.4em}.c .thumbs span{aspect-ratio:4/3;border-radius:.4em;background:linear-gradient(135deg,#c9b8a3,#8e7a63)}
+.c .thumbs span.dup{outline:2px solid var(--err);outline-offset:-2px}.c .thumbs span.b{background:linear-gradient(135deg,#a9c0cf,#5e7a8e)}.c .thumbs span.c2{background:linear-gradient(135deg,#d6c48f,#a08343)}
+.c .tl{display:flex;flex-direction:column;gap:.6em}.c .tl div{display:flex;gap:.6em;align-items:center;font-size:.92em}
+.c .tl i{flex:none;width:1.4em;height:1.4em;border-radius:50%;border:2px solid var(--ln);font-style:normal}.c .tl i.d{background:var(--ok);border-color:var(--ok)}.c .tl i.n{border-color:var(--r)}
+.c .row{display:flex;justify-content:space-between;gap:.6em;font-size:.92em}
+.c .tag{display:inline-block;font-size:.72em;font-weight:800;letter-spacing:.04em;padding:.25em .55em;border-radius:.4em}
+.c .tag.o{background:var(--okbg);color:var(--ok)}.c .tag.w{background:var(--warnbg);color:var(--warn)}.c .tag.r{background:var(--r);color:#fff}
+.c .tabs2{display:flex;gap:1.2em;font-size:.88em;font-weight:700;color:var(--mu);border-bottom:1px solid var(--ln);padding-bottom:.4em}.c .tabs2 b{color:var(--ink);border-bottom:2px solid var(--r);padding-bottom:.3em}
+.c .img{border-radius:.7em;background:linear-gradient(135deg,#7d4b3a,#d39a6a);min-height:7em}
+.c .img.b{background:linear-gradient(135deg,#3f5f7a,#8fb3c9)}.c .img.c3{background:linear-gradient(135deg,#5b6b3a,#b9c48a)}
+.c .pill{display:inline-flex;gap:.3em;align-items:center;border:1px solid var(--ln);border-radius:2em;padding:.35em .75em;font-size:.82em;font-weight:600;background:#fff}
+.c .opt{border:1.5px solid var(--ln);border-radius:.7em;padding:.7em;display:flex;justify-content:space-between;align-items:center;gap:.6em;cursor:pointer;background:#fff;font:inherit;color:inherit;text-align:left;width:100%}
+.c .opt.on{border-color:var(--r);background:#fff5f5}
+.c .nav{display:flex;border-top:1px solid var(--ln);padding:.55em 0 1em}.c .nav span{flex:1;text-align:center;font-size:.75em;font-weight:700;color:var(--mu)}.c .nav span.on{color:var(--r)}
+</style>
+<style>
+/* Layout: an app shell. Desktop = sticky sidebar with the 10 pages grouped Understand / Diagnose / Solve / Prove;
+   phone = top bar + stage sub-tabs + bottom tab bar. Every page: question it answers, content, pager. */
+:root{
+  --bg:#f7f5f1;--surface:#ffffff;--surface-2:#efebe4;--ink:#16151b;--mu:#5d5b66;--line:#e2ddd4;
+  --brand:#e8292b;--brand-ink:#c4191c;--on-brand:#ffffff;--guest:#2457d6;--guest-bg:#e8eefc;--owner:#7c3aed;--owner-bg:#f0e9fe;
+  --ok:#157a4b;--ok-bg:#e2f3e9;--s4:#7a1513;--s3:#e8292b;--s2:#c06505;--s1:#7b808a;
+  --obs:#1d4e89;--obs-bg:#e3eefb;--res:#7a5200;--res-bg:#fff0d6;--hyp:#5b2aa0;--hyp-bg:#efe6fb;
+  --stage:#ebe6dd;--shadow:0 1px 2px rgba(22,21,27,.06),0 8px 24px rgba(22,21,27,.06);
+  --display:"Bricolage Grotesque",Figtree,system-ui,sans-serif;--body:Figtree,system-ui,-apple-system,"Segoe UI",sans-serif;--serif:"Instrument Serif",Georgia,"Times New Roman",serif;
+  --side:280px;--topbar:56px;--botbar:64px}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121116;--surface:#1b1a21;--surface-2:#24232b;--ink:#f2f0ee;--mu:#a9a6b2;--line:#2f2d36;
+  --brand:#ff4b4d;--brand-ink:#ff7a7c;--guest:#7fa3ff;--guest-bg:#1b2645;--owner:#b892ff;--owner-bg:#2a1d45;--ok:#5fd09b;--ok-bg:#163829;--s1:#8c919c;
+  --obs:#9cc4f2;--obs-bg:#17304f;--res:#f2c46d;--res-bg:#3a2d10;--hyp:#c9a8f5;--hyp-bg:#2c1d45;--stage:#1f1e25;--shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.3);color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#121116;--surface:#1b1a21;--surface-2:#24232b;--ink:#f2f0ee;--mu:#a9a6b2;--line:#2f2d36;
+  --brand:#ff4b4d;--brand-ink:#ff7a7c;--guest:#7fa3ff;--guest-bg:#1b2645;--owner:#b892ff;--owner-bg:#2a1d45;--ok:#5fd09b;--ok-bg:#163829;--s1:#8c919c;
+  --obs:#9cc4f2;--obs-bg:#17304f;--res:#f2c46d;--res-bg:#3a2d10;--hyp:#c9a8f5;--hyp-bg:#2c1d45;--stage:#1f1e25;--shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.3);color-scheme:dark}
+*{box-sizing:border-box}[hidden]{display:none!important}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.55 var(--body);-webkit-font-smoothing:antialiased}
+a{color:var(--brand-ink)}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2.5px solid var(--brand);outline-offset:2px;border-radius:6px}
+h1,h2,h3,h4{font-family:var(--display);letter-spacing:-.022em;line-height:1.08;text-wrap:balance;margin:0}
+h1 em,h2 em{font-family:var(--serif);font-weight:400;font-style:italic;color:var(--brand-ink);letter-spacing:-.005em;font-size:1.1em}
+p{margin:0}
+.skip{position:absolute;left:-999px;top:8px;z-index:50;background:var(--ink);color:var(--bg);padding:8px 12px;border-radius:8px}.skip:focus{left:12px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* ---------- shell ---------- */
+.app{display:grid;grid-template-columns:var(--side) minmax(0,1fr);min-height:100%}
+.side{position:sticky;top:0;height:100vh;overflow:auto;border-right:1px solid var(--line);background:var(--surface);display:flex;flex-direction:column;gap:14px;padding:20px 16px 18px max(16px,env(safe-area-inset-left,0px))}
+.brand{display:flex;align-items:baseline;gap:8px;text-decoration:none;color:var(--ink)}
+.brand b{font:800 24px var(--display);color:var(--brand);letter-spacing:-.05em}
+.brand span{font:600 11px var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--mu)}
+.by{font-size:13px;color:var(--mu);margin-top:-8px}
+.search{position:relative}
+.search input{width:100%;border:1px solid var(--line);background:var(--bg);border-radius:10px;padding:10px 12px 10px 34px;font:500 14px var(--body);color:var(--ink)}
+.search svg{position:absolute;left:11px;top:50%;transform:translateY(-50%);width:15px;height:15px;stroke:var(--mu);fill:none;stroke-width:2}
+.search kbd{position:absolute;right:9px;top:50%;transform:translateY(-50%);font:600 11px var(--body);color:var(--mu);border:1px solid var(--line);border-radius:5px;padding:1px 5px;background:var(--surface)}
+.results{display:flex;flex-direction:column;gap:2px}
+.results button{display:flex;gap:10px;align-items:center;text-align:left;border:0;background:none;padding:8px;border-radius:8px;cursor:pointer;width:100%}
+.results button:hover,.results button:focus-visible{background:var(--surface-2)}
+.results small{display:block;color:var(--mu);font-size:12px}
+.results .none{font-size:14px;color:var(--mu);padding:8px}
+.grp{display:flex;flex-direction:column;gap:2px}
+.grp>span{font:700 10.5px var(--body);letter-spacing:.16em;text-transform:uppercase;color:var(--mu);padding:8px 10px 4px}
+.nav-a{display:grid;grid-template-columns:26px 1fr;gap:10px;align-items:center;border:0;background:none;text-align:left;padding:8px 10px;border-radius:10px;cursor:pointer;width:100%;color:var(--ink)}
+.nav-a i{font:800 12px/26px var(--body);font-style:normal;width:26px;height:26px;border-radius:50%;background:var(--surface-2);text-align:center}
+.nav-a b{font:600 14.5px/1.2 var(--body);display:block}
+.nav-a small{display:block;font-size:12px;color:var(--mu);line-height:1.3;margin-top:2px}
+.nav-a:hover{background:var(--surface-2)}
+.nav-a[aria-current="page"]{background:var(--ink);color:var(--bg)}.nav-a[aria-current="page"] i{background:var(--brand);color:var(--on-brand)}.nav-a[aria-current="page"] small{color:inherit;opacity:.75}
+.docs{display:flex;flex-direction:column;gap:6px;margin-top:auto;border-top:1px solid var(--line);padding-top:14px}
+.doc{display:flex;gap:10px;align-items:center;text-decoration:none;color:var(--ink);padding:8px 10px;border-radius:10px;border:1px solid var(--line);background:var(--bg)}
+.doc:hover{border-color:var(--brand)}
+.doc .ic{flex:none;width:30px;height:36px;border-radius:5px;background:var(--brand);color:var(--on-brand);font:800 9px/36px var(--body);text-align:center;letter-spacing:.04em}
+.doc .ic.live{background:var(--ink);color:var(--bg)}
+.doc b{font:700 13.5px/1.2 var(--body);display:block}.doc small{font-size:12px;color:var(--mu)}
+.prog{height:4px;background:var(--surface-2);border-radius:2px;overflow:hidden}.prog i{display:block;height:100%;background:var(--brand);transition:width .3s}
+
+.main{min-width:0;padding:0 max(16px,env(safe-area-inset-right,0px)) 80px max(16px,env(safe-area-inset-left,0px))}
+.wrap{max-width:1100px;margin:0 auto;padding-top:28px}
+.topbar,.subtabs,.botbar{display:none}
+
+/* ---------- page furniture ---------- */
+.phead{display:flex;flex-direction:column;gap:10px;padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.eyebrow{display:flex;gap:12px;flex-wrap:wrap;align-items:center;font:700 11.5px var(--body);letter-spacing:.16em;text-transform:uppercase;color:var(--brand-ink)}
+.eyebrow span+span{color:var(--mu)}
+.phead h2{font-size:clamp(28px,4vw,44px);font-weight:800}
+.ask{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.ask b{font:700 10.5px var(--body);letter-spacing:.14em;text-transform:uppercase;background:var(--surface-2);border-radius:5px;padding:4px 7px;white-space:nowrap}
+.ask span{font:italic 400 clamp(19px,2.3vw,23px)/1.2 var(--serif);color:var(--ink)}
+.deep{font-size:14px;color:var(--mu)}.deep a{font-weight:700}
+.sec{display:flex;flex-direction:column;gap:18px;margin-bottom:36px}
+.sec>h3{font-size:22px;font-weight:800}
+.lead{font-size:17.5px;max-width:68ch;color:var(--ink)}
+.muted{color:var(--mu)}
+.g2,.g3,.g4{display:grid;gap:14px}.g2{grid-template-columns:repeat(2,minmax(0,1fr))}.g3{grid-template-columns:repeat(3,minmax(0,1fr))}.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px;display:flex;flex-direction:column;gap:9px;min-width:0}
+.card h4{font-size:18px;font-weight:800}
+.card.soft{background:var(--surface-2);border-color:transparent}
+.card.ink{background:var(--ink);color:var(--bg);border-color:var(--ink)}.card.ink .lbl{color:var(--brand)}
+.card.good{background:var(--ok-bg);border-color:transparent}
+.lbl{font:700 11px var(--body);letter-spacing:.14em;text-transform:uppercase;color:var(--mu)}
+ul.t{margin:0;padding-left:19px;display:flex;flex-direction:column;gap:4px}
+.pager{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:center;border-top:1px solid var(--line);padding-top:20px;margin-top:10px}
+.pager button{border:1px solid var(--line);background:var(--surface);border-radius:14px;padding:12px 16px;cursor:pointer;text-align:left;min-width:0}
+.pager button small{display:block;font:700 11px var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--mu)}
+.pager button b{font:800 16.5px var(--display)}
+.pager .nx{background:var(--brand);border-color:var(--brand);color:var(--on-brand);text-align:right;justify-self:end}.pager .nx small{color:inherit;opacity:.85}
+.pager .pv{justify-self:start}
+.pager .mid{font-size:14px;color:var(--mu);text-align:center}
+.pager button[disabled]{visibility:hidden}
+
+/* chips */
+.id{display:inline-flex;align-items:center;justify-content:center;min-width:30px;height:22px;padding:0 6px;border-radius:6px;font:800 12px var(--body);color:#fff;flex:none;border:0}
+.id.T{background:var(--guest)}.id.O{background:var(--owner)}
+:root[data-theme="dark"] .id{color:#121116}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .id{color:#121116}}
+button.id{cursor:pointer}
+.sev{display:inline-block;font:700 11.5px/1 var(--body);color:#fff;border-radius:5px;padding:4px 7px;white-space:nowrap}
+.sev4{background:var(--s4)}.sev3{background:var(--s3)}.sev2{background:var(--s2)}.sev1{background:var(--s1)}
+.ev{display:inline-block;font:700 10.5px/1 var(--body);letter-spacing:.06em;text-transform:uppercase;border-radius:4px;padding:4px 6px}
+.e-Observed{background:var(--obs-bg);color:var(--obs)}.e-Research{background:var(--res-bg);color:var(--res)}.e-Hypothesis{background:var(--hyp-bg);color:var(--hyp)}.e-Concept{background:var(--surface-2);color:var(--brand-ink)}
+.law{display:inline-block;font:700 11.5px/1 var(--body);border:1.5px solid currentColor;border-radius:5px;padding:3px 6px;white-space:nowrap}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.btn{border:1px solid var(--line);background:var(--surface);color:var(--ink);font:700 14px var(--body);padding:10px 16px;border-radius:10px;cursor:pointer;text-decoration:none;display:inline-flex;gap:8px;align-items:center}
+.btn.p{background:var(--brand);border-color:var(--brand);color:var(--on-brand)}
+.btn.k{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.btn:disabled{opacity:.4;cursor:default}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--surface)}
+.seg button{border:0;background:none;color:var(--mu);font:700 14px var(--body);padding:10px 16px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.filters{display:flex;gap:8px;flex-wrap:wrap}
+.filters button{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:7px 13px;font:600 13.5px var(--body);cursor:pointer;color:var(--ink)}
+.filters button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+
+/* p1 hero */
+.hero{background:var(--brand);color:var(--on-brand);border-radius:24px;padding:clamp(22px,4vw,44px);display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.9fr);gap:30px;align-items:center;overflow:hidden}
+.hero h1{font-size:clamp(34px,5.4vw,62px);font-weight:800;letter-spacing:-.04em;line-height:.98}
+.hero h1 em{color:inherit;text-decoration:underline;text-decoration-thickness:3px;text-underline-offset:7px;text-decoration-color:rgba(255,255,255,.55)}
+.hero .eyebrow{color:#ffe1e1}.hero .eyebrow span+span{color:#ffd0d0}
+.hero p{font-size:17px;max-width:56ch;opacity:.96}
+.hero .stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.hero .stats div{border-top:1.5px solid rgba(255,255,255,.5);padding-top:6px}
+.hero .stats b{display:block;font:800 32px/1 var(--display);font-variant-numeric:tabular-nums}.hero .stats span{font-size:13px;opacity:.92;line-height:1.25;display:block}
+.hero .cta{display:flex;gap:10px;flex-wrap:wrap}
+.hero .cta .btn{background:#fff;color:#c4191c;border-color:#fff}.hero .cta .btn.ghost{background:transparent;color:#fff;border-color:rgba(255,255,255,.55)}
+.duo{display:flex;gap:14px;justify-content:center;align-items:flex-start}
+.duo .ph{font-size:8.6px;box-shadow:0 18px 40px rgba(60,0,0,.35)}.duo figure{margin:0;display:flex;flex-direction:column;gap:8px;align-items:center}
+.duo figure:last-child{margin-top:44px}
+.duo figcaption{font:700 12px var(--body);background:rgba(0,0,0,.22);border-radius:999px;padding:4px 10px;white-space:nowrap}
+.answer{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.answer .card b.n{font:800 13px var(--body);color:var(--brand-ink);letter-spacing:.12em}
+.tiles{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+.tiles button{border:1px solid var(--line);background:var(--surface);border-radius:14px;padding:14px;text-align:left;cursor:pointer;display:flex;flex-direction:column;gap:4px;min-width:0}
+.tiles button:hover{border-color:var(--brand)}
+.tiles small{font:700 10.5px var(--body);letter-spacing:.14em;text-transform:uppercase;color:var(--mu)}
+.tiles b{font:800 26px/1 var(--display);color:var(--brand-ink)}.tiles span{font-weight:700;line-height:1.2}.tiles em{font-style:normal;font-size:13px;color:var(--mu);line-height:1.3}
+.pdfs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.pdf{display:flex;gap:14px;align-items:flex-start;text-decoration:none;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px}
+.pdf:hover{border-color:var(--brand)}
+.pdf .ic{flex:none;width:42px;height:52px;border-radius:7px;background:var(--brand);color:#fff;font:800 11px/52px var(--body);text-align:center}
+.pdf .ic.live{background:var(--ink);color:var(--bg)}
+.pdf b{font:800 17px var(--display);display:block}.pdf span{font-size:14px;color:var(--mu)}
+
+/* persona */
+.per{border-top:5px solid var(--c)}
+.per .av{width:40px;height:40px;border-radius:50%;background:var(--c);color:#fff;display:flex;align-items:center;justify-content:center;font:800 13px var(--display);flex:none}
+dl.kv{display:grid;grid-template-columns:76px minmax(0,1fr);gap:6px 12px;margin:0;font-size:15px}
+dl.kv dt{font:700 10.5px/1.9 var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--mu)}dl.kv dd{margin:0}
+
+/* journey map */
+.lane{display:grid;grid-template-columns:150px minmax(0,1fr);gap:14px;align-items:stretch}
+.lane .nm{border-left:5px solid var(--c);padding-left:12px;display:flex;flex-direction:column;justify-content:center;gap:2px}
+.lane .nm b{font:800 17px/1.1 var(--display)}.lane .nm span{font-size:13px;color:var(--mu)}
+.steps{display:grid;gap:7px;overflow-x:auto;padding:12px 2px 6px}
+.st{position:relative;background:var(--surface);border:1px solid var(--line);border-top:4px solid var(--ok);border-radius:10px;padding:9px 9px 10px;display:flex;flex-direction:column;gap:6px;text-align:left;cursor:pointer;min-width:96px;color:var(--ink)}
+.st:hover{border-color:var(--brand)}
+.st.m2{border-top-color:var(--s2)}.st.m3{border-top-color:var(--s3)}.st.m4{border-top-color:var(--s4)}
+.st .n{font:800 10.5px var(--body);color:var(--mu);letter-spacing:.08em}.st b{font:700 14px/1.15 var(--body)}
+.st .iss{display:flex;flex-direction:column;gap:5px;margin-top:auto;font-size:12px}.st .iss span{display:flex;gap:5px;align-items:center;line-height:1.2}
+.st .iss .id{min-width:26px;height:19px;font-size:10.5px}
+.st .low{position:absolute;top:-11px;right:6px;background:var(--s4);color:#fff;font:800 9.5px var(--body);letter-spacing:.06em;text-transform:uppercase;border-radius:4px;padding:2px 6px}
+.legend{display:flex;gap:16px;flex-wrap:wrap;align-items:center;font-size:13.5px;color:var(--mu)}
+.legend i{display:inline-block;width:20px;height:4px;border-radius:2px;margin-right:6px;vertical-align:middle}
+
+/* stage */
+.stage{display:grid;grid-template-columns:auto minmax(0,1fr);gap:32px;align-items:start}
+.phonewrap{background:var(--stage);border-radius:22px;padding:26px 30px;display:flex;justify-content:center;position:sticky;top:20px}
+.ph .s.shot{aspect-ratio:600/1333}
+.hs{position:absolute;border:0;background:transparent;cursor:pointer;border-radius:10px;padding:0;z-index:3}
+.showhs .hs{outline:2px dashed #f0a020;outline-offset:-2px;background:rgba(240,160,32,.16)}
+.hs:hover{background:rgba(232,41,43,.18)}
+.toast{position:absolute;left:12px;right:12px;bottom:16px;background:#17171c;color:#fff;border-radius:12px;padding:12px 14px;font:600 13px var(--body);z-index:6;box-shadow:0 8px 24px rgba(0,0,0,.3)}
+.side2{display:flex;flex-direction:column;gap:14px;min-width:0}
+.side2 h3{font-size:30px;font-weight:800}
+.stepper{display:flex;gap:6px;overflow-x:auto;padding:2px 2px 8px}
+.stepper button{flex:0 0 auto;border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:8px 11px;cursor:pointer;text-align:left;font:700 13px/1.2 var(--body);color:var(--ink)}
+.stepper button small{display:block;font:800 10px var(--body);letter-spacing:.08em;color:var(--brand-ink)}
+.stepper button[aria-current="step"]{background:var(--brand);border-color:var(--brand);color:var(--on-brand)}.stepper button[aria-current="step"] small{color:inherit;opacity:.85}
+.note{display:flex;gap:12px;align-items:flex-start;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.note b{display:block;font-size:15px}.note small{color:var(--mu);font-size:13.5px;display:block}
+.chk{display:flex;gap:8px;align-items:center;font-size:14px;color:var(--mu);cursor:pointer}
+
+/* issue cards */
+.icard{display:grid;grid-template-columns:150px minmax(0,1fr);gap:22px;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:20px;scroll-margin-top:90px;transition:box-shadow .3s,border-color .3s}
+.icard.flash{border-color:var(--brand);box-shadow:0 0 0 4px color-mix(in srgb,var(--brand) 25%,transparent)}
+.icard .th .ph{font-size:6.2px}
+.icard .noev{width:150px;aspect-ratio:3/4;border-radius:14px;background:var(--surface-2);display:flex;flex-direction:column;gap:8px;align-items:center;justify-content:center;text-align:center;padding:14px;font-size:13px;color:var(--mu)}
+.icard h3{font-size:21px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.kv2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 26px;margin:12px 0 0}
+.kv2 dt{font:700 11px var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--mu);margin-top:10px}.kv2 dd{margin:0;font-size:15px}
+.kv2 dt.r{color:var(--brand-ink)}.kv2 dt.g{color:var(--ok)}
+.bm{border-left:3px solid var(--ok);padding-left:10px}
+
+/* laws */
+.lawc .sd{border-radius:10px;padding:10px 12px;font-size:14.5px}.lawc .tv{background:var(--guest-bg)}.lawc .ow{background:var(--owner-bg)}
+.lawc .rule{font:italic 400 19px/1.2 var(--serif);color:var(--mu)}
+.lawc .ph{font-size:5px}
+
+/* standouts */
+.stand{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.sc{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:8px;text-align:left;cursor:pointer;color:var(--ink);min-width:0}
+.sc:hover{border-color:var(--c)}
+.sc[aria-pressed="true"]{border-color:var(--c);box-shadow:0 0 0 3px color-mix(in srgb,var(--c) 22%,transparent)}
+.sc .hd{display:flex;gap:10px;align-items:center}
+.sc .ic{flex:none;width:30px;height:30px;border-radius:9px;background:var(--c);color:#fff;display:flex;align-items:center;justify-content:center;font:800 13px var(--display)}
+.sc h4{font-size:17px;font-weight:800}
+.sc .ln{font-weight:700;font-size:14.5px;line-height:1.3}
+.sc .why{font-size:14px;color:var(--mu)}
+.sc .ref{font-size:13px;background:var(--ok-bg);color:var(--ok);border-radius:9px;padding:8px 10px}.sc .ref b{display:block;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase}
+.score{display:grid;grid-template-columns:auto 1fr auto 1fr;gap:8px;align-items:center;font:700 12px var(--body);color:var(--mu);margin-top:auto;font-variant-numeric:tabular-nums}
+.score i{height:7px;border-radius:4px;background:var(--surface-2);position:relative;overflow:hidden;display:block}
+.score i::after{content:"";position:absolute;inset:0 auto 0 0;width:var(--w);background:var(--f);border-radius:4px}
+.detail{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:20px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px 28px}
+.detail h4{grid-column:1/-1;font-size:22px}
+.detail dl{margin:0;display:flex;flex-direction:column;gap:3px}.detail dt{font:700 11px var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--mu);margin-top:8px}.detail dd{margin:0;font-size:15px}
+.detail dt.r{color:var(--brand-ink)}.detail dt.g{color:var(--ok)}
+
+/* tables */
+.tw{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--surface)}
+table{width:100%;border-collapse:collapse;font-size:14.5px;min-width:640px}
+th{text-align:left;font:700 11px var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--mu);padding:12px 14px 10px;border-bottom:2px solid var(--ink)}
+td{padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:0}
+.ptag{display:inline-block;font:800 12.5px var(--display);color:#fff;border-radius:6px;padding:3px 8px}.P1{background:var(--s3)}.P2{background:var(--s2)}.P3{background:var(--s1)}
+.seq{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+.seq div{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:4px}
+.seq small{font:800 10.5px var(--body);letter-spacing:.14em;color:var(--brand-ink)}.seq b{font:800 17px var(--display)}.seq span{font-size:13.5px;color:var(--mu)}
+
+/* sheet (phone "All pages") */
+.sheet{position:fixed;inset:0;z-index:40;background:rgba(10,10,14,.45);display:flex;align-items:flex-end}
+.sheet .in{background:var(--surface);width:100%;max-height:86%;overflow:auto;border-radius:20px 20px 0 0;padding:16px max(16px,env(safe-area-inset-right,0px)) calc(20px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;gap:12px}
+.sheet .grab{width:40px;height:4px;border-radius:2px;background:var(--line);align-self:center}
+
+@media (max-width:1100px){.hero{grid-template-columns:1fr}.duo{display:none}.tiles{grid-template-columns:repeat(2,minmax(0,1fr))}.seq{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:960px){
+  .app{grid-template-columns:1fr}.side{display:none}
+  .topbar{display:flex;position:sticky;top:env(safe-area-inset-top,0px);z-index:20;height:var(--topbar);align-items:center;gap:12px;background:var(--surface);border-bottom:1px solid var(--line);margin:0 calc(-1*max(16px,env(safe-area-inset-right,0px))) 0 calc(-1*max(16px,env(safe-area-inset-left,0px)));padding:0 max(16px,env(safe-area-inset-right,0px)) 0 max(16px,env(safe-area-inset-left,0px))}
+  .topbar .brand b{font-size:22px}.topbar .t{flex:1;min-width:0;font:700 14px var(--body);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .topbar .t small{display:block;font:600 11px var(--body);color:var(--mu);letter-spacing:.1em;text-transform:uppercase}
+  .iconbtn{border:1px solid var(--line);background:var(--bg);border-radius:10px;width:40px;height:40px;display:flex;align-items:center;justify-content:center;cursor:pointer}
+  .iconbtn svg{width:18px;height:18px;stroke:var(--ink);fill:none;stroke-width:2}
+  .subtabs{display:flex;gap:6px;overflow-x:auto;position:sticky;top:calc(env(safe-area-inset-top,0px) + var(--topbar));z-index:19;background:var(--bg);margin:0 calc(-1*max(16px,env(safe-area-inset-right,0px))) 0 calc(-1*max(16px,env(safe-area-inset-left,0px)));padding:10px max(16px,env(safe-area-inset-right,0px)) 10px max(16px,env(safe-area-inset-left,0px));border-bottom:1px solid var(--line)}
+  .subtabs button{flex:0 0 auto;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:7px 12px;font:700 13px var(--body);cursor:pointer;color:var(--ink)}
+  .subtabs button[aria-current="page"]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+  .botbar{display:grid;grid-template-columns:repeat(5,1fr);position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--surface);border-top:1px solid var(--line);padding:6px max(8px,env(safe-area-inset-right,0px)) calc(6px + env(safe-area-inset-bottom,0px)) max(8px,env(safe-area-inset-left,0px))}
+  .botbar button{border:0;background:none;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 2px;border-radius:10px;cursor:pointer;color:var(--mu);font:700 11px var(--body)}
+  .botbar svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.9}
+  .botbar button[aria-current="true"]{color:var(--brand-ink)}
+  .main{padding-bottom:calc(var(--botbar) + 40px + env(safe-area-inset-bottom,0px))}
+  .wrap{padding-top:20px}
+  .stage{grid-template-columns:1fr;justify-items:center}.phonewrap{position:static;width:100%;padding:18px 10px}.side2{width:100%}
+  .g3,.g4,.answer,.pdfs{grid-template-columns:1fr}.g2{grid-template-columns:1fr}
+  .icard{grid-template-columns:1fr}.kv2{grid-template-columns:1fr}.detail{grid-template-columns:1fr}
+  .lane{grid-template-columns:1fr}.steps{grid-template-columns:repeat(auto-fill,minmax(110px,1fr))!important;overflow:visible}
+  .pager{grid-template-columns:1fr 1fr}.pager .mid{display:none}
+}
+@media (max-width:520px){.ph{font-size:11.5px}.hero .stats{grid-template-columns:repeat(2,minmax(0,1fr))}.tiles{grid-template-columns:1fr}.seq{grid-template-columns:1fr}.icard .noev{width:100%;aspect-ratio:auto;padding:18px}}
+@media (prefers-reduced-motion:no-preference){.page{animation:fin .28s ease}@keyframes fin{from{opacity:.4;transform:translateY(6px)}to{opacity:1;transform:none}}}
+</style>
+
+<a class="skip" href="#content">Skip to content</a>
+<div class="app">
+  <aside class="side" aria-label="Pages">
+    <a class="brand" href="#p1" data-pg="1"><b>OYO</b><span>Two journeys</span></a>
+    <p class="by">UX evaluation &amp; redesign by Varun Kumar</p>
+    <div class="search"><label class="sr" for="q">Find a page, issue or feature</label><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="q" type="search" placeholder="Find T5, KYC, refund…" autocomplete="off"><kbd>/</kbd></div>
+    <div class="results" id="res" hidden></div>
+    <nav id="sidenav" aria-label="Case study pages"></nav>
+    <div><div class="prog" aria-hidden="true"><i id="progbar"></i></div><p class="by" id="progtxt" style="margin:6px 0 0;font-size:12px"></p></div>
+    <div class="docs" id="sidedocs"></div>
+  </aside>
+  <div class="main">
+    <header class="topbar"><a class="brand" href="#p1" data-pg="1"><b>OYO</b></a><div class="t" id="toptitle"></div>
+      <button class="iconbtn" id="opensheet" aria-label="All pages and search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></button></header>
+    <nav class="subtabs" id="subtabs" aria-label="Pages in this stage"></nav>
+    <main class="wrap" id="content" tabindex="-1"></main>
+  </div>
+</div>
+<nav class="botbar" id="botbar" aria-label="Stages"></nav>
+<div class="sheet" id="sheet" hidden><div class="in" role="dialog" aria-modal="true" aria-label="All pages">
+  <span class="grab" aria-hidden="true"></span>
+  <div class="search"><label class="sr" for="q2">Find a page, issue or feature</label><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="q2" type="search" placeholder="Find T5, KYC, refund…" autocomplete="off"></div>
+  <div class="results" id="res2" hidden></div>
+  <nav id="sheetnav" aria-label="All pages"></nav>
+  <div class="docs" id="sheetdocs" style="margin-top:0"></div>
+  <button class="btn" id="closesheet">Close</button>
+</div></div>
+
+<script>// Single source of truth for the OYO deck, report and artifact.
+window.OYO = {
+  meta: {
+    title: "OYO · List Your Property",
+    sub: "UX Evaluation & Redesign: Improving Digital User Flows",
+    author: "Varun Kumar",
+    disclaimer: "Independent educational UX evaluation. Not affiliated with OYO. Screenshots from a manual walkthrough of the live app; personal data redacted."
+  },
+  persona: {
+    who: "Independent hotel or guest-house owner with 6–30 rooms, listing on OYO for the first time, mostly from a phone.",
+    goal: "Get the property listed correctly, once, and know when it goes live.",
+    stakes: "Shares identity documents, address, photos and time. A failed listing means a lost business partner for OYO."
+  },
+  steps: [
+    { n: 1, name: "Entry", sub: "Menu → Onboard as a partner", shots: ["s01_menu", "s02_partner"], issues: [] },
+    { n: 2, name: "Login & OTP", sub: "Phone number, code", shots: ["s03_login", "s04_otp"], issues: [1, 2] },
+    { n: 3, name: "Location", sub: "At your property?", shots: ["s05_address_search"], issues: [3] },
+    { n: 4, name: "Address", sub: "Manual address form", shots: ["s06_address_form"], issues: [4] },
+    { n: 5, name: "Property info", sub: "Floors, rooms, phone", shots: ["s07_property_info"], issues: [5, 6] },
+    { n: 6, name: "Facilities", sub: "Must-have list", shots: ["s08_facilities"], issues: [7] },
+    { n: 7, name: "Photos", sub: "6 landscape photos", shots: ["s09_photos"], issues: [8] },
+    { n: 8, name: "KYC", sub: "Aadhaar details", shots: ["s10_kyc"], issues: [9] },
+    { n: 9, name: "Review", sub: "Confirm details", shots: ["s11_review"], issues: [10] },
+    { n: 10, name: "Publish", sub: "Welcome Aboard → My Properties", shots: ["s12_welcome", "s13_listed", "s14_empty"], issues: [11] }
+  ],
+  issues: [
+    { n: 1, old: 5, step: 2, shot: "s04_otp", sev: 2, title: "Submit works before the OTP is entered",
+      heur: "#5 Error prevention", law: "Jakob's Law",
+      seen: "On “Confirm your number”, Submit stays active with all four boxes empty. Tapping it shows “ERR-INC-843-9: We are experiencing some issue. Please try later.” The flow also asks for a fresh phone login inside an app that is already signed in.",
+      why: "The button invites an error that should never be reachable, and the message is an internal code, not guidance.",
+      fix: ["Keep Submit disabled until all 4 digits are in", "Auto-read the SMS code; reuse the existing session", "Say “That code is incorrect or expired” in plain words"] },
+    { n: 2, old: 6, step: 2, shot: "s03_login", sev: 3, title: "“Rate Limit Exceeded” with no retry time",
+      heur: "#9 Help users recover from errors", law: "",
+      seen: "After a few attempts the login screen shows “Rate Limit Exceeded”. It does not say how long the block lasts or what to do meanwhile.",
+      why: "The owner is stopped with no way forward and no idea when to try again.",
+      fix: ["“Too many attempts. Try again in 15:00” with a countdown", "Offer Login with Apple or a support callback"] },
+    { n: 3, old: 7, step: 3, shot: "s05_address_search", sev: 2, title: "“Yes, I'm at my property” still means typing the address",
+      heur: "#2 Match with the real world", law: "Hick's Law",
+      seen: "The flow asks “Are you at your property's location right now?” Choosing Yes leads to the same manual address search as No.",
+      why: "The question promises auto-detection that never happens, and it adds a decision that changes nothing.",
+      fix: ["If Yes and location is allowed, pre-fill the address from GPS", "Otherwise remove the question"] },
+    { n: 4, old: 8, step: 4, shot: "s06_address_form", sev: 3, title: "Address form accepts junk; required fields are unmarked",
+      heur: "#5 Error prevention", law: "",
+      seen: "The form accepted a home title of “@” and a street of “67&£4” (alphabetic postal codes were also accepted in testing). No field is marked required, postal code says “Optional”, and Confirm Address stays active.",
+      why: "Meaningless data flows into a live listing, and owners cannot tell which fields matter.",
+      fix: ["Validate each field inline; numeric 6-digit PIN", "Mark required fields", "Enable Confirm only when the form is valid"] },
+    { n: 5, old: 9, step: 5, shot: "s07_property_info", sev: 2, title: "Floors value is cut off, uncapped and later changed",
+      heur: "#1 Visibility of system status", law: "Fitts's Law",
+      seen: "The floors stepper shows “10(”, clipped between small − and + buttons. It accepted 99,999 floors in testing, and the review later showed 100.",
+      why: "The owner cannot see the number they are setting, and the cramped controls make precise input hard.",
+      fix: ["Show the full value; cap floors at a realistic maximum", "44 × 44 pt stepper buttons, or a numeric field"] },
+    { n: 6, old: 10, step: 5, shot: "s07_property_info", sev: 3, title: "“Minimum 6 rooms” rule appears only after Continue",
+      heur: "#10 Help & documentation", law: "",
+      seen: "After entering 1–2 rooms and tapping Continue, a red banner says “OYO does not onboard properties less than 6 rooms.” The rule is stated nowhere earlier.",
+      why: "Ineligible owners invest effort (login, address, details) before learning they cannot list.",
+      fix: ["State eligibility on the first screen", "Show “Minimum 6 rooms” beside the rooms field"] },
+    { n: 7, old: 11, step: 6, shot: "s08_facilities", sev: 2, title: "Facilities are a fixed list; Next means agreeing to install them",
+      heur: "#7 Flexibility & efficiency of use", law: "",
+      seen: "Must-have facilities (Wi-Fi, Geyser, Power backup, Elevator, Kitchen, CCTV, Fire extinguisher) cannot be marked absent, and nothing can be added. A footnote says tapping Next means agreeing to install them.",
+      why: "Listings become inaccurate, and owners commit to installations they never offered.",
+      fix: ["Mark each facility Available / Not available", "Add “Other facility”", "Ask for consent explicitly, not via Next"] },
+    { n: 8, old: 12, step: 7, shot: "s09_photos", sev: 2, title: "Photo rules appear only after a rejected upload",
+      heur: "#10 Help & documentation", law: "",
+      seen: "Portrait photos are rejected only after upload. Guidance sits behind a small blue bulb icon. Six identical, irrelevant images were accepted and Continue stayed active.",
+      why: "Owners learn the rules by failing, and the listing can still go out with useless photos.",
+      fix: ["Show photo rules and examples before upload", "Flag duplicates and off-topic images"] },
+    { n: 9, old: 13, step: 8, shot: "s10_kyc", sev: 3, title: "KYC accepts a fake name, invalid number and non-ID images",
+      heur: "#5 Error prevention", law: "",
+      seen: "The step is labelled mandatory under government rules, yet it accepted the name “Doremon Mishra”, an Aadhaar number in an invalid format and two map screenshots as ID images.",
+      why: "A legally significant step performs no checks: a data-integrity and compliance risk.",
+      fix: ["Check Aadhaar format and checksum", "Verify the document image (OCR) and name match", "Continue only when KYC passes"] },
+    { n: 10, old: 14, step: 9, shot: "s11_review", sev: 3, title: "Review shows junk as valid; floors silently set to 100",
+      heur: "#1 Visibility of system status", law: "",
+      seen: "The review lists the address “@,,67&£4, Ahmedabad…”, title “@” and 100 floors, a value the owner never chose, all ready to Confirm.",
+      why: "The screen meant to show the truth presents broken data as a valid listing.",
+      fix: ["Validate before review; never reach review with invalid data", "Never change a value silently; explain any cap"] },
+    { n: 11, old: 15, step: 10, shot: "s14_empty", sev: 4, title: "“Welcome Aboard”, then the listing vanishes",
+      heur: "#1 Visibility of system status", law: "Peak–End Rule",
+      seen: "Publishing shows a confetti “Welcome Aboard!” screen. My Properties briefly shows Listed (1), not editable, then In Progress (0) / Listed (0): “It's empty!” No error, no recovery.",
+      why: "The highest-effort journey ends with false success followed by total loss: the worst possible ending.",
+      fix: ["Show success only after a confirmed save", "Status “Submitted for review” with next steps", "Keep the draft editable; show a clear error with retry if saving fails"] }
+  ],
+  observations: [
+    { id: "O1", old: 1, shot: "x02_404", sev: 2, title: "Menu link “Long stays in Hyderabad” opens a dead 404 page", heur: "#9 Help users recover from errors", fix: "Remove dead links; branded error page with Back to Home." },
+    { id: "O2", old: 2, shot: "x01_holidays", sev: 2, title: "Holidays “Other” destination gives no field to type in", heur: "#7 Flexibility & efficiency", fix: "Reveal a text field or use destination search." },
+    { id: "O3", old: 3, shot: "x04_language", sev: 3, title: "Whole-app language switches on one tap, no confirmation", heur: "#5 Error prevention", fix: "Confirm the switch; keep an easy way back." },
+    { id: "O4", old: 4, shot: "x03_wizard", sev: 1, title: "Wizard Lite opens in a different dark theme", heur: "#4 Consistency & standards", fix: "Stay in OYO's design system; use an accent for premium." },
+    { id: "O5", old: 16, shot: "s02_partner", sev: 1, title: "Two different buttons open the same partner form", heur: "#4 Consistency & standards (Jakob's Law)", fix: "One primary action; one distinct help entry." },
+    { id: "O6", old: 17, shot: "x05_chat", sev: 3, title: "Support chat loops the same prompts, no human handoff", heur: "#3 User control & freedom", fix: "Free-text input and “Talk to an agent”." }
+  ],
+  laws: [
+    { law: "Jakob's Law", issue: 1, shot: "s04_otp", rule: "Users expect your product to work like the others they use.",
+      seen: "Submit is active with empty OTP boxes, and a signed-in user must log in again.",
+      reason: "In banking, payments and delivery apps, OTPs auto-fill, the button waits for a full code, and a session carries over. OYO breaks all three.",
+      change: "Auto-read the OTP, disable Submit until 4 digits, reuse the session." },
+    { law: "Hick's Law", issue: 3, shot: "s05_address_search", rule: "Decision time grows with the number and complexity of choices.",
+      seen: "“Are you at your property?” adds a decision, but both answers lead to the same manual search.",
+      reason: "Fewer choices is not always better, but a choice that changes nothing is pure cost: time spent deciding with zero benefit.",
+      change: "Use GPS when allowed; otherwise drop the question." },
+    { law: "Fitts's Law", issue: 5, shot: "s07_property_info", rule: "Time to hit a target depends on its size and distance.",
+      seen: "Small − and + buttons sit tight against the floors value, which is clipped to “10(”. Size estimated from the screenshot; verify on device.",
+      reason: "Small, adjacent targets raise mis-taps and slow precise entry; the user also cannot see the result.",
+      change: "44 × 44 pt targets with spacing, a wider value, or a numeric field with a cap." },
+    { law: "Peak–End Rule", issue: 11, shot: "s12_welcome", rule: "People judge an experience by its peak and its end.",
+      seen: "A confetti success screen, then an empty My Properties page.",
+      reason: "The end of the longest flow is its worst moment, so the whole journey is remembered as broken.",
+      change: "Celebrate only after a confirmed save; show honest “Submitted for review” status." }
+  ],
+  strengths: [
+    ["Back and Next on every step", "#3 User control & freedom"],
+    ["Resend-code timer on the OTP screen", "#1 Visibility of system status"],
+    ["Login with Apple as an alternative", "#7 Flexibility & efficiency"],
+    ["“How do I fill these details? View example” on KYC", "#10 Help & documentation"],
+    ["Edit links on each review section", "#3 User control & freedom"],
+    ["Full-width primary buttons at the bottom, in thumb reach", "Fitts's Law followed"]
+  ],
+  priorities: [
+    { p: "P1", theme: "Save reliably, report honestly", issues: [11, 10], why: "Listings vanish after a fake success: total loss of work and trust.", effort: "Medium–High (backend)" },
+    { p: "P1", theme: "Validate every input", issues: [4, 9, 1], why: "Address and KYC accept junk: legal and data-integrity risk.", effort: "Medium" },
+    { p: "P2", theme: "Rules and guidance up front", issues: [6, 8], why: "Hidden rules waste effort and lose eligible owners.", effort: "Low" },
+    { p: "P2", theme: "Recover from errors", issues: [2], why: "Owners blocked with no time or alternative.", effort: "Low" },
+    { p: "P2", theme: "Flexible, truthful steps", issues: [3, 7], why: "Fake choices and fixed lists create inaccurate listings.", effort: "Medium" },
+    { p: "P3", theme: "Readable, tappable controls", issues: [5], why: "Friction rather than failure.", effort: "Low" }
+  ],
+  metrics: {
+    primary: ["Listing completion: started → submitted", "Listings live within 7 days of submission", "Drop-off by step (where owners quit)"],
+    quality: ["Submissions rejected at verification", "Validation errors per submission"],
+    guard: ["Time to complete a listing", "KYC false-reject rate", "OTP success rate", "“Listing missing” support tickets"]
+  },
+  test: {
+    who: "5–6 owners on Android and iOS: first-time listers with 4–30 rooms, including one under 6 rooms. Think-aloud, moderated.",
+    tasks: ["T1 Find out if your 4-room guest house can be listed.", "T2 List your 8-room hotel with address, photos and ID.", "T3 After publishing, say whether your hotel is live and what happens next."],
+    measure: "Completion, time on task, errors and backtracking, correct understanding of status after publish, confidence (1–7)."
+  },
+  coverage: [
+    ["5–7 slide presentation (PPT/PDF)", "7-slide PDF", "Original deck had 16 slides"],
+    ["Select ONE critical flow", "List Your Property, end to end", "Menu and support issues moved to Further observations"],
+    ["Screenshots of current experience", "Slide 2 and the clickable walkthrough", "Phone number, guest name and booking ID redacted"],
+    ["At least 5 usability issues (Nielsen)", "11 issues in the flow, slides 3–4", "Each with severity 0–4"],
+    ["Map at least 3 issues to UX laws", "Hick's, Fitts's, Jakob's + Peak–End, slide 5", "Fitts's was missing; Hick's was on an off-flow issue"],
+    ["Submission table: Issue | Heuristic | How to improve", "Slides 3–4", "Same three columns"],
+    ["Improve clarity, hierarchy, reduce friction", "Before/after concepts, slide 6", "New"],
+    ["Prioritise and measure", "P1–P3, metrics, test plan, slide 7", "Metrics and test plan are new"]
+  ],
+  changes: [
+    "Cut from 16 slides to 7, as the brief asks for 5–7.",
+    "Focused on one flow; 6 menu and support issues kept as Further observations.",
+    "Added Fitts's Law and moved every UX-law mapping onto issues inside the flow.",
+    "Added severity (NN/g 0–4), what works well, persona, before/after concepts, metrics and a test plan.",
+    "Redacted a phone number, a guest's name and a booking ID from screenshots.",
+    "Fixed typos (“Usibility”) and plain-English labels throughout."
+  ]
+};
+</script>
+<script>// Proposed concept screens for the redesigned owner listing flow. Each returns the inner HTML of a .s screen.
+// Interactive hooks use data-cx attributes; static use (deck/report) simply ignores them.
+(function () {
+  const sb = `<div class="sb"><span>9:41</span><span>●●●</span></div>`;
+  const hd = (t, step) => `<div class="hd"><span class="lg">OYO</span><b style="flex:1">${t}</b>${step ? `<span class="tag w">${step}</span>` : ""}</div>`;
+  const st = { rooms: 8, floors: 3, fixed: false, otp: "4827" };
+  const C = {
+    start: () => `<div class="c">${sb}${hd("List your property")}<div class="bd"><h3>Before you start</h3><p>Check these so you don't lose time later.</p>
+      <div class="card"><div class="chk"><i>✓</i><span><b>6 or more rooms</b><br><span style="color:#6b6b76">Smaller properties can't be listed yet</span></span></div>
+      <div class="chk"><i>✓</i><span><b>Owner ID</b>: Aadhaar or PAN</span></div><div class="chk"><i>✓</i><span><b>6 landscape photos</b>: rooms, lobby, outside</span></div>
+      <div class="chk"><i>✓</i><span><b>About 10 minutes</b>. Progress saves as you go</span></div></div>
+      <div class="stp"><span><b>How many rooms?</b></span><span class="ctl"><button data-cx="rooms-">−</button><output>${st.rooms}</output><button data-cx="rooms+">+</button></span></div>
+      ${st.rooms < 6 ? `<div class="note e">OYO lists properties with 6+ rooms. We'll save your details and notify you if this changes.</div>` : `<div class="note o">✓ Eligible to list</div>`}
+      </div><div class="cf"><button class="btn r" data-cx="next" ${st.rooms < 6 ? "disabled" : ""}>Start listing</button></div></div>`,
+    otp: () => `<div class="c">${sb}${hd("Confirm your number", "1/7")}<div class="bd"><h3>Enter the 4-digit code</h3><p>Sent by SMS to +91 •••••• 1234 <u>Edit</u></p>
+      <div class="otp">${st.otp.split("").map(d => `<span>${d}</span>`).join("")}</div><div class="note o">✓ Code filled in from SMS</div>
+      <p>Too many attempts? You'll see exactly when to retry, plus Login with Apple.</p></div><div class="cf"><button class="btn r" data-cx="next">Verify</button></div></div>`,
+    location: () => `<div class="c">${sb}${hd("Property location", "2/7")}<div class="bd"><h3>Where is your property?</h3>
+      <button class="opt on" data-cx="next"><span><b>\u{1F4CD} Use my current location</b><br><span style="color:#6b6b76;font-size:.85em">Fills the address for you</span></span><span>›</span></button>
+      <div class="card"><span class="tag o" style="align-self:flex-start">Detected</span><b>Plot 22, Sector 8, Ahmedabad 380015</b><p>Sample address. You can edit every field next.</p></div>
+      <button class="opt"><span>Type the address instead</span><span>›</span></button></div><div class="cf"><button class="btn r" data-cx="next">Confirm location</button></div></div>`,
+    address: () => { const ok = st.fixed; return `<div class="c">${sb}${hd("Address details", "3/7")}<div class="bd"><p><em style="color:#e8292b;font-style:normal">*</em> Required</p>
+      <div class="fld"><label>Property name <em>*</em></label><div class="in ${ok ? "good" : "bad"}">${ok ? "Sunrise Residency" : "@"}</div>${ok ? "" : `<span class="msg e">Use letters or numbers, at least 3 characters</span>`}</div>
+      <div class="fld"><label>Street / area <em>*</em></label><div class="in ${ok ? "good" : "bad"}">${ok ? "Plot 22, Sector 8" : "67&£4"}</div>${ok ? "" : `<span class="msg e">Remove symbols like & and £</span>`}</div>
+      <div class="fld"><label>City <em>*</em></label><div class="in good">Ahmedabad</div></div>
+      <div class="fld"><label>PIN code <em>*</em></label><div class="in ${ok ? "good" : "bad"}">${ok ? "380015" : "GGHH"}</div>${ok ? `<span class="msg o">✓ Ahmedabad, Gujarat</span>` : `<span class="msg e">Enter a 6-digit PIN code</span>`}</div>
+      ${ok ? "" : `<button class="opt" data-cx="fix" style="justify-content:center;font-weight:700">Fix fields (demo)</button>`}</div>
+      <div class="cf"><button class="btn r" data-cx="next" ${ok ? "" : "disabled"}>${ok ? "Confirm address" : "Fix 3 fields to continue"}</button></div></div>`; },
+    info: () => `<div class="c">${sb}${hd("Property information", "4/7")}<div class="bd">
+      <div class="stp"><span><b>Floors</b><br><span style="color:#6b6b76;font-size:.85em">Up to 50</span></span><span class="ctl"><button data-cx="floors-">−</button><output>${st.floors}</output><button data-cx="floors+">+</button></span></div>
+      <div class="stp"><span><b>Rooms</b><br><span style="color:#6b6b76;font-size:.85em">Minimum 6</span></span><span class="ctl"><button data-cx="rooms-">−</button><output>${st.rooms}</output><button data-cx="rooms+">+</button></span></div>
+      ${st.rooms < 6 ? `<div class="note e">OYO lists properties with 6+ rooms.</div>` : `<div class="note o">✓ ${st.rooms} rooms meets the minimum</div>`}
+      <div class="fld"><label>Front-desk phone <em>*</em></label><div class="in good">+91 •••••• 4567</div></div>
+      <p>Buttons are 44 pt, and the full value is always visible.</p></div><div class="cf"><button class="btn r" data-cx="next" ${st.rooms < 6 ? "disabled" : ""}>Continue</button></div></div>`,
+    facilities: () => `<div class="c">${sb}${hd("Facilities", "5/7")}<div class="bd"><h3>What does your property have?</h3>
+      ${["Wi-Fi", "Power backup", "Geyser", "Elevator", "CCTV"].map((f, i) => `<div class="row"><span>${f}</span><span><span class="tag ${i === 3 ? "w" : "o"}">${i === 3 ? "Not available" : "Available"}</span></span></div>`).join("")}
+      <button class="opt" style="justify-content:center;font-weight:700">+ Add another facility</button>
+      <div class="card"><label style="display:flex;gap:.5em;font-size:.88em"><input type="checkbox" checked> I agree to install missing must-haves within 30 days</label></div></div>
+      <div class="cf"><button class="btn r" data-cx="next">Continue</button></div></div>`,
+    photos: () => `<div class="c">${sb}${hd("Photos", "6/7")}<div class="bd"><div class="card"><b>Photo tips</b><div class="chk"><i>✓</i>Landscape (wide)</div><div class="chk"><i>✓</i>6 different spaces: room, bathroom, lobby, outside</div><div class="chk"><i>✓</i>Daylight, no screenshots</div></div>
+      <div class="thumbs"><span></span><span class="b"></span><span class="c2"></span><span class="dup"></span><span class="dup"></span><span class="b"></span></div>
+      <div class="note e">2 photos look identical. Replace one to continue.</div></div><div class="cf"><button class="btn r" data-cx="next">Continue</button></div></div>`,
+    kyc: () => `<div class="c">${sb}${hd("Owner KYC", "7/7")}<div class="bd"><p>Required by law. Checked before you continue.</p>
+      <div class="fld"><label>Aadhaar number <em>*</em></label><div class="in good">•••• •••• 4821</div><span class="msg o">✓ Valid format</span></div>
+      <div class="fld"><label>ID photo <em>*</em></label><div class="in good">aadhaar_front.jpg</div><span class="msg o">✓ Looks like an ID card</span></div>
+      <div class="fld"><label>Name on ID <em>*</em></label><div class="in good">Ramesh Patel (sample)</div><span class="msg o">✓ Matches the ID</span></div>
+      <p>Wrong document or number? You'll see why, and how to fix it.</p></div><div class="cf"><button class="btn r" data-cx="next">Continue</button></div></div>`,
+    review: () => `<div class="c">${sb}${hd("Review")}<div class="bd"><h3>Check before you submit</h3>
+      ${[["Address", "Plot 22, Sector 8, Ahmedabad 380015"], ["Rooms & floors", `${st.rooms} rooms · ${st.floors} floors (as entered)`], ["Facilities", "4 available · 1 not available"], ["Photos", "6 checked"], ["KYC", "Verified"]].map(r => `<div class="card"><div class="row"><b>${r[0]}</b><u style="color:#e8292b">Edit</u></div><span style="font-size:.9em">${r[1]}</span></div>`).join("")}
+      </div><div class="cf"><button class="btn r" data-cx="next">Submit for review</button></div></div>`,
+    status: () => `<div class="c">${sb}${hd("Submitted")}<div class="bd"><h3>Sunrise Residency is saved and submitted</h3><p>It is not live yet. Here's what happens next.</p>
+      <div class="tl"><div><i class="d"></i><span><b>Saved</b> · today, 10:42</span></div><div><i class="n"></i><span><b>Verification call</b> · within 2 working days</span></div><div><i></i><span><b>Goes live</b> after verification</span></div></div>
+      <div class="note w">You can edit details until verification.</div></div><div class="cf"><button class="btn r" data-cx="next">View in My Properties</button></div></div>`,
+    mine: () => `<div class="c">${sb}${hd("My Properties")}<div class="bd"><div class="tabs2"><b>In review (1)</b><span>Live (0)</span><span>Drafts (0)</span></div>
+      <div class="card"><div class="row"><b>Sunrise Residency</b><span class="tag w">In review</span></div><span style="font-size:.88em">Ahmedabad · ${st.rooms} rooms · submitted today</span><div class="row"><u style="color:#e8292b">Edit details</u><span style="color:#6b6b76;font-size:.85em">Call expected by Thu</span></div></div>
+      <p>If saving ever fails, you'll see an error and your draft stays here.</p></div><div class="cf"><button class="btn g" data-cx="restart">Start again</button></div></div>`
+  };
+  window.CONCEPT = { C, st, order: ["start", "otp", "location", "address", "info", "facilities", "photos", "kyc", "review", "status", "mine"],
+    labels: { start: "Before you start", otp: "Login (auto OTP)", location: "Location", address: "Address (validated)", info: "Property info", facilities: "Facilities", photos: "Photos", kyc: "KYC", review: "Review", status: "Honest status", mine: "My Properties" },
+    fixes: { start: [6], otp: [1, 2], location: [3], address: [4], info: [5, 6], facilities: [7], photos: [8], kyc: [9], review: [10], status: [11], mine: [11] } };
+})();
+</script>
+<script>// Traveller-side content for v2. Owner content stays in data.js (unchanged from v1).
+window.TRV = {
+  personas: {
+    first: { label: "First-time traveller", who: "New to OYO. Booking a budget room in an unfamiliar city for a weekend, paying by UPI.", goal: "Find a room they can trust, know the full price and the hotel's rules before paying, and check in without a fight.", fear: "Hidden charges, being turned away at the desk, unclear ID or couple rules." },
+    returning: { label: "Returning traveller", who: "Has booked OYO 3+ times. Travels for work twice a month and often stays at the same hotel.", goal: "Rebook in under a minute, change or cancel without calling anyone, and see exactly when a refund lands.", fear: "Retyping everything, slow refunds, support that goes in circles." },
+    owner: { label: "Property owner", who: "Independent hotel owner with 6–30 rooms, listing on OYO for the first time.", goal: "Get the property listed correctly, once, and know when it goes live.", fear: "Wasted effort, rejected or vanished listings." }
+  },
+  journeys: {
+    first: ["Open app", "Search", "Results", "Hotel page", "Verify phone", "Review & pay", "Confirmed", "Check-in"],
+    returning: ["Open app", "Book again", "Confirmed", "Manage booking", "Cancel", "Refund tracker", "Rate stay"],
+    owner: ["Entry", "Login & OTP", "Location", "Address", "Property info", "Facilities", "Photos", "KYC", "Review", "Publish"]
+  },
+  issues: [
+    { id: "T2", flow: "Both travellers", stage: "Results & hotel page", ev: "Research", sev: 3, title: "Nightly price shown first; taxes and fees appear later",
+      heur: "#1 Visibility of system status", law: "",
+      seen: "An industry-wide pattern: many hotel sites show a nightly rate in results and reveal taxes and fees only at checkout. A MoneySavingExpert investigation found most brokers did not always show the final cost upfront.",
+      why: "The first real number appears at the moment of commitment, which reads as a hidden charge and drives drop-off.",
+      fix: ["Show the total for the stay, incl. taxes, on every card", "Keep one price, from results to payment", "Expandable breakdown, never a surprise"],
+      src: [["Travolution", "https://www.travolution.com/news/travel-sectors/accommodation/leading-hotel-booking-websites-fail-to-show-real-costs-upfront"], ["Baymard: travel accommodations", "https://baymard.com/research/travel-accommodations"]] },
+    { id: "T3", flow: "First-time", stage: "Hotel page", ev: "Research", sev: 3, title: "ID and couple rules are decided by each hotel, and unclear before paying",
+      heur: "#10 Help & documentation", law: "",
+      seen: "OYO's own FAQ says valid photo ID is mandatory and that checking in couples is at the hotel's discretion; local-ID acceptance varies by property. A “couple friendly” filter exists, but rules live in FAQs, not at the point of booking.",
+      why: "A guest can pay for a room they will not be allowed to use, and finds out only at the desk.",
+      fix: ["“Before you book” rules card on every hotel: ID, couples, local ID, check-in time", "Show the same rules as tags in results", "Require the hotel to confirm these rules"],
+      src: [["OYO: couples page", "https://www.oyorooms.com/hotels-in-ooty/oyo-welcomes-couples/"], ["The Quint on Relationship Mode", "https://www.thequint.com/lifestyle/taking-on-big-brother-oyo-rooms-for-unmarried-couples"]] },
+    { id: "T5", flow: "Both travellers", stage: "Confirmation & check-in", ev: "Research", sev: 4, title: "“Confirmed” in the app, refused or charged again at the desk",
+      heur: "#1 Visibility of system status", law: "Peak–End Rule",
+      seen: "Recurring reviews describe guests arriving with a confirmation and payment proof, then being turned away or asked to pay more. The app's “confirmed” does not show whether the hotel itself has accepted the booking.",
+      why: "The end of the trip is the worst moment of the journey, with no in-app way to resolve it on the spot.",
+      fix: ["Show “Hotel confirmed” as its own status", "One-tap Check-in help: OYO calls the hotel, moves the guest or refunds", "State “You never pay more than ₹X”"],
+      src: [["Trustpilot reviews", "https://www.trustpilot.com/review/www.oyorooms.com"], ["App Store reviews", "https://apps.apple.com/us/app/988141624?see-all=reviews&platform=iphone"]] },
+    { id: "T8", flow: "Returning", stage: "Cancel & refund", ev: "Research", sev: 3, title: "Refund timing is vague, with no way to track it",
+      heur: "#1 Visibility of system status", law: "",
+      seen: "Reviews cite “7 to 14 working days” and follow-ups lasting 30+ days. Users can't see where the refund is or when it will land.",
+      why: "Money in limbo drives repeated support contacts and stops returning users booking again.",
+      fix: ["Show refund amount and date before cancelling", "Refund tracker with steps and a date", "UPI refunds to source by default"],
+      src: [["ConsumerComplaints.in", "https://www.consumercomplaints.in/oyo-rooms-b110912"], ["Trustpilot reviews", "https://www.trustpilot.com/review/www.oyorooms.com"]] },
+    { id: "T6", flow: "Both travellers", stage: "Support", ev: "Observed", shot: "x05_chat", sev: 3, title: "Support chat loops the same prompts, with no human handoff",
+      heur: "#3 User control & freedom", law: "",
+      seen: "In “Chat with OYO”, choosing “I have some other concerns” and “I am looking for something else” returns the same prompt. There is no free-text box and no agent.",
+      why: "A guest with a live problem (for example at check-in) is trapped in a loop.",
+      fix: ["Free-text “Describe your issue”", "“Talk to an agent” after one loop", "Show expected reply time"], src: [] },
+    { id: "T1", flow: "Both travellers", stage: "Open app", ev: "Observed", shot: "s01_menu", sev: 2, title: "Side menu offers 11 equal options",
+      heur: "#8 Aesthetic & minimalist design", law: "Hick's Law",
+      seen: "The menu lists Wizard, Holidays, Invite & Earn, Wallets, Saved, Long stays, Events, Help, Language, Privacy and Partner onboarding at the same weight.",
+      why: "Bookings, help and account live among promotions, so the things a guest needs take longer to find.",
+      fix: ["Group into Trips, Money, Help, Settings", "Put My bookings and Help first", "Move promotions out of navigation"], src: [] },
+    { id: "T4", flow: "First-time", stage: "Verify phone", ev: "Hypothesis", sev: 2, title: "Login asked before the guest sees value",
+      heur: "#7 Flexibility & efficiency of use", law: "Jakob's Law",
+      seen: "The owner flow (observed) forces a fresh login even when signed in. For travellers, forced sign-up is a leading cause of checkout abandonment in Baymard's research (about 19%, as cited by secondary sources). Verify when OYO asks travellers to log in.",
+      why: "Users expect to browse and see prices freely, and log in only to book.",
+      fix: ["Browse and see totals without login", "Ask for the phone number only at booking", "Auto-read the OTP"],
+      src: [["Baymard: cart abandonment", "https://baymard.com/blog/reduce-cart-abandonment"]] },
+    { id: "T7", flow: "Returning", stage: "Open app", ev: "Research", sev: 2, title: "Returning guests retype searches and details",
+      heur: "#6 Recognition rather than recall", law: "",
+      seen: "A UX review of Indian booking apps found recent searches hidden behind a separate button and recently viewed hotels easy to miss. Travel UX guidance recommends showing previous searches inside search.",
+      why: "Frequent travellers repeat the same search and details every time, which slows rebooking.",
+      fix: ["“Book again” card for past stays", "Recent searches inside the search box", "Saved guests and saved UPI"],
+      src: [["Inc42: Cleartrip, MakeMyTrip, Yatra UX", "https://inc42.com/?p=11779"], ["Travel UX playbook", "https://ux.haifa.ac.il/wp-content/uploads/2019/01/pdf_travel_ux_playbook.pdf"]] }
+  ],
+  laws: [
+    { law: "Hick's Law", rule: "More, equal choices mean slower decisions.", trav: ["T1", "11 equal menu items hide bookings and help."], own: [3, "“Are you at your property?” adds a decision that changes nothing."], change: "Group the menu; remove choices with no outcome." },
+    { law: "Jakob's Law", rule: "Users expect apps to work like the ones they already use.", trav: ["T4", "Guests expect to browse freely and log in only to book."], own: [1, "Owners expect auto-filled OTPs and a session that carries over."], change: "Just-in-time login, auto-read OTP, reuse sessions." },
+    { law: "Fitts's Law", rule: "Big, close targets are faster and safer to hit.", trav: ["Applied", "Sticky full-width Book and Pay buttons in thumb reach."], own: [5, "Tiny −/+ buttons crowd the floors value."], change: "44 pt targets; primary action pinned to the bottom." },
+    { law: "Peak–End Rule", rule: "People judge an experience by its peak and its end.", trav: ["T5", "A confirmed booking refused at the desk."], own: [11, "Confetti, then the listing vanishes."], change: "Make the ending true: hotel-confirmed status, saved listing, honest status." }
+  ],
+  priorities: [
+    { p: "P1", theme: "Make every status true", who: "Both", items: ["T5", "11", "10"], why: "Confirmed bookings refused at the desk; listings that vanish after success." },
+    { p: "P1", theme: "Full price and rules before paying", who: "Traveller", items: ["T2", "T3"], why: "Surprise totals and rules at the desk break trust on the first booking." },
+    { p: "P1", theme: "Validate owner inputs", who: "Owner", items: ["4", "9", "1"], why: "Junk addresses and fake KYC reach live listings." },
+    { p: "P2", theme: "Track refunds; support that resolves", who: "Traveller", items: ["T8", "T6"], why: "Money in limbo and loops drive repeat contacts." },
+    { p: "P2", theme: "Shortcuts for returning users", who: "Traveller", items: ["T7", "T4"], why: "Rebooking should take one tap, not a full search." },
+    { p: "P2", theme: "Rules up front for owners", who: "Owner", items: ["6", "8"], why: "Hidden eligibility wastes owners' effort." },
+    { p: "P3", theme: "Simpler menu and controls", who: "Both", items: ["T1", "5", "3", "7"], why: "Friction rather than failure." }
+  ],
+  metrics: {
+    trav: ["Search → booking conversion (first-time users)", "Check-in success: bookings honoured at the desk", "Repeat booking within 90 days", "Time to rebook (returning users)", "Refund turnaround in days"],
+    own: ["Listing completion: started → submitted", "Listings live within 7 days", "Drop-off by step"],
+    guard: ["Cancellation rate", "Support contacts per 100 bookings", "Average booking value", "KYC false-reject rate"]
+  },
+  tests: [
+    { who: "First-time travellers (5, never used OYO)", task: "Book a couple-friendly room in Hyderabad for Saturday under ₹1,500 in total. Tell us the final price and the ID you need.", look: "Finds total and rules before paying; no surprise at review." },
+    { who: "Returning travellers (5, booked OYO 3+ times)", task: "Book the hotel you stayed at last time for this Friday. Then cancel it and tell us when the money comes back.", look: "Rebooks in under a minute; states refund amount and date." },
+    { who: "Property owners (5–6, first-time listers)", task: "Find out if your 4-room guest house can be listed; list an 8-room hotel; say whether it is live.", look: "Learns eligibility first; understands “in review”." }
+  ],
+  principles: [
+    ["Honest totals", "One price, incl. taxes, from results to payment."],
+    ["Rules before commitment", "House rules for guests; eligibility for owners, on screen one."],
+    ["Status you can trust", "Hotel-confirmed bookings, saved listings, refund and review timelines."],
+    ["Ask only when needed", "Login at booking; OTP auto-read; details saved for next time."],
+    ["Shortcuts for regulars", "Book again, recent searches, saved guests and UPI."],
+    ["Help that resolves", "Check-in help, free-text support and a human handoff."]
+  ],
+  sources: [
+    ["OYO reviews, Trustpilot", "https://www.trustpilot.com/review/www.oyorooms.com"],
+    ["OYO app reviews, App Store", "https://apps.apple.com/us/app/988141624?see-all=reviews&platform=iphone"],
+    ["OYO complaints, ConsumerComplaints.in", "https://www.consumercomplaints.in/oyo-rooms-b110912"],
+    ["Baymard Institute: travel accommodations UX", "https://baymard.com/research/travel-accommodations"],
+    ["Baymard Institute: reducing checkout abandonment", "https://baymard.com/blog/reduce-cart-abandonment"],
+    ["Travolution: hotel sites fail to show real costs upfront", "https://www.travolution.com/news/travel-sectors/accommodation/leading-hotel-booking-websites-fail-to-show-real-costs-upfront"],
+    ["Inc42: UI/UX of Cleartrip, MakeMyTrip, Yatra hotel booking", "https://inc42.com/?p=11779"],
+    ["The Quint: OYO Relationship Mode", "https://www.thequint.com/lifestyle/taking-on-big-brother-oyo-rooms-for-unmarried-couples"],
+    ["OYO: couple-friendly hotels page", "https://www.oyorooms.com/hotels-in-ooty/oyo-welcomes-couples/"],
+    ["NN/g: 10 usability heuristics; severity ratings", "https://www.nngroup.com/articles/ten-usability-heuristics/"],
+    ["Laws of UX", "https://lawsofux.com/"]
+  ]
+};
+
+TRV.issues.sort((a, b) => +a.id.slice(1) - +b.id.slice(1));
+</script>
+<script>// Proposed traveller screens (first-time and returning). Each returns the inner HTML of a .s screen.
+// Interactive hooks use data-tx; static use (deck/report) ignores them. Sample data only.
+(function () {
+  const st = { guests: 2, f: { couple: false, local: false, pay: false }, hotel: 0, room: 0, pay: "hotel", open: true, booked: false, verified: false, cancelled: false, rating: 0, rated: false, upi: true };
+  const H = [
+    { n: "Lakeview Residency", a: "Banjara Hills", r: 4.4, p: 1249, c: "", couple: true, local: true, pay: true },
+    { n: "Hill Crest Inn", a: "Ameerpet", r: 4.1, p: 999, c: "b", couple: false, local: false, pay: true },
+    { n: "Metro Comfort Suites", a: "HITEC City", r: 4.6, p: 1599, c: "c3", couple: true, local: false, pay: false }
+  ];
+  const R = [["Classic room", 0, "Double bed · AC · Wi-Fi"], ["Deluxe room", 400, "Queen bed · city view · AC"]];
+  const inr = n => "₹" + n.toLocaleString("en-IN");
+  const tot = (h, room = 0) => { const b = H[h].p + R[room][1], t = Math.round(b * 0.12); return { b, t, total: b + t }; };
+  const sb = `<div class="sb"><span>9:41</span><span>●●●</span></div>`;
+  const hd = (t, back) => `<div class="hd">${back ? `<button class="pill" data-tx="${back}" aria-label="Back" style="cursor:pointer">←</button>` : `<span class="lg">OYO</span>`}<b style="flex:1">${t}</b></div>`;
+  const nav = on => `<div class="nav"><span class="${on === "home" ? "on" : ""}" data-tx="go:r_home" style="cursor:pointer">Home</span><span>Search</span><span class="${on === "trips" ? "on" : ""}" data-tx="go:r_manage" style="cursor:pointer">Trips</span><span>Account</span></div>`;
+  const tags = h => [h.couple ? "Couples welcome" : "", h.local ? "Local ID OK" : "", h.pay ? "Pay at hotel" : ""].filter(Boolean).map(t => `<span class="tag o">${t}</span>`).join(" ");
+  const C = {
+    // ---------- first-time ----------
+    f_welcome: () => `<div class="c">${sb}<div class="bd" style="justify-content:center;gap:1em"><span class="lg" style="font-size:2.4em">OYO</span><h3 style="font-size:1.7em">Stays you can trust, at prices you can see</h3>
+      ${[["₹", "Full price upfront", "Taxes included on every hotel"], ["✓", "Rules before you pay", "ID, couples and check-in, clearly shown"], ["☎", "Help at check-in", "If the desk says no, we fix it"]].map(v => `<div class="chk"><i>${v[0]}</i><span><b>${v[1]}</b><br><span style="color:#6b6b76;font-size:.9em">${v[2]}</span></span></div>`).join("")}
+      </div><div class="cf" style="flex-direction:column"><button class="btn r" data-tx="next">Explore stays</button><button class="btn g" data-tx="next">I already have an account</button><p style="text-align:center;font-size:.78em">No login needed to browse</p></div></div>`,
+    f_search: () => `<div class="c">${sb}${hd("Find a stay")}<div class="bd"><h3>Where are you going?</h3>
+      <div class="card"><div class="fld"><label>City or area</label><div class="in">Hyderabad</div></div><div class="fld"><label>Dates</label><div class="in">Sat 24 Oct → Sun 25 Oct · 1 night</div></div>
+      <div class="stp"><span><b>Guests</b><br><span style="color:#6b6b76;font-size:.85em">1 room</span></span><span class="ctl"><button data-tx="g-" aria-label="Fewer guests">−</button><output>${st.guests}</output><button data-tx="g+" aria-label="More guests">+</button></span></div></div>
+      <button class="btn r" data-tx="next">Search hotels</button><p>Popular: Banjara Hills · HITEC City · Ameerpet</p></div></div>`,
+    f_results: () => { const list = H.map((h, i) => [h, i]).filter(([h]) => (!st.f.couple || h.couple) && (!st.f.local || h.local) && (!st.f.pay || h.pay));
+      return `<div class="c">${sb}${hd("Hyderabad · 24–25 Oct", "prev")}<div class="bd">
+      <div style="display:flex;gap:.4em;flex-wrap:wrap">${[["couple", "Couples welcome"], ["local", "Local ID OK"], ["pay", "Pay at hotel"]].map(f => `<button class="pill" data-tx="f:${f[0]}" style="cursor:pointer;${st.f[f[0]] ? "background:#17171c;color:#fff;border-color:#17171c" : ""}">${st.f[f[0]] ? "✓ " : ""}${f[1]}</button>`).join("")}</div>
+      <p>${list.length} stays · prices are totals for 1 night, incl. taxes</p>
+      ${list.map(([h, i]) => `<button class="opt" data-tx="hotel:${i}" style="flex-direction:column;align-items:stretch;gap:.45em"><div class="img ${h.c}" style="min-height:5em"></div><div class="row"><b>${h.n}</b><span class="tag o">★ ${h.r}</span></div><div>${tags(h)}</div><div class="row"><span style="color:#6b6b76">${h.a}</span><span><b>${inr(tot(i).total)}</b> <span style="color:#6b6b76;font-size:.8em">total</span></span></div></button>`).join("") || `<div class="card">No stays match. Try removing a filter.</div>`}
+      </div></div>`; },
+    f_hotel: () => { const h = H[st.hotel], p = tot(st.hotel, st.room);
+      return `<div class="c">${sb}${hd(h.n, "go:f_results")}<div class="bd"><div class="img ${h.c}" style="min-height:8em"></div><div class="row"><h3 style="font-size:1.2em">${h.n}</h3><span class="tag o">★ ${h.r}</span></div>
+      <div class="card"><b>Before you book</b><div class="chk"><i>✓</i>Any government photo ID (Aadhaar, DL, passport)</div><div class="chk"><i style="background:${h.couple ? "#1e8e5a" : "#c62828"}">${h.couple ? "✓" : "!"}</i>${h.couple ? "Couples welcome" : "Couples: hotel's discretion"}</div><div class="chk"><i style="background:${h.local ? "#1e8e5a" : "#c62828"}">${h.local ? "✓" : "!"}</i>${h.local ? "Local ID accepted" : "Local ID not accepted"}</div><div class="chk"><i>✓</i>Check-in 12:00 · check-out 11:00</div></div>
+      <b>Choose a room</b>${R.map((r, i) => `<button class="opt ${st.room === i ? "on" : ""}" data-tx="room:${i}"><span><b>${r[0]}</b><br><span style="color:#6b6b76;font-size:.85em">${r[2]}</span></span><b>${inr(tot(st.hotel, i).total)}</b></button>`).join("")}
+      <div class="note o">Free cancellation until Sat 24 Oct, 10:00</div></div>
+      <div class="cf" style="align-items:center"><span style="flex:1"><b>${inr(p.total)}</b><br><span style="color:#6b6b76;font-size:.8em">total incl. ${inr(p.t)} taxes</span></span><button class="btn r" data-tx="next">Book now</button></div></div>`; },
+    f_verify: () => `<div class="c">${sb}${hd("Almost there", "prev")}<div class="bd"><h3>Verify your number to book</h3><p>We ask only now, to send your booking and let the hotel reach you.</p>
+      <div class="fld"><label>Mobile number</label><div class="in good">+91 •••••• 4321</div></div>
+      ${st.verified ? `<div class="otp">${"4827".split("").map(d => `<span>${d}</span>`).join("")}</div><div class="note o">✓ Code filled in from SMS</div>` : `<button class="btn g" data-tx="otp">Send code</button>`}
+      </div><div class="cf"><button class="btn r" data-tx="next" ${st.verified ? "" : "disabled"}>Continue to review</button></div></div>`,
+    f_review: () => { const h = H[st.hotel], p = tot(st.hotel, st.room);
+      return `<div class="c">${sb}${hd("Review & pay", "prev")}<div class="bd"><div class="card"><b>${h.n}</b><span style="font-size:.88em">Sat 24 → Sun 25 Oct · 1 night · ${st.guests} guest${st.guests > 1 ? "s" : ""} · ${R[st.room][0]}</span><div>${tags(h)}</div></div>
+      <div class="fld"><label>Guest name <em>*</em></label><div class="in good">Guest name (sample)</div></div>
+      <b>Pay</b>${[["hotel", "Pay at hotel", "Pay at check-in"], ["now", "Pay now by UPI", "Instant receipt"]].filter(o => o[0] === "now" || h.pay).map(o => `<button class="opt ${st.pay === o[0] ? "on" : ""}" data-tx="pay:${o[0]}"><span><b>${o[1]}</b><br><span style="color:#6b6b76;font-size:.85em">${o[2]}</span></span><span>${st.pay === o[0] ? "◉" : "○"}</span></button>`).join("")}
+      <button class="opt" data-tx="bill"><b>Total ${inr(p.total)}</b><span>${st.open ? "Hide" : "Show"} breakdown ${st.open ? "▲" : "▼"}</span></button>
+      ${st.open ? `<div class="card"><div class="row"><span>${R[st.room][0]}, 1 night</span><b>${inr(p.b)}</b></div><div class="row"><span>Taxes & fees</span><b>${inr(p.t)}</b></div><div class="row"><b>You pay, nothing more</b><b>${inr(p.total)}</b></div></div>` : ""}
+      </div><div class="cf"><button class="btn r" data-tx="confirm">Confirm booking · ${inr(p.total)}</button></div></div>`; },
+    f_confirmed: () => { const h = H[st.hotel], p = tot(st.hotel, st.room);
+      return `<div class="c">${sb}${hd("Booking confirmed")}<div class="bd"><h3>You're booked at ${h.n}</h3>
+      <div class="tl"><div><i class="d"></i><span><b>Booked</b> · OYO-SAMPLE-4821</span></div><div><i class="d"></i><span><b>Hotel confirmed your room</b> · 2 min ago</span></div><div><i class="n"></i><span><b>Check-in</b> · Sat 24 Oct, 12:00</span></div></div>
+      <div class="card"><div class="row"><span>${st.pay === "hotel" ? "Pay at hotel" : "Paid by UPI"}</span><b>${inr(p.total)}</b></div><span style="font-size:.85em">You never pay more than this at the desk.</span></div>
+      <div style="display:flex;gap:.4em;flex-wrap:wrap"><span class="pill">Directions</span><span class="pill">Call hotel</span><span class="pill">Modify</span></div>
+      <button class="opt" data-tx="next"><span><b>Problem at check-in?</b><br><span style="color:#6b6b76;font-size:.85em">Get help in one tap</span></span><span>›</span></button></div>
+      <div class="cf"><button class="btn r" data-tx="go:r_home">Done</button></div></div>`; },
+    f_checkin: () => `<div class="c">${sb}${hd("Check-in help", "prev")}<div class="bd"><h3>What's happening at the desk?</h3>
+      ${[["Hotel can't find my booking", "We call the hotel within 2 minutes"], ["Asked to pay more", "Show this screen: your total is fixed"], ["Refused check-in", "We move you to a nearby OYO or refund in full, now"]].map((o, i) => `<button class="opt" data-tx="help:${i}"><span><b>${o[0]}</b><br><span style="color:#6b6b76;font-size:.85em">${o[1]}</span></span><span>›</span></button>`).join("")}
+      <div class="note w">Proposed service. Needs OYO–hotel agreements.</div></div><div class="cf"><button class="btn g" data-tx="go:r_home">Back to home</button></div></div>`,
+    // ---------- returning ----------
+    r_home: () => `<div class="c">${sb}<div class="hd"><span class="lg">OYO</span><b style="flex:1">Welcome back</b></div><div class="bd">
+      ${st.booked ? `<button class="opt" data-tx="go:r_manage" style="flex-direction:column;align-items:stretch;gap:.3em"><span class="tag o" style="align-self:flex-start">Upcoming · Hotel confirmed</span><b>${H[st.hotel].n}</b><span style="font-size:.85em;color:#6b6b76">Sat 24 Oct · check-in 12:00</span></button>` : ""}
+      <div class="in" style="color:#6b6b76">\u{1F50D} Search city, area or hotel</div>
+      <div><b style="font-size:.85em">Recent searches</b><div style="display:flex;gap:.4em;flex-wrap:wrap;margin-top:.4em"><span class="pill">Hyderabad · 1 night</span><span class="pill">Pune · Fri–Sat</span></div></div>
+      <div class="card"><b>Book again</b><div class="row"><span><b>Lakeview Residency</b><br><span style="color:#6b6b76;font-size:.85em">You stayed 12 Oct · ★ 4.4</span></span><b>${inr(1399)}</b></div><button class="btn r" data-tx="go:r_again">Book again</button></div>
+      </div>${nav("home")}</div>`,
+    r_again: () => `<div class="c">${sb}${hd("Book again", "go:r_home")}<div class="bd"><div class="img" style="min-height:5em"></div><b>Lakeview Residency · Classic room</b>
+      <div class="card"><div class="row"><span>Dates</span><b>Fri 23 → Sat 24 Oct <u style="color:#e8292b;font-weight:600">Change</u></b></div><div class="row"><span>Guest</span><b>You (saved)</b></div><div class="row"><span>Pay</span><b>${st.upi ? "UPI •••@okaxis (saved)" : "Pay at hotel"}</b></div><div class="row"><span>Total incl. taxes</span><b>${inr(1399)}</b></div></div>
+      <button class="opt" data-tx="upi"><span>Switch to ${st.upi ? "Pay at hotel" : "saved UPI"}</span><span>⇄</span></button>
+      <p>Same room, same price rules as your last stay.</p></div><div class="cf"><button class="btn r" data-tx="rbook">Book in one tap · ${inr(1399)}</button></div></div>`,
+    r_confirmed: () => `<div class="c">${sb}${hd("Booked again")}<div class="bd"><h3>Lakeview Residency, Fri 23 Oct</h3>
+      <div class="tl"><div><i class="d"></i><span><b>Booked</b> · OYO-SAMPLE-5530</span></div><div><i class="d"></i><span><b>Hotel confirmed</b> · just now</span></div><div><i class="n"></i><span><b>Check-in</b> · Fri 23 Oct, 12:00</span></div></div>
+      <div class="note o">Done in one tap. Receipt sent to your email.</div></div><div class="cf"><button class="btn r" data-tx="go:r_manage">Manage booking</button></div></div>`,
+    r_manage: () => `<div class="c">${sb}${hd("My trips", "go:r_home")}<div class="bd"><div class="tabs2"><b>Upcoming (${st.cancelled ? 0 : 1})</b><span>Completed (3)</span><span>Cancelled (${st.cancelled ? 1 : 0})</span></div>
+      ${st.cancelled ? `<div class="card" style="text-align:center"><b>No upcoming trips</b><button class="btn g" data-tx="go:r_refund">View refund status</button></div>` : `<div class="card"><div class="row"><b>Lakeview Residency</b><span class="tag o">Hotel confirmed</span></div><span style="font-size:.88em">Fri 23 → Sat 24 Oct · Classic room</span><div style="display:flex;gap:.4em;flex-wrap:wrap"><span class="pill">Modify dates</span><span class="pill">Invoice</span><button class="pill" data-tx="go:r_cancel" style="cursor:pointer;color:#c62828">Cancel</button></div></div>`}
+      <div class="card"><div class="row"><b>Lakeview Residency</b><span class="tag w">Completed</span></div><span style="font-size:.88em">12 Oct · not rated yet</span><button class="btn g" data-tx="go:r_rate">Rate your stay</button></div>
+      </div>${nav("trips")}</div>`,
+    r_cancel: () => `<div class="c">${sb}${hd("Cancel booking", "go:r_manage")}<div class="bd"><h3>Cancel Fri 23 Oct at Lakeview Residency?</h3>
+      <div class="card"><div class="row"><span>You get back</span><b>${inr(1399)} (full)</b></div><div class="row"><span>To</span><b>UPI •••@okaxis</b></div><div class="row"><span>Expected by</span><b>Wed 21 Oct</b></div></div>
+      <p>Free cancellation until Fri 23 Oct, 10:00. You'll see every step of the refund.</p></div>
+      <div class="cf" style="flex-direction:column"><button class="btn r" data-tx="rcancel">Cancel and refund ${inr(1399)}</button><button class="btn g" data-tx="go:r_manage">Keep booking</button></div></div>`,
+    r_refund: () => `<div class="c">${sb}${hd("Refund status", "go:r_manage")}<div class="bd"><h3>${inr(1399)} is on its way</h3>
+      <div class="tl"><div><i class="d"></i><span><b>Booking cancelled</b> · today, 10:42</span></div><div><i class="d"></i><span><b>Refund sent by OYO</b> · today, 10:43</span></div><div><i class="n"></i><span><b>Credit to your UPI</b> · by Wed 21 Oct</span></div></div>
+      <div class="card"><b>Not received by Wed?</b><span style="font-size:.88em">Share UTR 6021 8841 2290 (sample) with your bank, or talk to us.</span><button class="btn g" data-tx="agent">Talk to an agent · avg 2 min</button></div></div>
+      <div class="cf"><button class="btn r" data-tx="go:r_home">Back to home</button></div></div>`,
+    r_rate: () => `<div class="c">${sb}${hd("Rate your stay", "go:r_manage")}<div class="bd"><h3>How was Lakeview Residency?</h3>
+      <div style="display:flex;gap:.4em;justify-content:center;font-size:2em">${[1, 2, 3, 4, 5].map(n => `<button data-tx="star:${n}" aria-label="${n} stars" style="border:0;background:none;cursor:pointer;font-size:1em;color:${n <= st.rating ? "#e8a800" : "#c9c9cf"}">★</button>`).join("")}</div>
+      <div style="display:flex;gap:.4em;flex-wrap:wrap;justify-content:center">${["Clean room", "Smooth check-in", "Good location", "Helpful staff"].map(t => `<span class="pill">${t}</span>`).join("")}</div>
+      ${st.rated ? `<div class="note o">Thanks! Your review helps the next guest.</div>` : ""}</div>
+      <div class="cf"><button class="btn r" data-tx="rate" ${st.rating ? "" : "disabled"}>${st.rated ? "Submitted" : "Submit review"}</button></div></div>`
+  };
+  const FIRST = ["f_welcome", "f_search", "f_results", "f_hotel", "f_verify", "f_review", "f_confirmed", "f_checkin"];
+  const RET = ["r_home", "r_again", "r_confirmed", "r_manage", "r_cancel", "r_refund", "r_rate"];
+  const LABEL = { f_welcome: "Welcome", f_search: "Search", f_results: "Results", f_hotel: "Hotel page", f_verify: "Verify phone", f_review: "Review & pay", f_confirmed: "Confirmed", f_checkin: "Check-in help",
+    r_home: "Home (returning)", r_again: "Book again", r_confirmed: "Booked again", r_manage: "My trips", r_cancel: "Cancel", r_refund: "Refund tracker", r_rate: "Rate stay" };
+  const FIX = { f_welcome: ["T4"], f_search: [], f_results: ["T2", "T3"], f_hotel: ["T2", "T3"], f_verify: ["T4"], f_review: ["T2"], f_confirmed: ["T5"], f_checkin: ["T5", "T6"],
+    r_home: ["T7", "T1"], r_again: ["T7"], r_confirmed: ["T5"], r_manage: ["T1"], r_cancel: ["T8"], r_refund: ["T8", "T6"], r_rate: [] };
+  window.TC = { C, st, H, tot, FIRST, RET, LABEL, FIX,
+    reset() { Object.assign(st, { guests: 2, f: { couple: false, local: false, pay: false }, hotel: 0, room: 0, pay: "hotel", open: true, booked: false, verified: false, cancelled: false, rating: 0, rated: false, upi: true }); } };
+})();
+</script>
+<script>// Shared structure for v3: journeys in order, each issue shown once at its step, and the 10-page outline.
+window.V3 = {
+  short: {
+    T1: "Menu has 11 equal items", T2: "Taxes added late", T3: "ID & couple rules unclear", T4: "Login before value",
+    T5: "“Confirmed”, refused at desk", T6: "Support chat loops", T7: "Retype every search", T8: "Refund can't be tracked",
+    O1: "Submit works with no OTP", O2: "Rate limit, no retry time", O3: "“At property?” does nothing", O4: "Address accepts junk",
+    O5: "Floors value cut off", O6: "6-room rule shown late", O7: "Fixed facilities list", O8: "Photo rules shown late",
+    O9: "Fake KYC accepted", O10: "Review shows junk", O11: "Listing vanishes"
+  },
+  journeys: [
+    { key: "first", name: "First-time traveller", color: "#17171c", steps: [
+      ["Open app", ["T1"], "f_welcome"], ["Search", [], "f_search"], ["Results", ["T2"], "f_results"], ["Hotel page", ["T3"], "f_hotel"],
+      ["Verify phone", ["T4"], "f_verify"], ["Review & pay", [], "f_review"], ["Confirmed", ["T5"], "f_confirmed"], ["Check-in", ["T6"], "f_checkin"]] },
+    { key: "returning", name: "Returning traveller", color: "#5f5f6a", steps: [
+      ["Open app", ["T7"], "r_home"], ["Book again", [], "r_again"], ["Confirmed", [], "r_confirmed"], ["My trips", [], "r_manage"],
+      ["Cancel", [], "r_cancel"], ["Refund", ["T8"], "r_refund"], ["Rate stay", [], "r_rate"]] },
+    { key: "owner", name: "Property owner", color: "#e8292b", steps: [
+      ["Entry", [], 0], ["Login & OTP", ["O1", "O2"], 2], ["Location", ["O3"], 4], ["Address", ["O4"], 5], ["Property info", ["O5", "O6"], 6],
+      ["Facilities", ["O7"], 7], ["Photos", ["O8"], 8], ["KYC", ["O9"], 9], ["Review", ["O10"], 10], ["Publish", ["O11"], 11]] }
+  ],
+  pages: [
+    ["Start here", "What this is, how to read it, and the 10 pages"],
+    ["Users & scope", "OYO, the three users and the two flows"],
+    ["Journey map", "Every step in order, and the issue found there"],
+    ["Current experience", "Real screens from the live app, plus traveller research"],
+    ["Traveller issues", "T1–T8 in the order a guest meets them"],
+    ["Owner issues", "O1–O11 in the order an owner meets them"],
+    ["UX laws", "Hick's, Jakob's, Fitts's and Peak–End on both sides"],
+    ["Redesign: travellers", "First-time and returning journeys, fixed"],
+    ["Redesign: owner", "The listing flow, fixed, and shared principles"],
+    ["Priorities & tests", "What to fix first and how to prove it"]
+  ]
+};
+// Owner issues are displayed as O1-O11 everywhere.
+V3.oid = n => "O" + n;
+</script>
+<script>// Shared content for the deck, the detailed report and the prototype. Written in the author's voice.
+window.FINAL = {
+  author: "Varun Kumar",
+  site: "https://oyo-varun-v3.netlify.app/",
+  siteLabel: "oyo-varun-v3.netlify.app",
+  deckFile: "OYO_UX_Evaluation_v3_10_Pages.pdf",
+  reportFile: "OYO_UX_Evaluation_v3_Detailed_Report.pdf",
+  disclaimer: "Independent educational UX evaluation by Varun Kumar. Not affiliated with OYO. Personal data in screenshots is redacted; redesign screens are concepts with sample data.",
+
+  // The ten pages. `tab` is the short label used in tab strips; `q` is the question the page answers.
+  pages: [
+    { n: 1, key: "start", name: "Start here", tab: "Start", group: "Understand", q: "What is this, and what is my answer?", rpt: "1–3" },
+    { n: 2, key: "users", name: "Users & scope", tab: "Users", group: "Understand", q: "Who am I designing for, and why these two flows?", rpt: "4" },
+    { n: 3, key: "journey", name: "Journey map", tab: "Journeys", group: "Understand", q: "Where exactly does each person get stuck?", rpt: "5" },
+    { n: 4, key: "today", name: "Current experience", tab: "Today", group: "Diagnose", q: "What does the app really show today?", rpt: "6–7" },
+    { n: 5, key: "tissues", name: "Traveller issues", tab: "Guest issues", group: "Diagnose", q: "What goes wrong for guests, and what does best-in-class do?", rpt: "8–11, 16–17" },
+    { n: 6, key: "oissues", name: "Owner issues", tab: "Owner issues", group: "Diagnose", q: "What goes wrong for owners, and what does best-in-class do?", rpt: "12–14, 16–17" },
+    { n: 7, key: "laws", name: "UX laws", tab: "UX laws", group: "Diagnose", q: "Why do these problems happen?", rpt: "15" },
+    { n: 8, key: "tfix", name: "Solution: travellers", tab: "Guest fix", group: "Solve", q: "How will the guest journey work now, and why did I design it this way?", rpt: "17–19" },
+    { n: 9, key: "ofix", name: "Solution: owners", tab: "Owner fix", group: "Solve", q: "How will the listing journey work now, and why did I design it this way?", rpt: "17, 20–21" },
+    { n: 10, key: "plan", name: "Priorities & proof", tab: "Plan", group: "Prove", q: "What do we build first, and how will we know it worked?", rpt: "22–23" }
+  ],
+  // Report page numbers for deep links (first page of each section).
+  rp: { cover: 1, contents: 2, glance: 3, users: 4, journey: 5, today: 6, research: 7, tissues: 8, oissues: 12, laws: 15, master: 16, bench: 17, tfix: 18, tfix2: 19, ofix: 20, ofix2: 21, plan: 22, proof: 23 },
+  rpTotal: 23,
+
+  glance: [
+    ["3", "people followed", "First-time guest, returning guest, property owner"],
+    ["19", "friction points", "8 for guests (T1–T8) and 11 for owners (O1–O11)"],
+    ["4", "UX laws", "Hick's, Jakob's, Fitts's and Peak–End, on both sides"],
+    ["26", "clickable screens", "15 guest and 11 owner concept screens in the prototype"]
+  ],
+
+  rootCause: "The app says things it can't back up. Owners see “Welcome Aboard” for a listing that then vanishes. Guests see “Confirmed” for a room the desk may refuse. Fix the truth of every status first; remove friction second.",
+
+  answer: [
+    ["Make every status true", "Hotel-confirmed bookings for guests. Saved, in-review and live listings for owners."],
+    ["Show the real price and the real rules, early", "One all-in total and the ID and couple rules before a guest pays. Eligibility and ID needs before an owner starts."],
+    ["Check inputs and shorten the path", "Inline validation, auto-read OTP, GPS address, one-tap rebooking and a refund tracker."]
+  ],
+
+  // Evaluator ratings: 10 = the best pattern I found in teardowns and public research. "Today" is for OYO as I observed it
+  // (owner side) or as reported in research (guest side, provisional). "After" is my projected rating if the design ships as drawn.
+  scoreNote: "Ratings are my own, on a 0–10 scale where 10 is the best pattern I found in public teardowns and research. Guest-side “today” scores are provisional because they rest on research and two observed screens. “After” is projected and has to be proven in the tests on page 10.",
+
+  tStand: [
+    { id: "ts1", icon: "₹", name: "Price Promise", line: "One total, taxes included, from search to payment.",
+      how: "Every result card shows the total for the whole stay, taxes included. That same number follows the guest to the hotel page, the pay screen and the receipt, with the breakdown open by default. The pay button names the exact amount.",
+      why: "The first real number a guest sees should also be the last one. When taxes appear late, guests read it as a hidden charge and leave.",
+      fixes: ["T2"], screen: "f_results", today: 4, after: 9,
+      bench: { who: "Airbnb", kind: "Product", text: "Shows the total price with fees in search results; made the default worldwide in 2025.", src: "https://www.timeout.com/usa/news/airbnb-will-finally-display-total-booking-prices-upfront-042125" },
+      dep: "Totals upfront can look pricier next to rivals that quote nightly rates." },
+    { id: "ts2", icon: "✓", name: "Rules Before You Pay", line: "ID, couples and check-in rules on the card, not in the FAQ.",
+      how: "Rule tags (Couples welcome, Local ID OK, Pay at hotel) appear in results and work as filters. Every hotel page opens with a “Before you book” card. A hotel can only carry a tag after it confirms the rule.",
+      why: "For a first-time guest the biggest fear is being refused at the desk. Answering that before payment is worth more than any discount.",
+      fixes: ["T3"], screen: "f_hotel", today: 4, after: 9,
+      bench: { who: "Airbnb, Booking.com", kind: "Product", text: "House rules, check-in details and cancellation terms sit on the listing page before the guest books.", src: "" },
+      dep: "Needs hotels to confirm and keep their rules up to date." },
+    { id: "ts3", icon: "◎", name: "Hotel-Confirmed Status", line: "“Booked” is not the same as “the hotel said yes”.",
+      how: "A booking moves through three honest states: Booked, Hotel confirmed, Checked in. “Hotel confirmed” appears only when the hotel has accepted the booking, and the guest is told in plain words that they never pay more than the total at the desk.",
+      why: "The worst OYO reviews describe one moment: arriving with a “confirmed” booking and being refused. The cure is to stop saying what we can't back up.",
+      fixes: ["T5"], screen: "f_confirmed", today: 3, after: 9,
+      bench: { who: "Airbnb", kind: "Product", text: "Keeps “request to book” (pending) separate from confirmed; the host has 24 hours to accept.", src: "https://www.hosteeva.com/blog/airbnb-reservation-management-guide" },
+      dep: "Needs an OYO–hotel agreement and a service level for confirming." },
+    { id: "ts4", icon: "☎", name: "Check-in Rescue", line: "If the desk says no, one tap starts the fix.",
+      how: "The confirmation screen carries “Problem at check-in?”. Three choices: the hotel can't find my booking, I'm asked to pay more, I'm refused. OYO calls the hotel within 2 minutes, shows a fixed-total proof screen, or moves the guest to a nearby OYO or refunds in full.",
+      why: "The end of a trip decides how the whole trip is remembered. A guest at a desk at night needs a person, not an FAQ.",
+      fixes: ["T5", "T6"], screen: "f_checkin", today: 3, after: 8,
+      bench: { who: "Airbnb AirCover", kind: "Product", text: "If a host cancels, the guest gets a full refund and help finding a similar place.", src: "https://www.airbnb.com/aircover" },
+      dep: "Needs a rebooking inventory and an agent team on call at night." },
+    { id: "ts5", icon: "↻", name: "Book Again + Refund Tracker", line: "Rebook in one tap; see where every rupee is.",
+      how: "Returning guests land on their upcoming stay, recent searches and a Book again card with saved guest and UPI. Before cancelling, the app shows the refund amount, destination and date. After, a tracker shows each step with a bank reference and a talk-to-agent button.",
+      why: "Frequent travellers are OYO's cheapest growth. Retyping everything, and waiting weeks for a refund, pushes them to rivals.",
+      fixes: ["T7", "T8"], screen: "r_home", today: 3, after: 9,
+      bench: { who: "Swiggy, Zomato; Amazon", kind: "Pattern", text: "“Reorder” from past orders in one tap; e-commerce refund timelines that show a date.", src: "" },
+      dep: "Saved UPI needs explicit consent and secure storage." }
+  ],
+  tSupport: [
+    { name: "Login only at booking", fixes: ["T4"], text: "Browse and see totals with no account. Ask for the phone number at booking; the OTP fills itself. Baymard's research links forced sign-up to about 19% of checkout abandonment." },
+    { name: "Four tabs, not eleven options", fixes: ["T1"], text: "Home, Search, Trips and Account replace the 11-item side menu. Promotions leave the navigation." },
+    { name: "Support that resolves", fixes: ["T6"], text: "Free-text “Describe your issue”, a human after one loop, and an expected reply time." }
+  ],
+
+  oStand: [
+    { id: "os1", icon: "☑", name: "Know Before You Start", line: "Eligibility and effort on screen one.",
+      how: "Before any login, a checklist shows what's needed: 6 or more rooms, owner ID, six landscape photos, about 10 minutes, progress saved as you go. A rooms stepper gives an instant yes, or “we'll save your details and tell you if this changes”.",
+      why: "Today an owner can type for ten minutes before learning they can't list. Bad news is cheaper the earlier it comes.",
+      fixes: ["O6", "O8"], screen: "start", today: 3, after: 9,
+      bench: { who: "Airbnb", kind: "Product", text: "Opens host onboarding with an earnings estimate and keeps a visible progress tracker through setup.", src: "https://www.lazyweb.com/canvas/flows/airbnb/onboarding" },
+      dep: "Product must agree the minimum-rooms rule is final." },
+    { id: "os2", icon: "▤", name: "Fields That Can't Lie", line: "Inline checks, required marks, GPS address.",
+      how: "The address pre-fills from GPS when the owner is at the property. Every field is checked as it's typed (6-digit PIN, letters in names), required fields carry a star, the OTP fills from SMS and Submit waits for four digits, a rate limit shows a countdown, and floors get 44-pt buttons and a cap.",
+      why: "Junk that enters a live listing costs OYO far more than the minute it saves. Catch it at the field, where fixing is cheapest.",
+      fixes: ["O1", "O2", "O3", "O4", "O5"], screen: "address", today: 2, after: 9,
+      bench: { who: "Banking and UPI apps", kind: "Pattern", text: "OTP auto-read, inline validation and retry countdowns; 44-pt minimum touch targets in Apple's guidance.", src: "https://www.nngroup.com/articles/ten-usability-heuristics/" },
+      dep: "PIN-code lookup and an SMS auto-read integration." },
+    { id: "os3", icon: "ID", name: "KYC That Checks", line: "A legal step that actually verifies.",
+      how: "The Aadhaar number is checked for format and checksum, the ID image is checked to be an ID card, and the name must match. A failed check says why and how to fix it. Verification should use consent-based routes such as offline e-KYC or DigiLocker, after legal review.",
+      why: "A mandatory legal step that accepts “Doremon Mishra” protects no one. This is a compliance risk before it is a UX problem.",
+      fixes: ["O9"], screen: "kyc", today: 2, after: 9,
+      bench: { who: "Uber; Booking.com", kind: "Product", text: "Documents pass explicit verification before activation; Booking.com requires a Know Your Partner form to stay bookable.", src: "https://developer.uber.com/docs/vehicles/platform-components/vehicle-onboarding" },
+      dep: "Legal review of how private platforms may verify Aadhaar-based identity." },
+    { id: "os4", icon: "●", name: "True Go-Live Tracker", line: "Saved, in review, live: each one real.",
+      how: "Success appears only after a confirmed save. The owner sees “Submitted for review” and a timeline: Saved, then a verification call within 2 working days, then Live. The listing stays editable, and if saving fails the owner sees an error with retry while the draft stays.",
+      why: "Confetti followed by an empty page is the worst ending the longest flow could have. A truthful “in review” beats a false “welcome aboard”.",
+      fixes: ["O10", "O11"], screen: "status", today: 1, after: 9,
+      bench: { who: "Uber", kind: "Product", text: "Partner status model (onboarding, onboarded, active, waitlisted, rejected), each with a last-updated time.", src: "https://developer.uber.com/docs/vehicles/references/api/v1/driver-management/get-compliance-info" },
+      dep: "A backend draft-saving and status model." },
+    { id: "os5", icon: "▣", name: "Honest Facilities & Photos", line: "Say what's missing; show the rules first.",
+      how: "Each facility is Available or Not available, with “Add another”. Installing missing must-haves becomes a clear checkbox with a 30-day window. Photo rules and examples come before upload, and duplicates and screenshots are flagged.",
+      why: "Accurate listings prevent “not as described” complaints later, and an owner should never commit to installations by tapping Next.",
+      fixes: ["O7", "O8"], screen: "photos", today: 4, after: 9,
+      bench: { who: "NN/g heuristics", kind: "Principle", text: "Show guidance before the action (#10) and let the user say what is true (#7).", src: "https://www.nngroup.com/articles/ten-usability-heuristics/" },
+      dep: "Duplicate-photo detection." }
+  ],
+  oSupport: [
+    { name: "Progress you can see", fixes: ["O10"], text: "A step counter on every screen and Edit links on the review page. Back and Next stay, because they already work." },
+    { name: "Review only valid data", fixes: ["O10"], text: "The review page can't be reached with junk, and no value is ever changed silently. Any cap is explained." },
+    { name: "Help that doesn't loop", fixes: ["O2"], text: "A retry time on rate limits, plus Login with Apple or a support callback." }
+  ],
+
+  // Short benchmark strings used in the issue tables (pages 5 and 6).
+  benchT: {
+    T1: ["Airbnb, Booking.com", "A few bottom tabs, not a long menu"],
+    T2: ["Airbnb", "Total price with fees in search results"],
+    T3: ["Airbnb, Booking.com", "House rules on the listing page, before booking"],
+    T4: ["Airbnb", "Browse and compare first; sign in only to book"],
+    T5: ["Airbnb", "Pending vs confirmed; refund or rebook if the host cancels"],
+    T6: ["Amazon", "Chat that escalates to an agent or a callback"],
+    T7: ["Swiggy, Zomato", "“Reorder” in one tap; recent searches in search"],
+    T8: ["Amazon, Flipkart", "Refund timeline that shows a date"]
+  },
+  benchO: {
+    O1: ["Banking and UPI apps", "OTP auto-read; button waits for 4 digits"],
+    O2: ["Banking apps", "“Try again in 15:00” countdown"],
+    O3: ["Food-delivery apps", "GPS pre-fills the address; edit after"],
+    O4: ["Checkout forms", "PIN lookup fills city and state; inline checks"],
+    O5: ["Apple, Material guidance", "44–48 px touch targets"],
+    O6: ["Airbnb", "Sets expectations before setup begins"],
+    O7: ["NN/g #7", "Say what is true: available or not"],
+    O8: ["NN/g #10", "Guidance and examples before the action"],
+    O9: ["Uber, Booking.com", "Document verification; Know Your Partner form"],
+    O10: ["Principle", "Never reach review with invalid data"],
+    O11: ["Uber", "Onboarding statuses with a last-updated time"]
+  },
+
+  // Why the design is shaped this way, in the author's voice (used on the solution pages).
+  designBeliefs: [
+    ["Trust before polish", "A smoother screen on top of a false status makes the lie more believable. So I fixed what the app says before how it looks."],
+    ["Put bad news early", "Eligibility, taxes and rules cost the user the most when they come last. I moved each to the first moment it matters."],
+    ["Only ask when needed", "Login at booking, OTP from SMS, details saved for next time. Each ask I removed is a drop-off I avoid."],
+    ["Same system on both sides", "Guests and owners lose trust at the same point, so one status language, one set of components and one tone serve both."]
+  ],
+
+  limits: "Guest-side findings rest on two observed screens, public reviews and published research; verify them with traveller screenshots and tests. Reviews are self-selected, so they show patterns to test, not measured frequency. Owner-side findings come from a manual walkthrough of the live app.",
+  bottom: "Guests and owners lose trust at the same moment: when the app's status isn't true. A “confirmed” room the desk refuses and a “welcome aboard” listing that vanishes are the same failure. Fix the status first, then the price, the rules and the shortcuts, and both sides of the marketplace get one smooth, trustworthy OYO. Every outcome here is a hypothesis until the tests on this page prove it."
+};
+</script>
+<script>
+const D = OYO, T = TRV, F = FINAL, PG = F.pages, N = PG.length, $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+// PDFs sit beside the page on Netlify and locally; anywhere else (claude.ai) they open from the public Netlify copy.
+const BASE = (location.protocol === "file:" || /netlify\.app$/.test(location.hostname)) ? "" : F.site;
+const RPT = p => `${BASE}${F.reportFile}#page=${p}`, DECKP = p => `${BASE}${F.deckFile}#page=${p}`;
+const GROUPS = [["Understand", [1, 2, 3], '<path d="M4 5h16M4 12h16M4 19h10"/>'], ["Diagnose", [4, 5, 6, 7], '<circle cx="11" cy="11" r="6"/><path d="m20 20-4.2-4.2M11 8v3l2 1"/>'], ["Solve", [8, 9], '<path d="M4 14l5 5L20 7"/>'], ["Prove", [10], '<path d="M5 20V10M12 20V4M19 20v-7"/>']];
+const groupOf = n => GROUPS.findIndex(g => g[1].includes(n));
+const sev = s => `<span class="sev sev${s}">${["", "1 Cosmetic", "2 Minor", "3 Major", "4 Catastrophe"][s]}</span>`;
+const ev = e => `<span class="ev e-${e}">${e}</span>`;
+const nid = s => { s = String(s); return /^\d+$/.test(s) ? "O" + s : s; };
+const id = s => { s = nid(s); return `<button class="id ${s[0]}" data-issue="${s}" aria-label="Open issue ${s}">${s}</button>`; };
+const idS = s => { s = nid(s); return `<span class="id ${s[0]}">${s}</span>`; };
+const TI = x => T.issues.find(i => i.id === x), OI = x => D.issues[+String(x).replace(/\D/g, "") - 1];
+const issue = x => { x = nid(x); if (x[0] === "T") { const i = TI(x); return { id: x, title: i.title, heur: i.heur, sev: i.sev, law: i.law }; } const i = OI(x); return { id: x, title: i.title, heur: i.heur, sev: i.sev, law: i.law }; };
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const S = { pg: 1, tmode: "first", ft: 0, rt: 0, own: 0, cx: 0, tap: true, toast: "", tfil: "all", ofil: "all", tsel: "ts1", osel: "os1" };
+
+// ---------- shell ----------
+const docsHTML = () => `<a class="doc" href="${BASE}${F.deckFile}" target="_blank" rel="noopener"><span class="ic">PDF</span><span><b>10-page deck</b><small>Clickable tabs on every page</small></span></a>
+<a class="doc" href="${BASE}${F.reportFile}" target="_blank" rel="noopener"><span class="ic">PDF</span><span><b>Detailed report</b><small>${F.rpTotal} pages · evidence and reasoning</small></span></a>
+<a class="doc" href="${F.site}" target="_blank" rel="noopener"><span class="ic live">WEB</span><span><b>Live site</b><small>${F.siteLabel}</small></span></a>`;
+const navHTML = () => GROUPS.map(g => `<div class="grp"><span>${g[0]}</span>${g[1].map(n => `<button class="nav-a" data-pg="${n}" ${n === S.pg ? 'aria-current="page"' : ""}><i>${n}</i><span><b>${PG[n - 1].name}</b><small>${PG[n - 1].q}</small></span></button>`).join("")}</div>`).join("");
+function shell() {
+  $("#sidenav").innerHTML = navHTML(); $("#sheetnav").innerHTML = navHTML();
+  const g = groupOf(S.pg);
+  $("#botbar").innerHTML = GROUPS.map((x, i) => `<button data-pg="${x[1][0]}" aria-current="${i === g}"><svg viewBox="0 0 24 24" aria-hidden="true">${x[2]}</svg>${x[0]}</button>`).join("") + `<button data-sheet="1"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/></svg>All pages</button>`;
+  $("#subtabs").innerHTML = GROUPS[g][1].map(n => `<button data-pg="${n}" ${n === S.pg ? 'aria-current="page"' : ""}>${n} · ${PG[n - 1].tab}</button>`).join("");
+  $("#toptitle").innerHTML = `<small>Page ${S.pg} of ${N} · ${PG[S.pg - 1].group}</small>${PG[S.pg - 1].name}`;
+  $("#progbar").style.width = (S.pg / N * 100) + "%"; $("#progtxt").textContent = `Page ${S.pg} of ${N}`;
+}
+$("#sidedocs").innerHTML = docsHTML(); $("#sheetdocs").innerHTML = docsHTML();
+const head = (n, title) => { const p = PG[n - 1]; return `<header class="phead"><div class="eyebrow"><span>Page ${n} of ${N}</span><span>${p.group}</span></div><h2>${title}</h2>
+<p class="ask"><b>This page answers</b><span>${p.q}</span></p><p class="deep">Deep dive: <a href="${RPT(String(p.rpt).match(/\d+/)[0])}" target="_blank" rel="noopener">detailed report, p. ${p.rpt}</a> · <a href="${DECKP(n)}" target="_blank" rel="noopener">deck page ${n}</a></p></header>`; };
+const pager = n => `<nav class="pager" aria-label="Page navigation"><button class="pv" data-pg="${n - 1}" ${n === 1 ? "disabled" : ""}><small>← Previous</small><b>${n > 1 ? PG[n - 2].name : ""}</b></button><span class="mid">Page ${n} of ${N}</span><button class="nx" data-pg="${n + 1}" ${n === N ? "disabled" : ""}><small>Next · page ${n + 1} →</small><b>${n < N ? PG[n].name : ""}</b></button></nav>`;
+const fill = (n, html) => { $("#content").innerHTML = `<article class="page" aria-labelledby="ph${n}">${html.replace("<h2>", `<h2 id="ph${n}">`)}${pager(n)}</article>`; };
+const tph = k => `<div class="ph" role="img" aria-label="Concept screen: ${TC.LABEL[k]}"><div class="s">${TC.C[k]()}</div></div>`;
+const oph = k => `<div class="ph" role="img" aria-label="Concept screen: ${CONCEPT.labels[k]}"><div class="s">${CONCEPT.C[k]()}</div></div>`;
+const shot = (s, alt) => `<div class="ph"><div class="s shot"><img src="shots/${s}.jpg" alt="${esc(alt)}" loading="lazy"></div></div>`;
+
+// ---------- 1 Start ----------
+function r1() {
+  const snap = JSON.stringify(TC.st); TC.st.booked = true;
+  const html = `<section class="hero" aria-label="Introduction"><div style="display:flex;flex-direction:column;gap:18px">
+<div class="eyebrow"><span>Page 1 of 10 · Start here</span><span>by ${F.author}</span></div>
+<h1>One smooth OYO for the guest who <em>books</em> and the owner who <em>lists</em></h1>
+<p>I followed three people through OYO's two most important flows: a first-time and a returning traveller booking a room, and an owner listing a hotel. I found 19 points of friction, traced them to one root cause, and redesigned both journeys around it.</p>
+<div class="stats">${F.glance.map(g => `<div><b>${g[0]}</b><span>${g[1]}</span></div>`).join("")}</div>
+<div class="cta"><button class="btn" data-pg="8">Try the guest prototype →</button><button class="btn" data-pg="9">Try the owner prototype →</button><button class="btn ghost" data-pg="2">Start the tour</button></div></div>
+<div class="duo" aria-hidden="true"><figure>${tph("f_confirmed")}<figcaption>Guest · hotel-confirmed status</figcaption></figure><figure>${oph("status")}<figcaption>Owner · honest go-live tracker</figcaption></figure></div></section>`;
+  Object.assign(TC.st, JSON.parse(snap));
+  fill(1, `<div class="sec" style="margin-top:4px">${html}</div>
+<div class="sec"><div class="card ink"><span class="lbl">The root cause</span><p style="font-size:19px;line-height:1.45">${F.rootCause}</p></div>
+<h3>My answer in three lines</h3><div class="answer">${F.answer.map((a, i) => `<div class="card"><b class="n">0${i + 1}</b><h4>${a[0]}</h4><p class="muted">${a[1]}</p></div>`).join("")}</div></div>
+<div class="sec"><h3>The ten pages</h3><p class="muted">Each page answers one question. Use the tabs, the search, or the Next button at the bottom.</p>
+<div class="tiles">${PG.map(p => `<button data-pg="${p.n}"><small>${p.group}</small><b>${p.n}</b><span>${p.name}</span><em>${p.q}</em></button>`).join("")}</div></div>
+<div class="sec"><h3>Documents</h3><div class="pdfs">
+<a class="pdf" href="${BASE}${F.deckFile}" target="_blank" rel="noopener"><span class="ic">PDF</span><span><b>10-page deck</b><span>The story in ten pages. Every page has clickable tabs, a link back here, and a pointer to its deep dive.</span></span></a>
+<a class="pdf" href="${BASE}${F.reportFile}" target="_blank" rel="noopener"><span class="ic">PDF</span><span><b>Detailed report · ${F.rpTotal} pages</b><span>Evidence, every issue in full, benchmarks, how each feature works and why, and the test plan.</span></span></a>
+<a class="pdf" href="${F.site}" target="_blank" rel="noopener"><span class="ic live">WEB</span><span><b>Live site</b><span>${F.siteLabel}, the same prototype on its own address.</span></span></a></div>
+<p class="muted" style="font-size:13.5px">${F.disclaimer}</p></div>`);
+}
+
+// ---------- 2 Users ----------
+function r2() {
+  const PC = { first: ["var(--guest)", "FT"], returning: ["#5b7fe0", "RT"], owner: ["var(--owner)", "OW"] };
+  fill(2, `${head(2, "A two-sided marketplace runs on <em>trust</em>")}
+<div class="sec"><p class="lead">Travellers book stays; independent owners list hotels for OYO to fill. Without listings there is nothing to book, and without trusted bookings owners get no guests. So I evaluated one critical flow on each side, through three people.</p>
+<div class="g3">${["first", "returning", "owner"].map(k => { const p = T.personas[k]; return `<div class="card per" style="--c:${PC[k][0]}"><div class="row" style="gap:12px"><span class="av">${PC[k][1]}</span><h4>${p.label}</h4></div>
+<dl class="kv"><dt>Who</dt><dd>${p.who}</dd><dt>Goal</dt><dd><b>${p.goal}</b></dd><dt>Worries</dt><dd class="muted">${p.fear}</dd><dt>Journey</dt><dd class="muted" style="font-size:14px">${T.journeys[k].join(" → ")}</dd></dl></div>`; }).join("")}</div></div>
+<div class="sec"><div class="g2"><div class="card soft"><span class="lbl" style="color:var(--guest)">Flow 1 · Booking a room</span><p>From opening the app to checking in (first-time), and rebooking, cancelling and getting a refund (returning).</p><p><b>Why this flow:</b> booking is where OYO earns trust or loses a customer. The first booking sets the habit; the returning guest decides whether to stay loyal.</p></div>
+<div class="card soft"><span class="lbl" style="color:var(--owner)">Flow 2 · Listing a property</span><p>From “Onboard as a partner” through login, address, details, photos and KYC to publishing.</p><p><b>Why this flow:</b> it is the longest, highest-stakes owner journey (ID, address, photos). A failed listing loses a supply partner.</p></div></div>
+<div class="card"><h4>How I evaluated</h4><ul class="t"><li><b>Owner:</b> manual walkthrough of the live app with real and deliberately invalid input, 14 screenshots.</li><li><b>Traveller:</b> 2 observed screens plus OYO reviews, complaint sites and published booking-UX research.</li><li><b>Lenses:</b> Nielsen's 10 heuristics, four UX laws, NN/g severity 0–4, and best-in-class teardowns (Airbnb, Booking.com, Uber).</li></ul>
+<div class="row">${[4, 3, 2, 1].map(sev).join("")}${ev("Observed")}${ev("Research")}${ev("Hypothesis")}</div></div></div>`);
+}
+
+// ---------- 3 Journey map ----------
+function r3() {
+  const lowSet = new Set(["T5", "O11"]), C = { first: "var(--guest)", returning: "#5b7fe0", owner: "var(--owner)" };
+  fill(3, `${head(3, "Every step in order, with the issue <em>found there</em>")}
+<div class="sec"><p class="muted">Read each row left to right. Tap a step to open it in the prototype; tap an issue chip to read it in full.</p>
+${V3.journeys.map(j => `<div class="lane"><div class="nm" style="--c:${C[j.key]}"><b>${j.name}</b><span>${j.steps.length} steps · ${j.steps.reduce((a, s) => a + s[1].length, 0)} issues</span></div>
+<div class="steps" style="grid-template-columns:repeat(${j.steps.length},minmax(96px,1fr))">${j.steps.map((s, i) => { const m = s[1].length ? Math.max(...s[1].map(x => issue(x).sev)) : 0;
+  return `<div class="st ${m ? "m" + m : ""}" role="button" tabindex="0" data-jump="${j.key}:${i}" aria-label="${j.name}, step ${i + 1}: ${s[0]}">${s[1].some(x => lowSet.has(x)) ? `<span class="low">Lowest point</span>` : ""}<span class="n">STEP ${i + 1}</span><b>${s[0]}</b><span class="iss">${s[1].map(x => `<span>${idS(x)}${V3.short[x]}</span>`).join("") || `<span style="color:var(--ok)">✓ works</span>`}</span></div>`; }).join("")}</div></div>`).join("")}
+<div class="legend"><span><i style="background:var(--ok)"></i>step works</span><span><i style="background:var(--s2)"></i>minor</span><span><i style="background:var(--s3)"></i>major</span><span><i style="background:var(--s4)"></i>catastrophe</span><span>${idS("T1")} guest issue</span><span>${idS("O1")} owner issue</span></div>
+<div class="card ink"><span class="lbl">The pattern</span><p>On both sides the lowest point is the <b>end</b> of the journey: a booking refused at the desk (T5) and a listing that vanishes after “Welcome Aboard” (O11). That is exactly the moment people remember most.</p></div></div>`);
+}
+
+// ---------- 4 Current experience ----------
+const OWN = [
+ { shot: "s01_menu", step: 1, cap: "The side menu, used by everyone. 11 equal items (T1); “Onboard as a partner” sits at the bottom.", iss: ["T1"], hot: [{ x: 2, y: 92.5, w: 70, h: 5.5, tip: "Onboard as a partner" }] },
+ { shot: "s02_partner", step: 1, cap: "Partner page. “Need help?” and “Register Now” open the same form.", iss: [], hot: [{ x: 8, y: 83, w: 84, h: 10, tip: "Register Now" }, { x: 8, y: 64, w: 84, h: 10, tip: "Need help? (same form)" }] },
+ { shot: "s04_otp", step: 2, cap: "Submit works with empty boxes and returns “ERR-INC-843-9”.", iss: ["O1"], hot: [{ x: 3, y: 93, w: 94, h: 5, tip: "Submit" }] },
+ { shot: "s03_login", step: 2, cap: "After a few tries: “Rate Limit Exceeded”, with no time to retry.", iss: ["O2"], hot: [{ x: 3, y: 34.5, w: 94, h: 5.5, tip: "Continue" }] },
+ { shot: "s05_address_search", step: 3, cap: "After “Yes, I'm at my property”, the owner still searches or types.", iss: ["O3"], hot: [{ x: 2, y: 39.5, w: 52, h: 4, tip: "Enter the address manually" }, { x: 50, y: 91, w: 47, h: 5.5, tip: "Next" }] },
+ { shot: "s06_address_form", step: 4, cap: "Accepts “@” and “67&£4”; nothing is marked required.", iss: ["O4"], hot: [{ x: 50, y: 91, w: 47, h: 5.5, tip: "Confirm Address" }] },
+ { shot: "s07_property_info", step: 5, cap: "Floors clipped to “10(”; the 6-room rule appears only after Continue.", iss: ["O5", "O6"], hot: [{ x: 50, y: 91, w: 47, h: 5.5, tip: "Continue" }] },
+ { shot: "s08_facilities", step: 6, cap: "Fixed must-have list; tapping Next means agreeing to install.", iss: ["O7"], hot: [{ x: 50, y: 91, w: 47, h: 5.5, tip: "Next" }] },
+ { shot: "s09_photos", step: 7, cap: "Six identical images pass; rules hide behind the bulb icon.", iss: ["O8"], hot: [{ x: 50, y: 91, w: 47, h: 5.5, tip: "Next" }] },
+ { shot: "s10_kyc", step: 8, cap: "A fake name, an invalid Aadhaar number and map images are accepted.", iss: ["O9"], hot: [{ x: 50, y: 91, w: 47, h: 5.5, tip: "Continue" }] },
+ { shot: "s11_review", step: 9, cap: "Junk shown as valid; 100 floors the owner never chose.", iss: ["O10"], hot: [{ x: 50, y: 91, w: 47, h: 5.5, tip: "Confirm" }] },
+ { shot: "s12_welcome", step: 10, cap: "Confetti: “Welcome Aboard!”", iss: ["O11"], hot: [{ x: 3, y: 91, w: 47, h: 5.5, tip: "View Properties" }] },
+ { shot: "s13_listed", step: 10, cap: "Listed (1) appears briefly, and can't be edited.", iss: ["O11"], hot: [{ x: 3, y: 36, w: 94, h: 14, tip: "Open listing" }] },
+ { shot: "s14_empty", step: 10, cap: "Moments later: Listed (0), “It's empty!”", iss: ["O11"], hot: [{ x: 3, y: 40, w: 94, h: 20, tip: "Where did it go?", end: 1 }] }
+];
+function r4() { const s = OWN[S.own];
+  fill(4, `${head(4, "What the app shows today, and what travellers <em>report</em>")}
+<div class="sec"><p class="muted">Tap through the owner's real screens from the live app (personal data blacked out). Tap the highlighted area on the phone to move on, just as the owner would.</p>
+<div class="stepper" role="group" aria-label="Owner steps">${D.steps.map(st => `<button data-ostep="${st.n}" ${s.step === st.n ? 'aria-current="step"' : ""}><small>STEP ${st.n}</small>${st.name}</button>`).join("")}</div>
+<div class="stage"><div class="phonewrap"><div class="ph"><div class="s shot ${S.tap ? "showhs" : ""}"><img src="shots/${s.shot}.jpg" alt="Current OYO owner screen: ${esc(D.steps[s.step - 1].name)}">${s.hot.map((h, k) => `<button class="hs" aria-label="${esc(h.tip)}" title="${esc(h.tip)}" style="left:${h.x}%;top:${h.y}%;width:${h.w}%;height:${h.h}%" data-ohot="${k}"></button>`).join("")}${S.toast ? `<div class="toast" role="status">${S.toast}</div>` : ""}</div></div></div>
+<div class="side2"><div class="eyebrow"><span>Screen ${S.own + 1} of ${OWN.length}</span><span>Owner · ${D.steps[s.step - 1].name}</span></div><h3>${D.steps[s.step - 1].name}</h3><p class="lead" style="font-size:16.5px">${s.cap}</p>
+${s.iss.map(x => { const i = issue(x); return `<div class="note">${id(x)}<div><b>${i.title}</b><small>${i.heur}${i.law ? " · " + i.law : ""}</small><div class="row" style="margin-top:6px">${sev(i.sev)}${ev(x[0] === "T" ? TI(x).ev : "Observed")}</div></div></div>`; }).join("") || `<div class="note"><div><b>No issue on this screen</b><small>It works; I keep it.</small></div></div>`}
+<label class="chk"><input type="checkbox" id="tap" ${S.tap ? "checked" : ""}> Highlight tap targets</label>
+<div class="row"><button class="btn" id="oback" ${S.own === 0 ? "disabled" : ""}>Back</button><button class="btn p" id="onext" ${S.own === OWN.length - 1 ? "disabled" : ""}>Next screen</button><button class="btn" id="orestart">Restart</button></div></div></div></div>
+<div class="sec"><div class="g3"><div class="card"><div class="row"><h4>What travellers report</h4>${ev("Research")}</div><ul class="t" style="font-size:15px"><li>${idS("T2")} ${idS("T3")} Taxes added late; ID and couple rules sit in FAQs (Travolution, Baymard, OYO pages).</li><li>${idS("T5")} “Confirmed”, then refused or charged again at the desk (Trustpilot, App Store).</li><li>${idS("T8")} Refunds of “7 to 14 working days”, chased for 30+ days (ConsumerComplaints.in).</li><li>${idS("T6")} Support chat loops (also observed).</li></ul></div>
+<div class="card good"><h4 style="color:var(--ok)">What already works: keep it</h4><ul class="t" style="font-size:15px">${D.strengths.map(x => `<li>${x[0]}</li>`).join("")}</ul></div>
+<div class="card ink"><span class="lbl">The shared root cause</span><p style="font-size:17px">${F.rootCause}</p></div></div></div>`); }
+
+// ---------- 5 / 6 issues ----------
+const filt = (key, cur) => `<div class="filters" role="group" aria-label="Filter by severity">${[["all", "All"], ["4", "Catastrophe"], ["3", "Major"], ["2", "Minor"]].map(f => `<button data-${key}="${f[0]}" aria-pressed="${cur === f[0]}">${f[1]}</button>`).join("")}</div>`;
+function r5() { const list = T.issues.filter(x => S.tfil === "all" || String(x.sev) === S.tfil);
+  fill(5, `${head(5, "Guests can't see the full price, the rules or the <em>real status</em>")}
+<div class="sec"><p class="muted">T1–T6 come from the first-time journey, T7–T8 from the returning journey. Severities are provisional: they rest on research and two observed screens.</p>${filt("tfil", S.tfil)}
+${list.map(x => { const b = F.benchT[x.id]; return `<article class="icard" id="${x.id}">${x.shot ? `<div class="th">${shot(x.shot, "Current OYO screen, evidence for " + x.id)}</div>` : `<div class="noev">${ev(x.ev)}<span>No traveller screenshot. Based on ${x.ev === "Research" ? "reviews and UX research" : "a related owner observation and research"}.</span></div>`}
+<div style="min-width:0"><h3>${idS(x.id)}${x.title}</h3><div class="row" style="margin-top:10px">${sev(x.sev)}${ev(x.ev)}${x.law ? `<span class="law">${x.law}</span>` : ""}<span class="muted" style="font-size:14px">${x.flow} · ${x.stage}</span></div>
+<dl class="kv2"><div><dt>What we know</dt><dd>${x.seen}</dd><dt>Why it matters</dt><dd>${x.why}</dd></div><div><dt>Heuristic violated</dt><dd><b>${x.heur}</b></dd><dt class="r">How to improve</dt><dd><ul class="t">${x.fix.map(f => `<li>${f}</li>`).join("")}</ul></dd><dt class="g">What 10/10 looks like</dt><dd class="bm"><b>${b[0]}:</b> ${b[1]}</dd>${x.src.length ? `<dt>Sources</dt><dd>${x.src.map(s => `<a href="${s[1]}" target="_blank" rel="noopener">${s[0]}</a>`).join(" · ")}</dd>` : ""}</div></dl>
+<div class="row" style="margin-top:14px"><button class="btn p" data-seefix="${x.id}">See the fix in the prototype →</button></div></div></article>`; }).join("") || `<p class="muted">No issues at this severity.</p>`}</div>`); }
+function r6() { const list = D.issues.filter(i => S.ofil === "all" || String(i.sev) === S.ofil);
+  fill(6, `${head(6, "Owners can enter anything, and still <em>lose the listing</em>")}
+<div class="sec"><p class="muted">All 11 were observed in the live app.</p>${filt("ofil", S.ofil)}
+${list.map(i => { const b = F.benchO["O" + i.n]; return `<article class="icard" id="O${i.n}"><div class="th">${shot(i.shot, "Current OYO owner screen, evidence for O" + i.n)}</div><div style="min-width:0"><h3>${idS(i.n)}${i.title}</h3>
+<div class="row" style="margin-top:10px">${sev(i.sev)}${ev("Observed")}${i.law ? `<span class="law">${i.law}</span>` : ""}<span class="muted" style="font-size:14px">Step: ${D.steps[i.step - 1].name}</span></div>
+<dl class="kv2"><div><dt>What happens</dt><dd>${i.seen}</dd><dt>Why it matters</dt><dd>${i.why}</dd></div><div><dt>Heuristic violated</dt><dd><b>${i.heur}</b></dd><dt class="r">How to improve</dt><dd><ul class="t">${i.fix.map(f => `<li>${f}</li>`).join("")}</ul></dd><dt class="g">What 10/10 looks like</dt><dd class="bm"><b>${b[0]}:</b> ${b[1]}</dd></div></dl>
+<div class="row" style="margin-top:14px"><button class="btn" data-openshot="${i.shot}">See it in the app</button><button class="btn p" data-openfix="${i.n}">See the fix in the prototype →</button></div></div></article>`; }).join("") || `<p class="muted">No issues at this severity.</p>`}</div>`); }
+
+// ---------- 7 laws ----------
+function r7() { const LP = { "Hick's Law": ["r_home", "s05_address_search"], "Jakob's Law": ["f_verify", "s04_otp"], "Fitts's Law": ["f_hotel", "s07_property_info"], "Peak–End Rule": ["f_confirmed", "s14_empty"] };
+  fill(7, `${head(7, "The same four laws explain friction <em>on both sides</em>")}
+<div class="sec"><div class="g2">${T.laws.map(l => `<div class="card lawc"><h4 style="font-size:24px">${l.law}</h4><p class="rule">${l.rule}</p>
+<div class="sd tv"><span class="lbl" style="color:var(--guest);display:block;margin-bottom:4px">Guest</span>${l.trav[0] === "Applied" ? "" : id(l.trav[0]) + " "}${l.trav[1]}</div>
+<div class="sd ow"><span class="lbl" style="color:var(--owner);display:block;margin-bottom:4px">Owner</span>${id(l.own[0])} ${l.own[1]}</div>
+<div class="row" style="justify-content:center;gap:12px;padding:6px 0">${tph(LP[l.law][0])}${shot(LP[l.law][1], "Current OYO screen for " + l.law)}</div>
+<p style="border-top:1.5px solid var(--ink);padding-top:10px"><b>My change:</b> ${l.change}</p></div>`).join("")}</div>
+<p class="muted">Fitts's Law is also <b>followed</b> today: full-width primary buttons sit at the bottom of the owner screens, within thumb reach.</p></div>`); }
+
+// ---------- 8 guest solution ----------
+const NOTE = {
+  f_welcome: "No login wall. The promise on screen one is the audit's fixes: full price, rules before paying, help at check-in.", f_search: "Three essentials in one card. Guests use a 44-pt stepper.",
+  f_results: "Totals include taxes on every card. Rule filters (couples, local ID, pay at hotel) answer a first-timer's biggest worries. Try the filters.", f_hotel: "“Before you book” shows ID, couple and check-in rules. The sticky total updates with the room you pick.",
+  f_verify: "Login is asked only at booking, and the OTP fills itself. Tap “Send code”.", f_review: "One screen: stay, guest, payment and an open price breakdown. The button names the exact amount.",
+  f_confirmed: "“Hotel confirmed” is its own status, and the guest is told they never pay more at the desk.", f_checkin: "If the desk says no, one tap starts a fix: OYO calls the hotel, moves the guest or refunds.",
+  r_home: "Upcoming stay, recent searches and Book again on the home screen; four clear tabs replace the 11-item menu.", r_again: "Same room, saved guest and saved UPI. Dates and payment can still be changed.",
+  r_confirmed: "One tap to book, with the same honest status timeline.", r_manage: "Trips show status, modify, invoice and cancel in one place.",
+  r_cancel: "Refund amount, destination and date are shown before cancelling.", r_refund: "A tracker with dates and a bank reference, plus a human agent if it's late.", r_rate: "Rating closes the loop on a good ending (Peak–End)."
+};
+const standCard = (s, c, sel, key) => `<button class="sc" style="--c:${c}" data-${key}="${s.id}" aria-pressed="${sel === s.id}"><span class="hd"><span class="ic">${s.icon}</span><h4>${s.name}</h4></span><span class="ln">${s.line}</span><span class="why">${s.why}</span>
+<span class="ref"><b>10/10 reference · ${s.bench.who}</b>${s.bench.text}</span><span class="row">${s.fixes.map(idS).join("")}</span>
+<span class="score" aria-label="Rating today ${s.today} of 10, after ${s.after} of 10"><span>Today ${s.today}</span><i style="--w:${s.today * 10}%;--f:var(--s1)"></i><span style="color:${c}">After ${s.after}</span><i style="--w:${s.after * 10}%;--f:${c}"></i></span></button>`;
+const detail = (s, c) => `<div class="detail" style="--c:${c}"><h4>${s.name} <span class="muted" style="font:italic 400 20px var(--serif)">· ${s.line}</span></h4>
+<dl><dt>How it works</dt><dd>${s.how}</dd><dt class="r">Why I built it this way</dt><dd>${s.why}</dd></dl>
+<dl><dt class="g">10/10 reference · ${s.bench.kind}</dt><dd><b>${s.bench.who}:</b> ${s.bench.text}${s.bench.src ? ` <a href="${s.bench.src}" target="_blank" rel="noopener">Source</a>` : ""}</dd><dt>Depends on</dt><dd class="muted">${s.dep}</dd><dt>Fixes</dt><dd class="row">${s.fixes.map(x => id(x)).join("")}</dd></dl></div>`;
+function r8() { const first = S.tmode === "first", list = first ? TC.FIRST : TC.RET, i = first ? S.ft : S.rt, k = list[i], P = T.personas[S.tmode], sel = F.tStand.find(s => s.id === S.tsel);
+  fill(8, `${head(8, "Book with the full price and rules in view; <em>rebook in one tap</em>")}
+<div class="sec"><p class="muted">A clickable concept with sample data, not OYO's screens. Everything on the phone works: filters, rooms, OTP, payment, cancel and rating.</p>
+<div class="seg" role="group" aria-label="Journey"><button aria-pressed="${first}" data-tmode="first">First-time guest · 8 screens</button><button aria-pressed="${!first}" data-tmode="returning">Returning guest · 7 screens</button></div>
+<div class="stepper" role="group" aria-label="${P.label} steps">${list.map((key, n) => `<button data-tgo="${n}" ${n === i ? 'aria-current="step"' : ""}><small>STEP ${n + 1}</small>${TC.LABEL[key].replace(" (returning)", "")}</button>`).join("")}</div>
+<div class="stage"><div class="phonewrap"><div class="ph"><div class="s" id="tscr">${TC.C[k]()}${S.toast ? `<div class="toast" role="status">${S.toast}</div>` : ""}</div></div></div>
+<div class="side2"><div class="eyebrow"><span>${P.label} · step ${i + 1} of ${list.length}</span><span>${ev("Concept")}</span></div><h3>${TC.LABEL[k].replace(" (returning)", "")}</h3><p class="lead" style="font-size:16.5px">${NOTE[k]}</p>
+${TC.FIX[k].map(x => { const it = TI(x); return `<div class="note">${id(x)}<div><b>Fixes ${x}: ${it.title}</b><small>${it.heur}${it.law ? " · " + it.law : ""}</small></div></div>`; }).join("")}
+<div class="row"><button class="btn" id="tback" ${i === 0 ? "disabled" : ""}>Back</button><button class="btn p" id="tnext" ${i === list.length - 1 ? "disabled" : ""}>Next screen</button><button class="btn" id="trestart">Restart</button></div></div></div></div>
+<div class="sec"><h3>Five standout features, and why I built them</h3><p class="muted">Tap a feature to see how it works and open its screen on the phone. Ratings are mine: 10 is the best pattern I found in public teardowns.</p>
+<div class="stand">${F.tStand.map(s => standCard(s, "var(--guest)", S.tsel, "tsel")).join("")}</div>${detail(sel, "var(--guest)")}
+<div class="g3">${F.tSupport.map(s => `<div class="card soft"><h4>${s.name} ${s.fixes.map(idS).join("")}</h4><p class="muted">${s.text}</p></div>`).join("")}</div></div>`); }
+
+// ---------- 9 owner solution ----------
+const OTIP = { start: "Try it: set rooms below 6 to see the eligibility message.", address: "Try it: tap “Fix fields (demo)” and Confirm unlocks.", info: "Try it: the steppers are 44 pt and capped." };
+function r9() { const k = CONCEPT.order[S.cx], sel = F.oStand.find(s => s.id === S.osel);
+  fill(9, `${head(9, "List once, correctly, and know the <em>real status</em>")}
+<div class="sec"><p class="muted">The listing flow with every fix applied. A clickable concept with sample data, not OYO's screens.</p>
+<div class="stepper" role="group" aria-label="Owner concept steps">${CONCEPT.order.map((key, n) => `<button data-cxgo="${n}" ${S.cx === n ? 'aria-current="step"' : ""}><small>STEP ${n + 1}</small>${CONCEPT.labels[key]}</button>`).join("")}</div>
+<div class="stage"><div class="phonewrap"><div class="ph"><div class="s" id="cscr">${CONCEPT.C[k]()}${S.toast ? `<div class="toast" role="status">${S.toast}</div>` : ""}</div></div></div>
+<div class="side2"><div class="eyebrow"><span>Owner · step ${S.cx + 1} of ${CONCEPT.order.length}</span><span>${ev("Concept")}</span></div><h3>${CONCEPT.labels[k]}</h3>
+${CONCEPT.fixes[k].map(f => { const i = D.issues[f - 1]; return `<div class="note">${id(f)}<div><b>Fixes O${f}: ${i.title}</b><small>${i.fix.join("; ")}.</small></div></div>`; }).join("")}
+<p class="muted">${OTIP[k] || "Tap the red button on the phone to continue."}</p>
+<div class="row"><button class="btn" id="cback" ${S.cx === 0 ? "disabled" : ""}>Back</button><button class="btn p" id="cnext" ${S.cx === CONCEPT.order.length - 1 ? "disabled" : ""}>Next screen</button><button class="btn" id="crestart">Restart</button></div></div></div></div>
+<div class="sec"><h3>Five standout features, and why I built them</h3><p class="muted">Tap a feature to see how it works and open its screen on the phone.</p>
+<div class="stand">${F.oStand.map(s => standCard(s, "var(--owner)", S.osel, "osel")).join("")}</div>${detail(sel, "var(--owner)")}</div>
+<div class="sec"><h3>Why the whole design is shaped this way</h3><div class="g2">${F.designBeliefs.map(b => `<div class="card"><h4>${b[0]}</h4><p class="muted">${b[1]}</p></div>`).join("")}</div>
+<h3>One design system for both sides</h3><div class="g3">${T.principles.map(p => `<div class="card soft"><h4>${p[0]}</h4><p class="muted">${p[1]}</p></div>`).join("")}</div></div>`); }
+
+// ---------- 10 plan ----------
+function r10() { const ord = a => a.slice().sort((x, y) => ((x[0] === "T" ? 0 : 100) + +x.replace(/\D/g, "")) - ((y[0] === "T" ? 0 : 100) + +y.replace(/\D/g, "")));
+  const brow = (s, side, c) => `<tr><td><b>${s.name}</b><br><span class="muted" style="font-size:13px">${side}</span></td><td style="font-variant-numeric:tabular-nums">${s.today} → <b style="color:${c}">${s.after}</b></td><td><b>${s.bench.who}</b> · ${s.bench.text}</td><td>${s.fixes.map(id).join(" ")}</td></tr>`;
+  fill(10, `${head(10, "Make every status true first, <em>then remove friction</em>")}
+<div class="sec"><div class="tw"><table><thead><tr><th>Priority</th><th>Theme</th><th>For</th><th>Issues</th><th>Why</th></tr></thead><tbody>${T.priorities.map(p => `<tr><td><span class="ptag ${p.p}">${p.p}</span></td><td><b>${p.theme}</b></td><td>${p.who}</td><td><span class="row">${ord(p.items).map(id).join("")}</span></td><td>${p.why}</td></tr>`).join("")}</tbody></table></div>
+<p class="muted"><b style="color:var(--ink)">How I ranked:</b> severity × people affected × risk to OYO (money, stays, listings, legal), weighed against effort. P1 loses money or trust outright; P3 is friction, not failure.</p>
+<h3>Release order</h3><div class="seq">${[["Truth", "Save listings before success; hotel-confirmed status", ["T5", "O11"]], ["Clarity", "Totals and rules before paying; validate owner inputs", ["T2", "T3", "O4", "O9"]], ["Recovery", "Refund tracker; support with a human", ["T8", "T6"]], ["Speed", "Book again, login at booking, owner rules up front", ["T7", "T4", "O6"]], ["Polish", "Menu and control fixes", ["T1", "O5"]]].map((s, i) => `<div><small>STEP ${i + 1}</small><b>${s[0]}</b><span>${s[1]}</span><span class="row" style="margin-top:4px">${s[2].map(idS).join("")}</span></div>`).join("")}</div></div>
+<div class="sec"><h3>Benchmark scorecard</h3><p class="muted">${F.scoreNote}</p><div class="tw"><table><thead><tr><th>Feature</th><th>Score</th><th>10/10 reference</th><th>Fixes</th></tr></thead><tbody>${F.tStand.map(s => brow(s, "Guest", "var(--guest)")).join("")}${F.oStand.map(s => brow(s, "Owner", "var(--owner)")).join("")}</tbody></table></div></div>
+<div class="sec"><div class="g3"><div class="card"><h4>Guest metrics</h4><ul class="t">${T.metrics.trav.map(m => `<li>${m}</li>`).join("")}</ul></div><div class="card"><h4>Owner metrics</h4><ul class="t">${T.metrics.own.map(m => `<li>${m}</li>`).join("")}</ul></div><div class="card"><h4>Guardrails</h4><ul class="t">${T.metrics.guard.map(m => `<li>${m}</li>`).join("")}</ul></div></div>
+<div class="tw"><table><thead><tr><th>Who (moderated, think-aloud)</th><th>Task</th><th>Success looks like</th></tr></thead><tbody>${T.tests.map(t => `<tr><td><b>${t.who}</b></td><td>${t.task}</td><td>${t.look}</td></tr>`).join("")}</tbody></table></div>
+<div class="card ink"><span class="lbl">Bottom line</span><p style="font-size:18px">${F.bottom}</p></div>
+<div class="card"><h4>Research sources</h4><ul class="t">${T.sources.map(s => `<li><a href="${s[1]}" target="_blank" rel="noopener">${s[0]}</a></li>`).join("")}</ul></div></div>`); }
+
+// ---------- routing & interaction ----------
+const R = [null, r1, r2, r3, r4, r5, r6, r7, r8, r9, r10];
+function render() { R[S.pg](); }
+function go(n, opt = {}) { n = Math.max(1, Math.min(N, +n)); const changed = n !== S.pg; S.pg = n; S.toast = ""; render(); shell(); closeSheet();
+  try { history.replaceState(null, "", "#p" + n); } catch (e) {}
+  try { localStorage.setItem("oyo-pg", String(n)); } catch (e) {}
+  if (opt.anchor) { const el = document.getElementById(opt.anchor); if (el) { el.scrollIntoView({ block: "start" }); el.classList.add("flash"); setTimeout(() => el.classList.remove("flash"), 1800); return; } }
+  if (changed || opt.top) { window.scrollTo(0, 0); $("#content").focus({ preventScroll: true }); } }
+let tt; function flash(m) { S.toast = m; render(); clearTimeout(tt); tt = setTimeout(() => { S.toast = ""; render(); }, 2600); }
+function tx(cmd) { const st = TC.st, [a, b] = cmd.split(":"), first = S.tmode === "first", list = first ? TC.FIRST : TC.RET;
+  const setI = v => { if (S.tmode === "first") S.ft = v; else S.rt = v; }, cur = first ? S.ft : S.rt;
+  const goKey = key => { if (TC.FIRST.includes(key)) { S.tmode = "first"; S.ft = TC.FIRST.indexOf(key); } else { S.tmode = "returning"; S.rt = TC.RET.indexOf(key); } r8(); };
+  if (a === "next") { setI(Math.min(list.length - 1, cur + 1)); return r8(); } if (a === "prev") { setI(Math.max(0, cur - 1)); return r8(); }
+  if (a === "go") { if (b === "r_home" && first) st.booked = true; return goKey(b); }
+  if (a === "g-") { st.guests = Math.max(1, st.guests - 1); return r8(); } if (a === "g+") { st.guests = Math.min(3, st.guests + 1); return r8(); }
+  if (a === "f") { st.f[b] = !st.f[b]; return r8(); }
+  if (a === "hotel") { st.hotel = +b; st.room = 0; if (!TC.H[st.hotel].pay) st.pay = "now"; return goKey("f_hotel"); }
+  if (a === "room") { st.room = +b; return r8(); } if (a === "otp") { st.verified = true; return r8(); } if (a === "pay") { st.pay = b; return r8(); } if (a === "bill") { st.open = !st.open; return r8(); }
+  if (a === "confirm") { st.booked = true; return goKey("f_confirmed"); }
+  if (a === "help") return flash(["Calling the hotel for you now (demo).", "Your total is fixed. Show this screen at the desk (demo).", "Finding a nearby OYO, or refunding in full (demo)."][+b]);
+  if (a === "upi") { st.upi = !st.upi; return r8(); } if (a === "rbook") { st.booked = true; st.cancelled = false; return goKey("r_confirmed"); }
+  if (a === "rcancel") { st.cancelled = true; return goKey("r_refund"); } if (a === "agent") return flash("Connecting you to an agent. Average wait 2 min (demo).");
+  if (a === "star") { st.rating = +b; st.rated = false; return r8(); } if (a === "rate") { st.rated = true; return r8(); } }
+const screenForT = key => { if (TC.FIRST.includes(key)) { S.tmode = "first"; S.ft = TC.FIRST.indexOf(key); } else { S.tmode = "returning"; S.rt = TC.RET.indexOf(key); } };
+function openIssue(x) { x = nid(x); go(x[0] === "T" ? 5 : 6, { anchor: x }); if (!document.getElementById(x)) { if (x[0] === "T") S.tfil = "all"; else S.ofil = "all"; go(x[0] === "T" ? 5 : 6, { anchor: x }); } }
+
+document.addEventListener("click", e => {
+  const t = e.target.closest("button,a,[data-tx],[data-jump]"); if (!t) return; const d = t.dataset;
+  if (t.tagName === "A" && d.pg) { e.preventDefault(); return go(d.pg, { top: true }); }
+  if (d.tx) return tx(d.tx);
+  if (d.issue) return openIssue(d.issue);
+  if (d.pg) return go(d.pg, { top: true });
+  if (d.sheet) return openSheet();
+  if (d.jump) { const [j, n] = d.jump.split(":"); if (j === "owner") { S.own = Math.max(0, OWN.findIndex(o => o.step === +n + 1)); return go(4); } S.tmode = j; if (j === "first") S.ft = +n; else S.rt = +n; return go(8); }
+  if (d.ostep) { S.own = OWN.findIndex(o => o.step === +d.ostep); S.toast = ""; return r4(); }
+  if (d.ohot !== undefined) { const h = OWN[S.own].hot[+d.ohot]; if (h.end) return flash("End of the observed flow: the listing is gone, with no error and no way to recover it."); S.own = Math.min(OWN.length - 1, S.own + 1); S.toast = ""; return r4(); }
+  if (t.id === "oback") { S.own = Math.max(0, S.own - 1); return r4(); } if (t.id === "onext") { S.own = Math.min(OWN.length - 1, S.own + 1); return r4(); } if (t.id === "orestart") { S.own = 0; return r4(); }
+  if (d.tfil) { S.tfil = d.tfil; return r5(); } if (d.ofil) { S.ofil = d.ofil; return r6(); }
+  if (d.tmode) { S.tmode = d.tmode; S.toast = ""; return r8(); }
+  if (d.tgo !== undefined) { if (S.tmode === "first") S.ft = +d.tgo; else S.rt = +d.tgo; return r8(); }
+  if (t.id === "tback") return tx("prev"); if (t.id === "tnext") return tx("next");
+  if (t.id === "trestart") { TC.reset(); if (S.tmode === "first") S.ft = 0; else S.rt = 0; return r8(); }
+  if (d.tsel) { S.tsel = d.tsel; screenForT(F.tStand.find(s => s.id === d.tsel).screen); r8(); $(".phonewrap").scrollIntoView({ block: "nearest" }); return; }
+  if (d.osel) { S.osel = d.osel; S.cx = CONCEPT.order.indexOf(F.oStand.find(s => s.id === d.osel).screen); r9(); $(".phonewrap").scrollIntoView({ block: "nearest" }); return; }
+  if (d.cxgo !== undefined) { S.cx = +d.cxgo; return r9(); }
+  if (d.cx) { const st = CONCEPT.st; if (d.cx === "next") { S.cx = Math.min(CONCEPT.order.length - 1, S.cx + 1); return r9(); } if (d.cx === "restart") { st.rooms = 8; st.floors = 3; st.fixed = false; S.cx = 0; return r9(); } if (d.cx === "fix") { st.fixed = true; return r9(); }
+    if (d.cx === "rooms-") st.rooms = Math.max(1, st.rooms - 1); if (d.cx === "rooms+") st.rooms = Math.min(99, st.rooms + 1); if (d.cx === "floors-") st.floors = Math.max(1, st.floors - 1); if (d.cx === "floors+") st.floors = Math.min(50, st.floors + 1); return r9(); }
+  if (t.id === "cback") { S.cx = Math.max(0, S.cx - 1); return r9(); } if (t.id === "cnext") { S.cx = Math.min(CONCEPT.order.length - 1, S.cx + 1); return r9(); }
+  if (t.id === "crestart") { const st = CONCEPT.st; st.rooms = 8; st.floors = 3; st.fixed = false; S.cx = 0; return r9(); }
+  if (d.seefix) { screenForT([...TC.FIRST, ...TC.RET].find(k => TC.FIX[k].includes(d.seefix))); const s = F.tStand.find(s => s.fixes.includes(d.seefix)); if (s) S.tsel = s.id; return go(8); }
+  if (d.openshot) { S.own = Math.max(0, OWN.findIndex(o => o.shot === d.openshot)); return go(4); }
+  if (d.openfix) { const n = +d.openfix; S.cx = Math.max(0, CONCEPT.order.findIndex(k => CONCEPT.fixes[k].includes(n))); const s = F.oStand.find(s => s.fixes.includes("O" + n)); if (s) S.osel = s.id; return go(9); }
+  if (d.hit) { const [kind, v] = d.hit.split(":"); $("#q").value = ""; $("#q2").value = ""; search(""); search2("");
+    if (kind === "page") return go(v, { top: true }); if (kind === "issue") return openIssue(v);
+    if (kind === "ts") { S.tsel = v; screenForT(F.tStand.find(s => s.id === v).screen); return go(8); }
+    if (kind === "os") { S.osel = v; S.cx = CONCEPT.order.indexOf(F.oStand.find(s => s.id === v).screen); return go(9); } }
+  if (t.id === "opensheet") return openSheet(); if (t.id === "closesheet") return closeSheet();
+});
+document.addEventListener("keydown", e => {
+  if (e.key === "Enter" || e.key === " ") { const j = e.target.closest && e.target.closest("[data-jump]"); if (j) { e.preventDefault(); j.click(); } }
+  if (e.key === "/" && !/INPUT|TEXTAREA/.test(document.activeElement.tagName)) { e.preventDefault(); if (getComputedStyle($(".side")).display !== "none") $("#q").focus(); else { openSheet(); } }
+  if (e.key === "Escape") closeSheet();
+});
+document.addEventListener("change", e => { if (e.target.id === "tap") { S.tap = e.target.checked; r4(); } });
+$("#sheet").addEventListener("click", e => { if (e.target.id === "sheet") closeSheet(); });
+function openSheet() { $("#sheet").hidden = false; setTimeout(() => $("#q2").focus(), 30); }
+function closeSheet() { $("#sheet").hidden = true; }
+
+// ---------- search ----------
+const INDEX = [
+  ...PG.map(p => ({ k: "page:" + p.n, chip: `<span class="id" style="background:var(--ink);color:var(--bg)">${p.n}</span>`, t: p.name, s: p.q, x: (p.name + " " + p.q + " " + p.tab).toLowerCase() })),
+  ...T.issues.map(i => ({ k: "issue:" + i.id, chip: idS(i.id), t: i.title, s: "Guest issue · " + i.stage, x: (i.id + " " + i.title + " " + i.heur + " " + i.stage).toLowerCase() })),
+  ...D.issues.map(i => ({ k: "issue:O" + i.n, chip: idS(i.n), t: i.title, s: "Owner issue · " + D.steps[i.step - 1].name, x: ("o" + i.n + " " + i.title + " " + i.heur + " " + D.steps[i.step - 1].name).toLowerCase() })),
+  ...F.tStand.map(s => ({ k: "ts:" + s.id, chip: `<span class="id T">★</span>`, t: s.name, s: "Guest feature · " + s.line, x: (s.name + " " + s.line + " " + s.fixes.join(" ")).toLowerCase() })),
+  ...F.oStand.map(s => ({ k: "os:" + s.id, chip: `<span class="id O">★</span>`, t: s.name, s: "Owner feature · " + s.line, x: (s.name + " " + s.line + " " + s.fixes.join(" ")).toLowerCase() }))
+];
+const runSearch = (q, box, nav) => { q = q.trim().toLowerCase(); if (!q) { box.hidden = true; nav.hidden = false; return; }
+  const words = q.split(/\s+/), hits = INDEX.filter(r => words.every(w => r.x.includes(w))).slice(0, 12);
+  box.innerHTML = hits.map(h => `<button data-hit="${h.k}">${h.chip}<span><b>${h.t}</b><small>${h.s}</small></span></button>`).join("") || `<p class="none">Nothing matches “${esc(q)}”. Try an issue number like T5 or a word like refund.</p>`;
+  box.hidden = false; nav.hidden = true; };
+const search = q => runSearch(q, $("#res"), $("#sidenav")), search2 = q => runSearch(q, $("#res2"), $("#sheetnav"));
+$("#q").addEventListener("input", e => search(e.target.value)); $("#q2").addEventListener("input", e => search2(e.target.value));
+
+// ---------- boot ----------
+let start = 1; const h0 = location.hash.match(/^#p(\d+)$/); if (h0) start = +h0[1]; else { try { const v = +localStorage.getItem("oyo-pg"); if (v >= 1 && v <= N) start = v; } catch (e) {} }
+TC.reset(); S.pg = start; render(); shell();
+</script>
+
+</html>
