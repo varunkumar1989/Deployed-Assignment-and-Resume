@@ -5,6 +5,7 @@ Varun Kumar · product and UX case studies.
 | What | Link |
 |---|---|
 | Resume site | [varun-pm-resume.netlify.app](https://varun-pm-resume.netlify.app/) |
+| Case studies page for Netlify: [`case-studies.html`](./case-studies.html) | Deploys as `/case-studies.html` next to your resume |
 | Portfolio (Claude artifact, all projects) | [claude.ai/artifact/LSjCZrSgrP9G5gLKr24vPw](https://claude.ai/artifact/LSjCZrSgrP9G5gLKr24vPw) |
 | Case studies repository | [varunkumar1989/Case-studies](https://github.com/varunkumar1989/Case-studies) |
 
