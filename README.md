@@ -19,3 +19,7 @@ Varun Kumar · product and UX case studies.
 | Klook | [Artifact](https://claude.ai/artifact/NgvkYSWfS4hdnmYe1kjYhf) | 8-slide deck |
 
 The portfolio page also lists the Slack, Snapdeal, SIP, Tatkal, Hike and AMPscript projects.
+
+## Netlify upload folder
+
+[`netlify/`](./netlify) holds `index.html` (case-studies page with all artifact links) and a ready zip. Drag the folder onto Netlify > Deploys.
