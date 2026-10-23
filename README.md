@@ -1,4 +1,4 @@
-# Resume
+# Deployed Case Studies
 
 Varun Kumar · product and UX case studies.
 
